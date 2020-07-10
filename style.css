@@ -3,13 +3,53 @@
 /*body { padding: 0; margin: 0; background-color:lightgray; font-family: inherit;}
 */
 
-html, body, {
+html {
     position:fixed;
     top:0;
     bottom:0;
     left:0;
     right:0;
+} 
+
+body {
+    position:fixed;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+    padding: 0px;
+    margin: 0px;
+    overflow: hidden;
 }
+
+
+
+input {
+    cursor: pointer;
+}
+
+
+
+#algorithm_panel {
+    right: 20px;
+    top: 20px;
+}
+
+.panel {
+    position: fixed;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    border-radius: 16px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+    cursor: default;
+}
+
+.right_panel {
+    width: 250px;
+    right: 20px;
+}
+
 
 .navbar {
   /*overflow: hidden;*/
@@ -228,6 +268,10 @@ html, body, {
    text-align: center;
 }
 
+a {
+    color: #33f;
+}
+
 #stats {
     position: fixed;
     bottom: 40px;
@@ -237,4 +281,20 @@ html, body, {
     padding: 5px;
     background: rgba(255, 255, 255, 0.5);
     border-radius: 5px;
+}
+
+.white {
+    color: #fff;
+}
+
+.green {
+    color: #0d0;
+}
+
+.red {
+    color: #ff9166;
+}
+
+.spinner {
+    width: 2em;
 }
