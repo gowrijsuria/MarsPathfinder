@@ -1,0 +1,279 @@
+/*#F08080 is light coral*/
+
+/*body { padding: 0; margin: 0; background-color:lightgray; font-family: inherit;}
+*/
+
+html {
+    position:fixed;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+} 
+
+body {
+    position:fixed;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+    padding: 0px;
+    margin: 0px;
+    overflow: hidden;
+}
+
+input {
+    cursor: pointer;
+}
+
+#algorithm_panel {
+    right: 20px;
+    top: 20px;
+}
+.navbar {
+  /*overflow: hidden;*/
+  background-color: #333;
+  font-family: inherit;
+  margin: 0;
+}
+
+.navbar a {
+  float: left;
+  font-size: 16px;
+  color: white;
+  text-align: center;
+  padding: 6px 8px;
+  text-decoration: none;
+  background-color: inherit;
+  font-family: inherit;
+  margin: 0;
+}
+
+.navbar a:hover, .dropdown:hover{
+  background-color: #F08080;
+}
+
+.dropbtn {
+  background-color: #333;
+  color: white;
+  padding: 6px 8px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+.dropbtn:hover, .dropbtn:focus {
+  background-color: #2980B9;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  overflow: auto;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown a:hover {background-color: #ddd;}
+
+.show {display: block;}
+
+.button {
+  /*background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 8px 8px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  /*margin: 2px 1px;*/
+  font-family: inherit;
+  margin: 0;
+  /*transition-duration: 0.4s;*/
+  cursor: pointer;
+}
+
+.button1 {
+    background-color: #333;
+    color: white;
+/*    border: 1px solid #e7e7e7;*/
+}
+
+.button1:hover {background-color: #F08080;}
+
+.sidenav {
+  z-index: 100;
+  opacity:0.3;
+  height: 90%;
+  width: 200px;
+  position: fixed;
+  top: 54;
+  right: 20;
+  bottom: 54;
+  background-color: #333;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  padding-top: 10px;
+  border: none;
+  color: white;
+  cursor: pointer;  
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 25px;
+
+  /*margin: 2px 1px;*/
+  /*transition-duration: 0.4s;*/
+  /*padding: 12px 24px;*/
+}
+
+.sidenav a {
+  /*padding: 4px 4px 4px 24px;*/
+  text-decoration: none;
+  font-size: 16px;
+  color: white;
+  display: block;
+  font-family: inherit;
+  margin: 0;
+}
+
+.sidenav a:hover {
+  background-color: #F08080;
+}
+
+.sidenav button {
+  padding: 2px 2px 2px 2px;
+  text-decoration: none;
+  font-size: 16px;
+  color: #818181;
+  display: block;
+}
+
+.sidenav button:hover {
+  color: #f1f1f1;
+}
+
+.class1 {
+  margin-left: 200px;
+    right: 20px; 
+    /* Same as the width of the sidenav */
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 12px;}
+}
+
+.startstyle{
+    color:#00FF7F;
+    font-size: 24px;
+}
+
+.stopstyle{
+    color:#FF6347;
+    font-size: 24px;
+}
+
+.circlestyle{
+    color:#4682B4;
+    font-size: 24px;
+}
+
+.shortestpathstyle{
+    color:#ffff33;
+    font-size: 24px;
+}
+
+.obstaclestyle{
+    color:#696969;
+    font-size: 24px;
+}
+
+.chargepointstyle{
+    color:#FFA500;
+    font-size: 24px;
+}
+
+.NotationsBar{
+    float: left;
+    /*overflow: hidden;*/
+    font-size: 16px;
+    color:#333;
+    background-color: white;
+    padding: 2px 32px 2px 4px;
+
+}
+
+.footer {
+    color: #333;
+    font-size: 70%;
+    text-align: center;
+    position: fixed;
+    width: 200px;
+    bottom: 10px;
+    left: 50%;
+    margin-left: -100px;
+    background: rgba(255, 255, 255, 0.5);
+    padding: 5px;
+    border-radius: 5px;
+    background-color: inherit;
+    font-family: inherit;
+
+}
+
+.footercontents{
+    background-color: inherit;
+    font-family: inherit;
+    color: #333;
+    left: 0;
+   bottom: 0;
+   width: 100%;
+   text-align: center;
+}
+
+a {
+    color: #33f;
+}
+
+#stats {
+    position: fixed;
+    bottom: 40px;
+    left: 35px;
+    color: #0a0;
+    font-size: 85%;
+    padding: 5px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 5px;
+}
+
+.white {
+    color: #fff;
+}
+
+.green {
+    color: #0d0;
+}
+
+.red {
+    color: #ff9166;
+}
+
+.spinner {
+    width: 2em;
+}
