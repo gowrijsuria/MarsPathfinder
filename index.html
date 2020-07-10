@@ -1,15 +1,39 @@
+<!-- <!DOCTYPE HTML> -->
 <html>
 	<head>
 		<meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
 		<title>Engage 2020 - Navigate the Mars Rover</title>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 		<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-		<link id="css1" rel="stylesheet" href="style.css"/>
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">			
+		<!-- <link id="css1" rel="stylesheet" href="style.css"/> -->
+		
+		<link rel="stylesheet" href="./UI/css/style.css" />
+		<link rel="stylesheet" href=".UI/lib/themes/jquery.ui.all.css" />
+    	<script type="text/javascript" src="./UI/lib/raphael-min.js"></script>
+	    <script type="text/javascript" src="./UI/lib/es5-shim.min.js"></script>
+	    <script type="text/javascript" src="./UI/lib/jquery-1.7.2.min.js"></script>
+	    <script type="text/javascript" src="./UI/lib/state-machine.min.js"></script>
+	    <script type="text/javascript" src="./UI/lib/async.min.js"></script>
+		<script type="text/javascript" src="./UI/lib/ui/jquery.ui.core.min.js"></script>
+	    <script type="text/javascript" src="./UI/lib/ui/jquery.ui.widget.min.js"></script>
+	    <script type="text/javascript" src="./UI/lib/ui/jquery.ui.mouse.min.js"></script>
+	    <script type="text/javascript" src="./UI/lib/ui/jquery.ui.draggable.min.js"></script>
+	    <script type="text/javascript" src="./UI/lib/ui/jquery.ui.accordion.min.js"></script>
+	    <script type="text/javascript" src="./UI/lib/ui/jquery.ui.slider.min.js"></script>
+		<script type="text/javascript" src="./UI/lib/pathfinding-browser.min.js"></script>
+		<script type="text/javascript" src="./UI/js/view.js"></script>
+	    <script type="text/javascript" src="./UI/js/controller.js"></script>
+	    <script type="text/javascript" src="./UI/js/panel.js"></script>
+	    <script type="text/javascript" src="./UI/js/main.js"></script>
 
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">			
+		
 	</head>
 	<body>
+		
 		<div class='Grid'>		
+			<div id="draw_area"></div>
+			
 			<div class='navbar'>											
 				<div class="dropdown">
     				<button onclick="myFunction()" class="dropbtn">Algorithms<i class="fa fa-caret-down"></i></button>    	
@@ -22,7 +46,7 @@
                 </div>
 
 				<button class="button button1" href="#" type = "button">Create a Maze</button>
-				<button class="button button1" href="#" type = "button">Create Randon Obstacles</button>
+				<button class="button button1" href="#" type = "button">Create Random Obstacles</button>
 				<button class="button button1" href="#" type = "button">Add Via Points</button>
 				<button class="button button1" href="#" type = "button">Generate weighted Grid</button>
 
@@ -30,7 +54,7 @@
 				<a class="button button1" href="#">About</a>
 				<a class="button button1" href="#home">ScoreBoard</a>
 		</div>
-
+	<!-- </div> -->
 			
 			<script src="basic.js"></script>
 			<!--<script src="grid.js"></script>-->
@@ -44,7 +68,7 @@
 				<div class="icons NotationsBar"><i class="fa fa-exclamation-triangle chargepointstyle"></i> Charge Point</div>
 
 			</div>
-		
+			<div id="algorithm_panel" class="panel right_panel">
 			<div class="sidenav" style="width:15%">	
 				<a href="#" class="w3-button">Start Search</a>
 				<a href="#" class="w3-button">Stop Search</a>
@@ -54,7 +78,6 @@
 				<a href="#" class="w3-button">Clear Path</a>
 			
 			</div>
-
 			<div id = "stats">
       				<div class="fieldclass">        		      
 				        <label class="footercontents">Time Elapsed</label>
@@ -66,4 +89,6 @@
 					</div>
 			</div>		
 		</div>
+		</div>
 	</body>
+</html>	
