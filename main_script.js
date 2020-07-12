@@ -18,6 +18,15 @@ const ALGORITHMS = {
   ASTAR: 'astar'
 };
 Object.freeze(ALGORITHMS);
+// const FEATURES = {
+//   : 'RandomObs',
+//   DFS: 'dfs',
+//   GREEDY: 'greedy',
+//   ASTAR: 'astar'
+// };
+// Object.freeze(FEATURES);
+
+
 const rectWidth = 25;
 const rectHeight = 25;
 const num_rows = Math.floor((screen.height - 70)/rectWidth);
@@ -289,6 +298,51 @@ function clearWalls() {
   }
 }
 
+const random = (min, max) => Math.random() * (max - min) + min;
+/**
+  Creates random obstales
+ * @param {*} e 
+ */
+async function CreateRandomObs() {
+  if(!running){
+    clearPath();
+    clearWalls();
+    const rows = nodes[0].length;
+    const cols = nodes.length;
+    for(let row = 0; row < nodes.length; row++)
+    {
+      for(let col = 0; col < nodes[row].length; col++)
+      {
+        node = nodes[row][col];
+        // const ObsOrNot = parseInt(random(1, rows + cols));
+        const ObsOrNot = parseInt(Math.random() * ((rows+cols) - 1) + 1);
+        if(ObsOrNot == 1)
+        {
+          if(node.state != STATE.START && node.state != STATE.FINISH)
+          {
+            node.state = STATE.WALL;
+          }      
+        }
+      }
+    }  
+  }
+}    
+
+function CreateMaze() {
+  if(!running){
+    clearPath();
+    clearWalls();
+  }
+}
+
+function CreateVia() {
+
+}
+
+function CreateTerrain() {
+
+}
+
 /**
  * Moves the start node when dragged
  * @param {*} e 
@@ -417,6 +471,21 @@ window.onload=function init() {
   btn = document.getElementById('astar');
   if(btn) btn.addEventListener('click', () => {currentAlgorithm = ALGORITHMS.ASTAR; algorithmText.textContent = "A* Search"}, false);
   
+  //Extra functionalities 
+  
+  // Create Random Obstacles
+  btn = document.getElementById('RandomObs');
+  if(btn) btn.addEventListener('click', CreateRandomObs, false);
+  // Create Maze Button
+  btn = document.getElementById('Maze');
+  if(btn) btn.addEventListener('click', CreateMaze, false);
+  // Create Via Points
+  btn = document.getElementById('Via');
+  if(btn) btn.addEventListener('click', CreateVia, false);
+  // Create Terrain
+  btn = document.getElementById('Terrain');
+  if(btn) btn.addEventListener('click', CreateTerrain, false);  
+
   canvas.width = WIDTH;
   canvas.height = HEIGHT;
   createGrid();
