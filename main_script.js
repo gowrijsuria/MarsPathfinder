@@ -1,5 +1,6 @@
 
-const WIDTH = 1920;
+// const WIDTH = 1920;
+const WIDTH = 1800;
 const HEIGHT = 940;
 const STATE = {
   EMPTY: 'e',
@@ -29,6 +30,8 @@ Object.freeze(ALGORITHMS);
 
 const rectWidth = 25;
 const rectHeight = 25;
+var BOARD_HEIGHT;
+var BOARD_WIDTH;
 const num_rows = Math.floor((screen.height - 70)/rectWidth);
 const num_cols = Math.floor(screen.width/rectHeight) - 1;
 const canvas = document.getElementById('canvas');
@@ -127,6 +130,8 @@ function createGrid() {
   }
   nodes[startNode.row][startNode.col].state = STATE.START;
   nodes[finishNode.row][finishNode.col].state = STATE.FINISH;
+  BOARD_HEIGHT = nodes.length;
+  BOARD_WIDTH = nodes[0].length;
 }
 
 function drawGrid(){
@@ -314,8 +319,8 @@ async function CreateRandomObs() {
       for(let col = 0; col < nodes[row].length; col++)
       {
         node = nodes[row][col];
-        // const ObsOrNot = parseInt(random(1, rows + cols));
-        const ObsOrNot = parseInt(Math.random() * ((rows+cols) - 1) + 1);
+        const ObsOrNot = parseInt(random(1, rows + cols));
+        // const ObsOrNot = parseInt(Math.random() * ((rows+cols) - 1) + 1);
         if(ObsOrNot == 1)
         {
           if(node.state != STATE.START && node.state != STATE.FINISH)
@@ -328,10 +333,12 @@ async function CreateRandomObs() {
   }
 }    
 
+
 function CreateMaze() {
   if(!running){
     clearPath();
     clearWalls();
+    recursive_maze(2,HEIGHT - 3, 2, WIDTH - 3, "horizontal", false);
   }
 }
 
