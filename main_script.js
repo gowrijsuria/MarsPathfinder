@@ -1,6 +1,6 @@
 
-// const WIDTH = 1920;
-const WIDTH = 1800;
+const WIDTH = 1920;
+// const WIDTH = 1800;
 const HEIGHT = 940;
 const STATE = {
   EMPTY: 'e',
@@ -8,7 +8,8 @@ const STATE = {
   START: 's',
   FINISH: 'f',
   PATH: 'p',
-  VISITED: 'v'
+  VISITED: 'v',
+  TERRAIN: 't'
 };
 
 Object.freeze(STATE);
@@ -96,6 +97,11 @@ function drawRect(x, y, width, height, state, colour = null) {
     ctx.fillStyle = "#3DD633";
     else if (state == STATE.FINISH)
       ctx.fillStyle = "#CC33D6";
+    else if (state == STATE.TERRAIN)
+      {
+        ctx.fillStyle = "#7E2217";
+        console.log("Terrain detected!!!!!!!!!!!!!!!!")
+      }
     else if (state == STATE.WALL)
       ctx.fillStyle = "navy";
     else if (state == STATE.PATH)
@@ -124,7 +130,8 @@ function createGrid() {
         x: col *(rectWidth + 1),
         y: row * (rectHeight + 1),
         state: STATE.EMPTY,
-        prevState: STATE.EMPTY // used for when the start/end nodes are being moved
+        prevState: STATE.EMPTY, // used for when the start/end nodes are being moved
+        weight: 0
       };
     }
   }
@@ -303,33 +310,28 @@ function clearWalls() {
   }
 }
 
+function clearTerrain() {
+ if(!running){
+    for(let row = 0; row < nodes.length; row++){
+      nodes[row].forEach(node => {
+        if(node.state == STATE.TERRAIN)
+          node.state = STATE.EMPTY;
+      });
+    }
+  } 
+}
+
 const random = (min, max) => Math.random() * (max - min) + min;
 /**
   Creates random obstales
  * @param {*} e 
  */
-async function CreateRandomObs() {
+function CreateRandomObs() {
   if(!running){
     clearPath();
     clearWalls();
-    const rows = nodes[0].length;
-    const cols = nodes.length;
-    for(let row = 0; row < nodes.length; row++)
-    {
-      for(let col = 0; col < nodes[row].length; col++)
-      {
-        node = nodes[row][col];
-        const ObsOrNot = parseInt(random(1, rows + cols));
-        // const ObsOrNot = parseInt(Math.random() * ((rows+cols) - 1) + 1);
-        if(ObsOrNot == 1)
-        {
-          if(node.state != STATE.START && node.state != STATE.FINISH)
-          {
-            node.state = STATE.WALL;
-          }      
-        }
-      }
-    }  
+    randomObs();
+      
   }
 }    
 
@@ -347,7 +349,10 @@ function CreateVia() {
 }
 
 function CreateTerrain() {
-
+  if(!running){
+    clearPath();
+    Createterrain(); 
+  }  
 }
 
 /**
@@ -454,6 +459,9 @@ window.onload=function init() {
   // Clear path
   btn = document.getElementById('clrPathBtn');
   if(btn) btn.addEventListener('click', clearPath, false);
+  // Clear Terrain
+  btn = document.getElementById('clrTerrainBtn');
+  if(btn) btn.addEventListener('click', clearTerrain, false);
   // Set speed
   btn = document.getElementById('speed');
   if(btn) btn.addEventListener('input', () => speed = document.getElementById('speed').value);
