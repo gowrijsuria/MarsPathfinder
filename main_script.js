@@ -362,17 +362,21 @@ function CreateTerrain() {
 function moveStartNode(e){
   let col = getCol(getX(e));
   let row = getRow(getY(e));
-  let cell = nodes[startNode.row][startNode.col];
-  cell.state = cell.prevState;
-  cell.prevState = STATE.START;
+  let cell1 = nodes[startNode.row][startNode.col];
+  let cell2 = nodes[row][col];
 
-  startNode.row = row;
-  startNode.col = col;
+  if(cell2.state != STATE.FINISH && cell2.state != STATE.WALL)
+  {
+    cell1.state = cell1.prevState;
+    cell1.prevState = STATE.START;  
 
+    startNode.row = row;
+    startNode.col = col;
 
-  cell = nodes[startNode.row][startNode.col];
-  cell.prevState = cell.state;
-  cell.state = STATE.START;
+    cell1 = nodes[startNode.row][startNode.col];
+    cell1.prevState = cell1.state;
+    cell1.state = STATE.START;
+  }
 }
 
 /**
@@ -382,16 +386,22 @@ function moveStartNode(e){
 function moveFinishNode(e){
   let col = getCol(getX(e));
   let row = getRow(getY(e));
-  let cell = nodes[finishNode.row][finishNode.col];
-  cell.state = cell.prevState;
-  cell.prevState = STATE.FINISH;
+  let cell1 = nodes[finishNode.row][finishNode.col];
+  let cell2 = nodes[row][col];
 
-  finishNode.row = row;
-  finishNode.col = col;
+  if(cell2.state != STATE.START && cell2.state != STATE.WALL)
+  {
+    cell1.state = cell1.prevState;
+    cell1.prevState = STATE.FINISH;  
 
-  cell = nodes[finishNode.row][finishNode.col];
-  cell.prevState = cell.state;
-  cell.state = STATE.FINISH
+    finishNode.row = row;
+    finishNode.col = col;
+
+    cell1 = nodes[finishNode.row][finishNode.col];
+    cell1.prevState = cell1.state;
+    cell1.state = STATE.FINISH;
+  }
+
 }
 
 
