@@ -1,62 +1,43 @@
-
-const WIDTH = 1920;
-// const WIDTH = 1800;
-const HEIGHT = 940;
-const STATE = {
-  EMPTY: 'e',
-  WALL: 'w',
-  START: 's',
-  FINISH: 'f',
-  PATH: 'p',
-  VISITED: 'v',
-  TERRAIN: 't'
-};
+const STATE = {EMPTY: 'e',WALL: 'w',START: 's',FINISH: 'f',PATH: 'p',VISITED: 'v',TERRAIN: 't'};
+const ALGORITHMS = {BFS: 'bfs', DFS: 'dfs', GREEDY: 'greedy', ASTAR: 'astar'};
 
 Object.freeze(STATE);
-const ALGORITHMS = {
-  BFS: 'bfs',
-  DFS: 'dfs',
-  GREEDY: 'greedy',
-  ASTAR: 'astar'
-};
 Object.freeze(ALGORITHMS);
-// const FEATURES = {
-//   : 'RandomObs',
-//   DFS: 'dfs',
-//   GREEDY: 'greedy',
-//   ASTAR: 'astar'
-// };
-// Object.freeze(FEATURES);
 
+const WIDTH = (80/100)*2000;
+const HEIGHT = 1000;
 
-const rectWidth = 25;
-const rectHeight = 25;
-var BOARD_HEIGHT;
-var BOARD_WIDTH;
+//Size of each pixel in the grid
+const rectWidth = 27;
+const rectHeight = 27;
+
 const num_rows = Math.floor((screen.height - 70)/rectWidth);
-const num_cols = Math.floor(screen.width/rectHeight) - 1;
+const num_cols = Math.floor(screen.width/rectHeight) - 13;
+
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 const nodes = [];
 const startNode = {
-  row: 14,
+  row: 7,
   col: 7
 };
 const finishNode = {
-  row: 14,
-  col: num_cols-7
+  row: 7,
+  col: num_cols-10
 };
+
 const startBtn = document.getElementById('startBtn');
 
+var BOARD_HEIGHT;
+var BOARD_WIDTH;
 let LMBDown = false;
 let RMBDown = false;
 let moveStart = false;
 let moveFinish = false;
-let currentAlgorithm = ALGORITHMS.BFS;
+let currentAlgorithm = ALGORITHMS.ASTAR;
 let running = false;
 let speed = 1; // sleep time in ms between each iteration in algos
 
-/* Pathfinding Algorithms */
 function manhattan(row, col) {
   return Math.abs(row - finishNode.row) + Math.abs(col - finishNode.col);
 }
@@ -80,77 +61,6 @@ function findNeighbours(curNode) {
   return neighbours;
 }
 
-/**
- * Draws a rectangle on the canvas
- * @param {*} x 
- * @param {*} y 
- * @param {*} width 
- * @param {*} height 
- * @param {*} state 
- * @param {*} colour
- */
-function drawRect(x, y, width, height, state, colour = null) {
-  if(colour){
-    ctx.fillStyle = colour;
-  } else {
-    if (state == STATE.START)
-    ctx.fillStyle = "#3DD633";
-    else if (state == STATE.FINISH)
-      ctx.fillStyle = "#CC33D6";
-    else if (state == STATE.TERRAIN)
-      {
-        ctx.fillStyle = "#7E2217";
-        console.log("Terrain detected!!!!!!!!!!!!!!!!")
-      }
-    else if (state == STATE.WALL)
-      ctx.fillStyle = "navy";
-    else if (state == STATE.PATH)
-      ctx.fillStyle = "#D6D627";
-    else if (state == STATE.VISITED)
-      ctx.fillStyle = "#2A867B";
-    else
-      ctx.fillStyle = "#CACACA";
-  }
-
-  ctx.beginPath();
-  ctx.rect(x, y, width, height);
-  ctx.closePath();
-  ctx.fill();
-}
-
-/**
- * Creates a 2d grid of nodes and stores them
- * in the global nodes[] array
- */
-function createGrid() {
-  for(let row = 0; row < num_rows; row++) {
-    nodes[row] = [];
-    for(let col = 0; col < num_cols; col++) {
-      nodes[row][col] = {
-        x: col *(rectWidth + 1),
-        y: row * (rectHeight + 1),
-        state: STATE.EMPTY,
-        prevState: STATE.EMPTY, // used for when the start/end nodes are being moved
-        weight: 0
-      };
-    }
-  }
-  nodes[startNode.row][startNode.col].state = STATE.START;
-  nodes[finishNode.row][finishNode.col].state = STATE.FINISH;
-  BOARD_HEIGHT = nodes.length;
-  BOARD_WIDTH = nodes[0].length;
-}
-
-function drawGrid(){
-  clear();
-  for(row = 0; row < num_rows; row++){
-    for(col = 0; col < num_cols; col++){
-      cell = nodes[row][col];
-      drawRect(cell.x, cell.y, rectWidth, rectHeight, cell.state);
-    }
-  }
-}
-
 /* Helper Functions */
 function clear() {
   ctx.clearRect(0, 0, WIDTH, HEIGHT);
@@ -169,11 +79,13 @@ function getY(e){
 }
 
 function getCol(x){
-  return parseInt((x - (x / rectHeight)) / rectHeight); // 2nd term's numerator changes based on the constant value that separates cells in createGrid()
+// 2nd term's numerator changes based on the constant value that separates cells in createGrid()
+  return parseInt((x - (x / rectHeight)) / rectHeight); 
 }
 
 function getRow(y){
-  return parseInt((y - (y / rectWidth)) / rectWidth); // 2nd term's numerator changes based on the constant value that separates cells in createGrid()
+// 2nd term's numerator changes based on the constant value that separates cells in createGrid()
+  return parseInt((y - (y / rectWidth)) / rectWidth); 
 }
 
 function resetVisitedNodes(){
@@ -184,12 +96,9 @@ function resetVisitedNodes(){
     });
   }
 }
-/**
- * Given an array of {row, col} tuples, this function will
- * change the state of each node to STATE.PATH
- * @param {} parent
- * @param {} timer 
- */
+
+
+//Given an array of {row, col} tuples, this function will change the state of each node to STATE.PATH
 async function drawPath(parent){
   clearPath();
   let path = [finishNode];
@@ -213,17 +122,13 @@ async function drawPath(parent){
 }
 
 /* Button Eventlisteners */
-
 function removeDiv() {
   let div = document.getElementById('tutorial');
   div.parentNode.removeChild(div);
   return false;
 }
 
-/**
- * Calls the appropriate search algorithm to
- * solve the maze
- */
+//Calls the appropriate search algorithm to solve the maze
 async function search() {
   if(!running){
     clearPath();
@@ -241,7 +146,7 @@ async function search() {
       result = await astar();
 
     if(result == -1)
-      alert('A path could not be found!');
+      alert('Path could not be found!');
 
     running = false;
     startBtn.textContent = 'Find Path';
@@ -253,9 +158,8 @@ async function search() {
   }
 }
 
-/**
- * Clears everything except for start and end nodes
- */
+
+//Clears everything except for start and end nodes 
 function clearPath(){
   if(!running){
 
@@ -268,11 +172,7 @@ function clearPath(){
   }
 }
 
-/**
- * Changes state of empty nodes to wall nodes
- * on left-click
- * @param {*} e 
- */
+//Changes state of empty nodes to wall nodes on left-click
 function createWall(e){
   let col = getCol(getX(e));
   let row = getRow(getY(e));
@@ -281,24 +181,18 @@ function createWall(e){
     cell.state = STATE.WALL;
   }
 }
-/**
- * Changes state of wall nodes to empty nodes
- * on right-click
- * @param {*} e 
- */
+//Changes state of wall nodes to empty nodes on right-click
 function deleteWall(e){
   let col = getCol(getX(e));
   let row = getRow(getY(e));
   let cell = nodes[row][col];
+
   if(cell.state == STATE.WALL) {
     cell.state = STATE.EMPTY;
   }
 }
 
-/**
- * Sets all wall nodes in nodes[][] to STATE.EMPTY
- * @param {*} e 
- */
+// Sets all wall nodes in nodes[][] to STATE.EMPTY
 function clearWalls() {
   if(!running){
     for(let row = 0; row < nodes.length; row++){
@@ -322,10 +216,8 @@ function clearTerrain() {
 }
 
 const random = (min, max) => Math.random() * (max - min) + min;
-/**
-  Creates random obstales
- * @param {*} e 
- */
+
+//  Creates random obstales
 function CreateRandomObs() {
   if(!running){
     clearPath();
@@ -334,7 +226,6 @@ function CreateRandomObs() {
       
   }
 }    
-
 
 function CreateMaze() {
   if(!running){
@@ -355,55 +246,48 @@ function CreateTerrain() {
   }  
 }
 
-/**
- * Moves the start node when dragged
- * @param {*} e 
- */
+function CallTutorial(){
+document.getElementById("tutorial").classList.toggle("show");
+}
+
+function Pause() {
+
+}
+
+
+// Moves the start node when dragged
 function moveStartNode(e){
   let col = getCol(getX(e));
   let row = getRow(getY(e));
-  let cell1 = nodes[startNode.row][startNode.col];
-  let cell2 = nodes[row][col];
+  let cell = nodes[startNode.row][startNode.col];
+  
+  cell.state = cell.prevState;
+  cell.prevState = STATE.START;
 
-  if(cell2.state != STATE.FINISH && cell2.state != STATE.WALL)
-  {
-    cell1.state = cell1.prevState;
-    cell1.prevState = STATE.START;  
+  startNode.row = row;
+  startNode.col = col;
 
-    startNode.row = row;
-    startNode.col = col;
-
-    cell1 = nodes[startNode.row][startNode.col];
-    cell1.prevState = cell1.state;
-    cell1.state = STATE.START;
-  }
+  cell = nodes[startNode.row][startNode.col];
+  cell.prevState = cell.state;
+  cell.state = STATE.START;
 }
 
-/**
- * Moves the finish node when dragged
- * @param {*} e 
- */
+// Moves the finish node when dragged
 function moveFinishNode(e){
   let col = getCol(getX(e));
   let row = getRow(getY(e));
-  let cell1 = nodes[finishNode.row][finishNode.col];
-  let cell2 = nodes[row][col];
+  let cell = nodes[finishNode.row][finishNode.col];
+  
+  cell.state = cell.prevState;
+  cell.prevState = STATE.FINISH;
 
-  if(cell2.state != STATE.START && cell2.state != STATE.WALL)
-  {
-    cell1.state = cell1.prevState;
-    cell1.prevState = STATE.FINISH;  
+  finishNode.row = row;
+  finishNode.col = col;
 
-    finishNode.row = row;
-    finishNode.col = col;
-
-    cell1 = nodes[finishNode.row][finishNode.col];
-    cell1.prevState = cell1.state;
-    cell1.state = STATE.FINISH;
-  }
-
+  cell = nodes[finishNode.row][finishNode.col];
+  cell.prevState = cell.state;
+  cell.state = STATE.FINISH
 }
-
 
 
 /* Canvas Eventlisteners */
@@ -510,6 +394,14 @@ window.onload=function init() {
   // Create Terrain
   btn = document.getElementById('Terrain');
   if(btn) btn.addEventListener('click', CreateTerrain, false);  
+
+  btn = document.getElementById('instructions');
+  if(btn) btn.addEventListener('click', CallTutorial, false);  
+
+  let pause_btn = document.getElementById('pauseSearch');
+  if(btn) btn.addEventListener('click', Pause, false);  
+  if(pause_btn) pause_btn.addEventListener('click', () => { pause_btn.textContent = "Resume Search"}, false);
+
 
   canvas.width = WIDTH;
   canvas.height = HEIGHT;
