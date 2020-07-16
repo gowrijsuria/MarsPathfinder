@@ -13,6 +13,8 @@ function drawRect(x, y, width, height, state, colour = null) {
       }
     else if (state == STATE.WALL)
       ctx.fillStyle = "#696969";
+    else if (state == STATE.VIA)
+      ctx.fillStyle = "#146c91";
     else if (state == STATE.PATH)
       ctx.fillStyle = "#ebeb2a";
     else if (state == STATE.VISITED)

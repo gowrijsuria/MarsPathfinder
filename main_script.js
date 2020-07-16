@@ -1,4 +1,4 @@
-const STATE = {EMPTY: 'e',WALL: 'w',START: 's',FINISH: 'f',PATH: 'p',VISITED: 'v',TERRAIN: 't'};
+const STATE = {EMPTY: 'e',WALL: 'w',START: 's',FINISH: 'f',PATH: 'p',VISITED: 'v',TERRAIN: 't', VIA: 'via'};
 const ALGORITHMS = {BFS: 'bfs', DFS: 'dfs', GREEDY: 'greedy', ASTAR: 'astar'};
 
 Object.freeze(STATE);
@@ -25,6 +25,10 @@ const finishNode = {
   row: 7,
   col: num_cols-10
 };
+const viaNode = {
+  row: null,
+  col: null
+};
 
 const startBtn = document.getElementById('startBtn');
 
@@ -34,6 +38,8 @@ let LMBDown = false;
 let RMBDown = false;
 let moveStart = false;
 let moveFinish = false;
+let addvia = false;
+let viaOrnot = false;
 let currentAlgorithm = ALGORITHMS.ASTAR;
 let running = false;
 let speed = 1; // sleep time in ms between each iteration in algos
@@ -103,7 +109,7 @@ async function drawPath(parent){
   clearPath();
   let path = [finishNode];
   let endNode = path[path.length - 1];
-  //console.log(`endNode row: ${endNode.row} col: ${endNode.col}`);
+  console.log(`endNode row: ${endNode.row} col: ${endNode.col}`);
   while(!(endNode.row == startNode.row && endNode.col == startNode.col)) {
     endNode = parent.get(`${endNode.row},${endNode.col}`);
     //console.log(`endNode row: ${endNode.row} col: ${endNode.col}`);
@@ -130,14 +136,21 @@ function removeDiv() {
 
 //Calls the appropriate search algorithm to solve the maze
 async function search() {
-  if(!running){
+  console.log(`search`);
+  if (!running) {
     clearPath();
     let result = 0;
     running = true;
     startBtn.textContent = 'Cancel';
     startBtn.classList.toggle('btn', 'btn-danger');
-    if (currentAlgorithm == ALGORITHMS.BFS)
-      result = await bfs();
+    if (currentAlgorithm == ALGORITHMS.BFS && viaOrnot == true) {
+      console.log(`via existing`);
+      result = await bfs(startNode, viaNode); 
+    }
+    else if (currentAlgorithm == ALGORITHMS.BFS && viaOrnot == false) {
+      console.log(`no via`);
+      result = await bfs(startNode, finishNode);
+    }
     else if (currentAlgorithm == ALGORITHMS.DFS)
       result = await dfs();
     else if (currentAlgorithm == ALGORITHMS.GREEDY)
@@ -235,7 +248,22 @@ function CreateMaze() {
   }
 }
 
-function CreateVia() {
+function AddVia() {
+  console.log(`entered addvia: ${addvia}`);
+  addvia = true;
+}
+
+function CreateVia(e) {
+  let col = getCol(getX(e));
+  let row = getRow(getY(e));
+  let cell = nodes[row][col];
+  if (cell.state != STATE.START && cell.state != STATE.FINISH) {
+    cell.state = STATE.VIA;
+    console.log(`created via state ${addvia}`);
+    viaOrnot = true;
+    viaNode.row = row;
+    viaNode.col = col;
+  }
 
 }
 
@@ -296,6 +324,7 @@ canvas.onmouseup = function(e) {
   RMBDown = false;
   moveStart = false;
   moveFinish = false;
+  addvia = false;
 }
 
 canvas.onmousedown = function(e) {
@@ -313,10 +342,16 @@ canvas.onmousedown = function(e) {
     moveStart = true;
   } else if (nodes[row][col].state == STATE.FINISH) {
     moveFinish = true;
-  } else {
-    if (e.button == 0){
+  } else if (addvia){
+    if (e.button == 0) {
+      CreateVia(e);
+    }
+  }
+  else {
+    if (e.button == 0) {
       createWall(e);
-    } else if (e.button == 2){
+    }
+    else if (e.button == 2){
       deleteWall(e);
     }
   }
@@ -333,8 +368,9 @@ canvas.onmousemove = function(e) {
       moveStartNode(e);
     } else if (moveFinish) {
       moveFinishNode(e);
-    } else {
-      createWall(e);
+    } else if (addvia) {
+      console.log(`addvia: ${addvia}`);
+      CreateVia(e);
     }
   } else if (RMBDown) {
     deleteWall(e)
@@ -390,7 +426,7 @@ window.onload=function init() {
   if(btn) btn.addEventListener('click', CreateMaze, false);
   // Create Via Points
   btn = document.getElementById('Via');
-  if(btn) btn.addEventListener('click', CreateVia, false);
+  if(btn) btn.addEventListener('click', AddVia, false);
   // Create Terrain
   btn = document.getElementById('Terrain');
   if(btn) btn.addEventListener('click', CreateTerrain, false);  

@@ -1,10 +1,10 @@
-async function bfs() {
+async function bfs(beginNode, endNode) {
   const queue = [];
   const parent = new Map();
   let neighbours = [];
   let node = {
-    row: startNode.row,
-    col: startNode.col
+    row: beginNode.row,
+    col: beginNode.col
   };
   queue.push(node);
   while (queue.length > 0 && running) {
@@ -12,7 +12,7 @@ async function bfs() {
     if (nodes[node.row][node.col].state != STATE.START && nodes[node.row][node.col].state != STATE.FINISH) {
       nodes[node.row][node.col].state = STATE.VISITED;
     }
-    if(node.row == finishNode.row && node.col == finishNode.col){
+    if(node.row == endNode.row && node.col == endNode.col){
       await drawPath(parent);
       return;
     } else {
