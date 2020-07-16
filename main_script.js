@@ -38,6 +38,7 @@ let LMBDown = false;
 let RMBDown = false;
 let moveStart = false;
 let moveFinish = false;
+let moveVia = false;
 let addvia = false;
 let viaOrnot = false;
 let currentAlgorithm = ALGORITHMS.ASTAR;
@@ -105,9 +106,9 @@ function resetVisitedNodes(){
 
 
 //Given an array of {row, col} tuples, this function will change the state of each node to STATE.PATH
-async function drawPath(parent){
+async function drawPath(parent, currentendpt){
   clearPath();
-  let path = [finishNode];
+  let path = [currentendpt];
   let endNode = path[path.length - 1];
   console.log(`endNode row: ${endNode.row} col: ${endNode.col}`);
   while(!(endNode.row == startNode.row && endNode.col == startNode.col)) {
@@ -119,7 +120,7 @@ async function drawPath(parent){
   for(let i = path.length - 1; i >= 0; i--) {
     let node = path[i];
     let curNode = nodes[node.row][node.col];
-    if(curNode.state != STATE.START && curNode.state != STATE.FINISH){
+    if(curNode.state != STATE.START && curNode.state != STATE.FINISH && curNode.state != STATE.VIA){
       curNode.state = STATE.PATH;
       await sleep(20);
     }
@@ -152,11 +153,11 @@ async function search() {
       result = await bfs(startNode, finishNode);
     }
     else if (currentAlgorithm == ALGORITHMS.DFS)
-      result = await dfs();
+      result = await dfs(startNode, finishNode);
     else if (currentAlgorithm == ALGORITHMS.GREEDY)
-      result = await greedy();
+      result = await greedy(startNode, finishNode);
     else if (currentAlgorithm == ALGORITHMS.ASTAR)
-      result = await astar();
+      result = await astar(startNode, finishNode);
 
     if(result == -1)
       alert('Path could not be found!');
@@ -190,7 +191,7 @@ function createWall(e){
   let col = getCol(getX(e));
   let row = getRow(getY(e));
   let cell = nodes[row][col];
-  if(cell.state != STATE.START && cell.state != STATE.FINISH){
+  if(cell.state != STATE.START && cell.state != STATE.FINISH && cell.state != STATE.VIA){
     cell.state = STATE.WALL;
   }
 }
@@ -317,6 +318,23 @@ function moveFinishNode(e){
   cell.state = STATE.FINISH
 }
 
+function moveViaNode(e) {
+  console.log(`move via`);
+  let col = getCol(getX(e));
+  let row = getRow(getY(e));
+  let cell = nodes[viaNode.row][viaNode.col];
+
+  cell.state = cell.prevState;
+  cell.prevState = STATE.EMPTY;
+
+  viaNode.row = row;
+  viaNode.col = col;
+
+  cell = nodes[viaNode.row][viaNode.col];
+  cell.prevState = cell.state;
+  cell.state = STATE.VIA;
+}
+
 
 /* Canvas Eventlisteners */
 canvas.onmouseup = function(e) {
@@ -324,6 +342,7 @@ canvas.onmouseup = function(e) {
   RMBDown = false;
   moveStart = false;
   moveFinish = false;
+  moveVia = false;
   addvia = false;
 }
 
@@ -342,7 +361,10 @@ canvas.onmousedown = function(e) {
     moveStart = true;
   } else if (nodes[row][col].state == STATE.FINISH) {
     moveFinish = true;
-  } else if (addvia){
+  } else if (nodes[row][col].state == STATE.VIA) {
+    moveVia = true;
+  }
+  else if (addvia) {
     if (e.button == 0) {
       CreateVia(e);
     }
@@ -368,9 +390,15 @@ canvas.onmousemove = function(e) {
       moveStartNode(e);
     } else if (moveFinish) {
       moveFinishNode(e);
-    } else if (addvia) {
+    } else if (moveVia) {
+      moveViaNode(e);
+    }
+    else if (addvia) {
       console.log(`addvia: ${addvia}`);
       CreateVia(e);
+    }
+    else {
+      createWall(e);
     }
   } else if (RMBDown) {
     deleteWall(e)

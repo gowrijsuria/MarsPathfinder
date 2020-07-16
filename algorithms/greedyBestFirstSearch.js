@@ -1,11 +1,11 @@
-async function greedy(){
+async function greedy(beginNode, endNode){
   const frontier = [];
   const parent = new Map();
   let neighbours = [];
   let node = {
-    row: startNode.row,
-    col: startNode.col,
-    heuristic: manhattan(startNode.row, startNode.col)
+    row: beginNode.row,
+    col: beginNode.col,
+    heuristic: manhattan(beginNode.row, beginNode.col)
   };
   
   frontier.push(node);
@@ -16,8 +16,8 @@ async function greedy(){
       nodes[node.row][node.col].state = STATE.VISITED;
     }
     // if found, draw its path and return
-    if(node.row == finishNode.row && node.col == finishNode.col){
-      await drawPath(parent);
+    if(node.row == endNode.row && node.col == endNode.col){
+      await drawPath(parent, endNode);
       return;
     } else {
       neighbours = findNeighbours(node);

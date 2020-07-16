@@ -1,10 +1,10 @@
-async function dfs() {
+async function dfs(beginNode, endNode) {
   const stack = [];
   const parent = new Map();
   let neighbours = [];
   let node = {
-    row: startNode.row,
-    col: startNode.col
+    row: beginNode.row,
+    col: beginNode.col
   };
   stack.push(node);
   while (stack.length > 0 && running) {
@@ -12,8 +12,8 @@ async function dfs() {
     if (nodes[node.row][node.col].state != STATE.START && nodes[node.row][node.col].state != STATE.FINISH) {
       nodes[node.row][node.col].state = STATE.VISITED;
     }
-    if(node.row == finishNode.row && node.col == finishNode.col){
-      await drawPath(parent);
+    if(node.row == endNode.row && node.col == endNode.col){
+      await drawPath(parent, endNode);
       return;
     } else {
       neighbours = findNeighbours(node);

@@ -9,11 +9,11 @@ async function bfs(beginNode, endNode) {
   queue.push(node);
   while (queue.length > 0 && running) {
     node = queue.shift();
-    if (nodes[node.row][node.col].state != STATE.START && nodes[node.row][node.col].state != STATE.FINISH) {
+    if (nodes[node.row][node.col].state != STATE.START && nodes[node.row][node.col].state != STATE.FINISH && nodes[node.row][node.col].state != STATE.VIA) {
       nodes[node.row][node.col].state = STATE.VISITED;
     }
     if(node.row == endNode.row && node.col == endNode.col){
-      await drawPath(parent);
+      await drawPath(parent, endNode);
       return;
     } else {
       neighbours = findNeighbours(node);
