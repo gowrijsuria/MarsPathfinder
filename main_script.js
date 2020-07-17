@@ -17,13 +17,14 @@ const num_cols = Math.floor(screen.width/rectHeight) - 13;
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 const nodes = [];
+var path = [];
 const startNode = {
   row: 7,
   col: 7
 };
 const finishNode = {
   row: 7,
-  col: num_cols-10
+  col: num_cols-30
 };
 const viaNode = {
   row: null,
@@ -36,6 +37,7 @@ var BOARD_HEIGHT;
 var BOARD_WIDTH;
 let LMBDown = false;
 let RMBDown = false;
+let enable_via = true;
 let moveStart = false;
 let moveFinish = false;
 let moveVia = false;
@@ -104,28 +106,59 @@ function resetVisitedNodes(){
   }
 }
 
-
-//Given an array of {row, col} tuples, this function will change the state of each node to STATE.PATH
-async function drawPath(parent, currentendpt){
+async function drawViaPath(parent, beginNode, endpt){
   clearPath();
-  let path = [currentendpt];
+  path.push(endpt);
   let endNode = path[path.length - 1];
-  console.log(`endNode row: ${endNode.row} col: ${endNode.col}`);
-  while(!(endNode.row == startNode.row && endNode.col == startNode.col)) {
+  // console.log(`endNode row: ${endNode.row} col: ${endNode.col}`);
+  while(!(endNode.row == beginNode.row && endNode.col == beginNode.col)) {
     endNode = parent.get(`${endNode.row},${endNode.col}`);
+    // curNode.state = STATE.PATH;
     //console.log(`endNode row: ${endNode.row} col: ${endNode.col}`);
     path.push(endNode);
   }
-  console.log('done');
-  for(let i = path.length - 1; i >= 0; i--) {
-    let node = path[i];
-    let curNode = nodes[node.row][node.col];
-    if(curNode.state != STATE.START && curNode.state != STATE.FINISH && curNode.state != STATE.VIA){
-      curNode.state = STATE.PATH;
-      await sleep(20);
+  await sleep(20);
+  return path;
+
+}
+
+//Given an array of {row, col} tuples, this function will change the state of each node to STATE.PATH
+async function drawPath(parent, beginNode, currentendpt,oldpath,via=false){
+   clearPath();
+   if(!via && oldpath.length == 0){
+    var path = [];
+    path.push(currentendpt);
+    } 
+    clearPath();
+    if(oldpath.length != 0){
+      var path = [];
+      var path2 = path.concat(oldpath);
+      path = path2;
+      path.push(currentendpt);
     }
-  }
-  return;
+    
+    
+    // path.push(currentendpt);
+    let endNode = path[path.length - 1];
+    // console.log(`endNode row: ${endNode.row} col: ${endNode.col}`);
+    while(!(endNode.row == beginNode.row && endNode.col == beginNode.col)) {
+      endNode = parent.get(`${endNode.row},${endNode.col}`);
+      //console.log(`endNode row: ${endNode.row} col: ${endNode.col}`);
+      path.push(endNode);
+    }
+
+    console.log('done');
+    console.log("path");
+    console.log(path);
+    for(let i = path.length - 1; i >= 0; i--) {
+      let node = path[i];
+      let curNode = nodes[node.row][node.col];
+      if(curNode.state != STATE.START && curNode.state != STATE.FINISH && curNode.state != STATE.VIA){
+        curNode.state = STATE.PATH;
+        await sleep(20);
+      }
+    }
+    return;
 }
 
 /* Button Eventlisteners */
@@ -146,7 +179,10 @@ async function search() {
     startBtn.classList.toggle('btn', 'btn-danger');
     if (currentAlgorithm == ALGORITHMS.BFS && viaOrnot == true) {
       console.log(`via existing`);
-      result = await bfs(startNode, viaNode); 
+      path1 = await bfs(startNode, viaNode, true);
+      console.log("path1");
+      console.log("path1");
+      result = await bfs(viaNode, finishNode,false,path1); 
     }
     else if (currentAlgorithm == ALGORITHMS.BFS && viaOrnot == false) {
       console.log(`no via`);
@@ -229,6 +265,19 @@ function clearTerrain() {
   } 
 }
 
+function ClearVia() {
+  if(!running){
+    for(let row = 0; row < nodes.length; row++){
+      nodes[row].forEach(node => {
+        if(node.state == STATE.VIA)
+          node.state = STATE.EMPTY;
+      });
+    }
+    enable_via = true;
+  }
+}
+
+
 const random = (min, max) => Math.random() * (max - min) + min;
 
 //  Creates random obstales
@@ -251,6 +300,7 @@ function CreateMaze() {
 
 function AddVia() {
   console.log(`entered addvia: ${addvia}`);
+  no_of_via = 1;
   addvia = true;
 }
 
@@ -288,51 +338,64 @@ function Pause() {
 function moveStartNode(e){
   let col = getCol(getX(e));
   let row = getRow(getY(e));
-  let cell = nodes[startNode.row][startNode.col];
-  
-  cell.state = cell.prevState;
-  cell.prevState = STATE.START;
 
-  startNode.row = row;
-  startNode.col = col;
+  let cell1 = nodes[startNode.row][startNode.col];
+  let cell2 = nodes[row][col];
 
-  cell = nodes[startNode.row][startNode.col];
-  cell.prevState = cell.state;
-  cell.state = STATE.START;
+  if(cell2.state != STATE.FINISH && cell2.state != STATE.WALL && cell2.state != STATE.VIA)
+  {
+    cell1.state = cell1.prevState;
+    cell1.prevState = STATE.START;
+
+    startNode.row = row;
+    startNode.col = col;
+
+    cell1 = nodes[startNode.row][startNode.col];
+    cell1.prevState = cell1.state;
+    cell1.state = STATE.START;
+  }
 }
 
 // Moves the finish node when dragged
 function moveFinishNode(e){
   let col = getCol(getX(e));
   let row = getRow(getY(e));
-  let cell = nodes[finishNode.row][finishNode.col];
-  
-  cell.state = cell.prevState;
-  cell.prevState = STATE.FINISH;
+  let cell1 = nodes[finishNode.row][finishNode.col];
+  let cell2 = nodes[row][col];
 
-  finishNode.row = row;
-  finishNode.col = col;
+  if(cell2.state != STATE.START && cell2.state != STATE.WALL && cell2.state != STATE.VIA)
+  {
+    cell1.state = cell1.prevState;
+    cell1.prevState = STATE.FINISH;  
 
-  cell = nodes[finishNode.row][finishNode.col];
-  cell.prevState = cell.state;
-  cell.state = STATE.FINISH
+    finishNode.row = row;
+    finishNode.col = col;
+
+    cell1 = nodes[finishNode.row][finishNode.col];
+    cell1.prevState = cell1.state;
+    cell1.state = STATE.FINISH
+  }
 }
 
 function moveViaNode(e) {
-  console.log(`move via`);
+  // console.log(`move via`);
   let col = getCol(getX(e));
   let row = getRow(getY(e));
-  let cell = nodes[viaNode.row][viaNode.col];
+  let cell1 = nodes[viaNode.row][viaNode.col];
+  let cell2 = nodes[row][col];
 
-  cell.state = cell.prevState;
-  cell.prevState = STATE.EMPTY;
+  if(cell2.state != STATE.START && cell2.state != STATE.WALL && cell2.state != STATE.FINISH)
+  {
+    cell1.state = cell1.prevState;
+    cell1.prevState = STATE.EMPTY;
 
-  viaNode.row = row;
-  viaNode.col = col;
+    viaNode.row = row;
+    viaNode.col = col;
 
-  cell = nodes[viaNode.row][viaNode.col];
-  cell.prevState = cell.state;
-  cell.state = STATE.VIA;
+    cell1 = nodes[viaNode.row][viaNode.col];
+    cell1.prevState = cell1.state;
+    cell1.state = STATE.VIA;
+  }
 }
 
 
@@ -365,8 +428,10 @@ canvas.onmousedown = function(e) {
     moveVia = true;
   }
   else if (addvia) {
-    if (e.button == 0) {
+    if (e.button == 0 && enable_via) {
+
       CreateVia(e);
+      enable_via = false;
     }
   }
   else {
@@ -455,6 +520,9 @@ window.onload=function init() {
   // Create Via Points
   btn = document.getElementById('Via');
   if(btn) btn.addEventListener('click', AddVia, false);
+  // Clear Via Points
+  btn = document.getElementById('ClearVia');
+  if(btn) btn.addEventListener('click', ClearVia, false);
   // Create Terrain
   btn = document.getElementById('Terrain');
   if(btn) btn.addEventListener('click', CreateTerrain, false);  
