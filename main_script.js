@@ -108,6 +108,7 @@ function resetVisitedNodes(){
 
 async function drawViaPath(parent, beginNode, endpt){
   clearPath();
+  path = [];
   path.push(endpt);
   let endNode = path[path.length - 1];
   // console.log(`endNode row: ${endNode.row} col: ${endNode.col}`);
@@ -124,12 +125,12 @@ async function drawViaPath(parent, beginNode, endpt){
 
 //Given an array of {row, col} tuples, this function will change the state of each node to STATE.PATH
 async function drawPath(parent, beginNode, currentendpt,oldpath,via=false){
+   
    clearPath();
    if(!via && oldpath.length == 0){
     var path = [];
     path.push(currentendpt);
     } 
-    clearPath();
     if(oldpath.length != 0){
       var path = [];
       var path2 = path.concat(oldpath);
@@ -137,8 +138,6 @@ async function drawPath(parent, beginNode, currentendpt,oldpath,via=false){
       path.push(currentendpt);
     }
     
-    
-    // path.push(currentendpt);
     let endNode = path[path.length - 1];
     // console.log(`endNode row: ${endNode.row} col: ${endNode.col}`);
     while(!(endNode.row == beginNode.row && endNode.col == beginNode.col)) {
@@ -146,10 +145,9 @@ async function drawPath(parent, beginNode, currentendpt,oldpath,via=false){
       //console.log(`endNode row: ${endNode.row} col: ${endNode.col}`);
       path.push(endNode);
     }
-
+    // clearPath();
     console.log('done');
-    console.log("path");
-    console.log(path);
+    
     for(let i = path.length - 1; i >= 0; i--) {
       let node = path[i];
       let curNode = nodes[node.row][node.col];
@@ -177,23 +175,41 @@ async function search() {
     running = true;
     startBtn.textContent = 'Cancel';
     startBtn.classList.toggle('btn', 'btn-danger');
-    if (currentAlgorithm == ALGORITHMS.BFS && viaOrnot == true) {
-      console.log(`via existing`);
-      path1 = await bfs(startNode, viaNode, true);
-      console.log("path1");
-      console.log("path1");
-      result = await bfs(viaNode, finishNode,false,path1); 
+    if(viaOrnot == true)
+    {
+      if (currentAlgorithm == ALGORITHMS.BFS) {
+        path1 = await bfs(startNode, viaNode, true);
+        result = await bfs(viaNode, finishNode,false,path1);  
+      }
+      else if (currentAlgorithm == ALGORITHMS.DFS){
+        path1 = await dfs(startNode, viaNode, true);
+        result = await dfs(viaNode, finishNode,false,path1);  
+      }
+      else if (currentAlgorithm == ALGORITHMS.GREEDY){
+        path1 = await greedy(startNode, viaNode, true);
+        result = await greedy(viaNode, finishNode,false,path1);  
+      }
+      else if (currentAlgorithm == ALGORITHMS.ASTAR){
+        path1 = await astar(startNode, viaNode, true);
+        result = await astar(viaNode, finishNode,false,path1);  
+      }
     }
-    else if (currentAlgorithm == ALGORITHMS.BFS && viaOrnot == false) {
-      console.log(`no via`);
-      result = await bfs(startNode, finishNode);
+    else
+    {
+      if (currentAlgorithm == ALGORITHMS.BFS) {
+        result = await bfs(startNode, finishNode);
+      }
+      else if (currentAlgorithm == ALGORITHMS.DFS){
+        result = await dfs(startNode, finishNode);
+      }
+      else if (currentAlgorithm == ALGORITHMS.GREEDY){
+        result = await greedy(startNode, finishNode);
+      }
+      else if (currentAlgorithm == ALGORITHMS.ASTAR){
+        result = await astar(startNode, finishNode);
+      }
+
     }
-    else if (currentAlgorithm == ALGORITHMS.DFS)
-      result = await dfs(startNode, finishNode);
-    else if (currentAlgorithm == ALGORITHMS.GREEDY)
-      result = await greedy(startNode, finishNode);
-    else if (currentAlgorithm == ALGORITHMS.ASTAR)
-      result = await astar(startNode, finishNode);
 
     if(result == -1)
       alert('Path could not be found!');
@@ -274,6 +290,7 @@ function ClearVia() {
       });
     }
     enable_via = true;
+    viaOrnot =false;
   }
 }
 

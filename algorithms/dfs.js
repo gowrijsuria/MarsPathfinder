@@ -1,4 +1,4 @@
-async function dfs(beginNode, endNode) {
+async function dfs(beginNode, endNode, via=false, oldpath=[]) {
   const stack = [];
   const parent = new Map();
   let neighbours = [];
@@ -9,12 +9,21 @@ async function dfs(beginNode, endNode) {
   stack.push(node);
   while (stack.length > 0 && running) {
     node = stack.pop();
-    if (nodes[node.row][node.col].state != STATE.START && nodes[node.row][node.col].state != STATE.FINISH) {
-      nodes[node.row][node.col].state = STATE.VISITED;
+    let row = node.row;
+    let col = node.col;
+    if (nodes[row][col].state != STATE.START && nodes[row][col].state != STATE.FINISH && nodes[row][col].state != STATE.VIA) {
+      nodes[row][col].state = STATE.VISITED;
     }
-    if(node.row == endNode.row && node.col == endNode.col){
-      await drawPath(parent, endNode);
-      return;
+    if(row == endNode.row && col == endNode.col){
+      if(via){
+        path2 = await drawViaPath(parent, beginNode, endNode);
+        oldpath = path2;
+        return oldpath;
+      }
+      else{
+       await drawPath(parent, beginNode, endNode, oldpath,via); 
+       return;
+      }
     } else {
       neighbours = findNeighbours(node);
       neighbours.forEach(newNode => {

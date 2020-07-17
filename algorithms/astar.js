@@ -1,4 +1,4 @@
-async function astar(beginNode, endNode){
+async function astar(beginNode, endNode , via=false, oldpath=[]){
   const frontier = [];
   const parent = new Map();
   let neighbours = [];
@@ -12,15 +12,26 @@ async function astar(beginNode, endNode){
   frontier.push(node);
   while (frontier.length > 0 && running) {
     node = frontier.shift();
+    let row = node.row;
+    let col = node.col;
     // if node is not start/end node, mark as visited
-    if (nodes[node.row][node.col].state != STATE.START && nodes[node.row][node.col].state != STATE.FINISH) {
-      nodes[node.row][node.col].state = STATE.VISITED;
+    if (nodes[row][col].state != STATE.START && nodes[row][col].state != STATE.FINISH && nodes[row][col].state != STATE.VIA) {
+      nodes[row][col].state = STATE.VISITED;
     }
     // if found, draw its path and return
-    if(node.row == endNode.row && node.col == endNode.col){
-      await drawPath(parent, endNode);
-      return;
-    } else {
+    if(row == endNode.row && col == endNode.col){
+      if(via){
+        path2 = await drawViaPath(parent, beginNode, endNode);
+        oldpath = path2;
+        return oldpath;
+      }
+      else{
+       await drawPath(parent, beginNode, endNode, oldpath,via); 
+       return;
+      }
+
+    } 
+    else {
       neighbours = findNeighbours(node);
       neighbours.forEach(newNode => {
         // check if node already exists in frontier
