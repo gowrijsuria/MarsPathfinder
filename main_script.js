@@ -190,9 +190,9 @@ async function search() {
     startBtn.classList.toggle('btn', 'btn-danger');
 
     //check for closest path
-    if (multidest >= 0 && closedest == true) {
-      findmanhattan();
-    }
+    // if (multidest >= 0 && closedest == true) {
+    //   findmanhattan();
+    // }
     if(viaOrnot == true)
     {
       if (currentAlgorithm == ALGORITHMS.BFS) {
