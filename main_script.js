@@ -24,17 +24,24 @@ const startNode = {
 };
 const finishNode = {
   row: 7,
-  col: num_cols-30
+  col: num_cols-20
 };
 const viaNode = {
   row: null,
   col: null
 };
+class dest{
+  constructor() {
+    this.row;
+    this.col;
+  }
+}
 
 const startBtn = document.getElementById('startBtn');
 
 var BOARD_HEIGHT;
 var BOARD_WIDTH;
+// var dest = [];
 let LMBDown = false;
 let RMBDown = false;
 let enable_via = true;
@@ -43,6 +50,8 @@ let moveFinish = false;
 let moveVia = false;
 let addvia = false;
 let viaOrnot = false;
+let addDestn = false;
+let multidest = 0;
 let currentAlgorithm = ALGORITHMS.ASTAR;
 let running = false;
 let speed = 1; // sleep time in ms between each iteration in algos
@@ -50,6 +59,10 @@ let speed = 1; // sleep time in ms between each iteration in algos
 function manhattan(row, col) {
   return Math.abs(row - finishNode.row) + Math.abs(col - finishNode.col);
 }
+
+// function findmanhattan(row, col) {
+
+// }
 
 function findNeighbours(curNode) {
   const neighbours = [];
@@ -175,6 +188,11 @@ async function search() {
     running = true;
     startBtn.textContent = 'Cancel';
     startBtn.classList.toggle('btn', 'btn-danger');
+
+    //check for closest path
+    if (multidest >= 0 && closedest == true) {
+      findmanhattan();
+    }
     if(viaOrnot == true)
     {
       if (currentAlgorithm == ALGORITHMS.BFS) {
@@ -294,6 +312,19 @@ function ClearVia() {
   }
 }
 
+function MultiDest(e) {
+  let col = getCol(getX(e));
+  let row = getRow(getY(e));
+  let cell = nodes[row][col];
+  if (cell.state != STATE.START && cell.state != STATE.FINISH) {
+    cell.state = STATE.FINISH;
+    console.log(`created via state ${addvia}`);
+    multidest += 1;
+    this.row[multidest] = row;
+    this.col[multidest] = col;
+  }
+}
+
 
 const random = (min, max) => Math.random() * (max - min) + min;
 
@@ -319,6 +350,16 @@ function AddVia() {
   console.log(`entered addvia: ${addvia}`);
   no_of_via = 1;
   addvia = true;
+}
+
+function AddDestn() {
+  console.log(`entered adddestn: ${addDestn}`);
+  addDestn = true;
+}
+
+function ClosestDestination() {
+  console.log(`entered adddestn: ${addDestn}`);
+  closedest = true;
 }
 
 function CreateVia(e) {
@@ -424,6 +465,7 @@ canvas.onmouseup = function(e) {
   moveFinish = false;
   moveVia = false;
   addvia = false;
+  addDestn = false;
 }
 
 canvas.onmousedown = function(e) {
@@ -449,6 +491,11 @@ canvas.onmousedown = function(e) {
 
       CreateVia(e);
       enable_via = false;
+    }
+  }
+  else if (addDestn) {
+    if (e.button == 0) {
+      MultiDest(e);
     }
   }
   else {
@@ -478,6 +525,10 @@ canvas.onmousemove = function(e) {
     else if (addvia) {
       console.log(`addvia: ${addvia}`);
       CreateVia(e);
+    }
+    else if (addDestn) {
+      console.log(`addvia: ${addvia}`);
+      MultiDest(e);
     }
     else {
       createWall(e);
@@ -540,6 +591,12 @@ window.onload=function init() {
   // Clear Via Points
   btn = document.getElementById('ClearVia');
   if(btn) btn.addEventListener('click', ClearVia, false);
+  // Create Multiple Destinations
+  btn = document.getElementById('multipleDestinations');
+  if (btn) btn.addEventListener('click', AddDestn, false);
+  //Find path to Closest destination
+  btn = document.getElementById('Closestdest');
+  if (btn) btn.addEventListener('click', ClosestDestination, false);
   // Create Terrain
   btn = document.getElementById('Terrain');
   if(btn) btn.addEventListener('click', CreateTerrain, false);  
