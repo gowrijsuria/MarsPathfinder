@@ -35,13 +35,15 @@ const NewFinishnode = {
   col: num_cols - 20
 };
 
-// const dist = [{ row: null, col: null }];
-var dist = [];
+// const dest = [{ row: null, col: null }];
+var dest = [];
 
 const startBtn = document.getElementById('startBtn');
 
 var BOARD_HEIGHT;
 var BOARD_WIDTH;
+let closedest = false;
+let draw_flag = true;
 let LMBDown = false;
 let RMBDown = false;
 let enable_via = true;
@@ -176,9 +178,64 @@ async function search() {
     startBtn.classList.toggle('btn', 'btn-danger');
 
     //check for closest path
-    // if (multidest >= 0 && closedest == true) {
-    //   findmanhattan();
-    // }
+    if (multidest >= 0 && closedest == true) {
+      draw_flag = false;
+
+      if (currentAlgorithm == ALGORITHMS.BFS) {
+        result = await bfs(startNode, finishNode);
+        for (let end = 0; end < dest.length; end++){
+          distance = await bfs(startNode, dest[end]);
+          if (result > distance && distance != -1) {
+            end_point = end;
+            result = distance;
+          }
+        }
+        finishNode.row = dest[end_point].row;
+        finishNode.col = dest[end_point].col;
+      }
+
+      else if (currentAlgorithm == ALGORITHMS.DFS) {
+        result = await dfs(startNode, finishNode);
+        for (let end = 0; end < dest.length; end++) {
+          distance = await dfs(startNode, dest[end]);
+          if (result > distance && distance != -1) {
+            end_point = end;
+            result = distance;
+          }
+        }
+        finishNode.row = dest[end_point].row;
+        finishNode.col = dest[end_point].col;
+      }
+        
+      else if (currentAlgorithm == ALGORITHMS.GREEDY) {
+        result = await greedy(startNode, finishNode);
+        for (let end = 0; end < dest.length; end++) {
+          distance = await greedy(startNode, dest[end]);
+          if (result > distance && distance != -1) {
+            end_point = end;
+            result = distance;
+          }
+        }
+        finishNode.row = dest[end_point].row;
+        finishNode.col = dest[end_point].col;
+      }
+      
+      else if (currentAlgorithm == ALGORITHMS.ASTAR) {
+        result = await astar(startNode, finishNode);
+        for (let end = 0; end < dest.length; end++) {
+          distance = await astar(startNode, dest[end]);
+          if (result > distance && distance != -1) {
+            end_point = end;
+            result = distance;
+          }
+        }
+        finishNode.row = dest[end_point].row;
+        finishNode.col = dest[end_point].col;
+      }
+
+      draw_flag = true;
+    }
+
     if(viaOrnot == true)
     {
       if (currentAlgorithm == ALGORITHMS.BFS) {
@@ -304,13 +361,20 @@ function MultiDest(e) {
   let cell = nodes[row][col];
   if (cell.state != STATE.START && cell.state != STATE.FINISH) {
     cell.state = STATE.FINISH;
-    console.log(`created via state ${addvia}`);
     multidest += 1;
-    dist.push({ row, col });
-    console.log(dist);
+    dest.push({ row, col });
+    console.log(dest);
   }
 }
 
+function ClearDest() {
+  if (!running) {
+    for (let end = 0; end < dest.length; end++) {
+      dest.pull;
+      nodes[dest[end].row][dest[end].col].state = STATE.EMPTY;
+    }
+  }
+}
 
 const random = (min, max) => Math.random() * (max - min) + min;
 
@@ -345,7 +409,14 @@ function AddDestn() {
 
 function ClosestDestination() {
   console.log(`entered adddestn: ${addDestn}`);
-  closedest = true;
+  var isChecked = document.getElementById("switch").checked;
+  console.log(isChecked);
+  if (isChecked == true) {
+    closedest = true;
+  }
+  else {
+    closedest = false;
+  }
 }
 
 function CreateVia(e) {
@@ -409,11 +480,15 @@ function moveFinishNode(e){
   let r = NewFinishnode.row;
   let c = NewFinishnode.col;
   let cell1 = nodes[r][c];
-  const index = dist.indexOf({ r, c });
-  dist.splice(index, 1);
+  console.log(`dest`,dest,`r:`,r,`c:`,c);
+  const index = dest.indexOf({ r, c });
+  dest.splice(index, 1);
+  console.log(dest);
   console.log(`cell1: ${cell1.state}`);
   let cell2 = nodes[row][col];
-  dist.push({ row, col });
+  dest.push({ row, col });
+  console.log(dest);
+
 
   if(cell2.state != STATE.START && cell2.state != STATE.WALL && cell2.state != STATE.VIA)
   {
@@ -431,7 +506,6 @@ function moveFinishNode(e){
 }
 
 function moveViaNode(e) {
-  // console.log(`move via`);
   let col = getCol(getX(e));
   let row = getRow(getY(e));
   let cell1 = nodes[viaNode.row][viaNode.col];
@@ -593,8 +667,11 @@ window.onload=function init() {
   btn = document.getElementById('multipleDestinations');
   if (btn) btn.addEventListener('click', AddDestn, false);
   //Find path to Closest destination
-  btn = document.getElementById('Closestdest');
+  btn = document.getElementById('switch');
   if (btn) btn.addEventListener('click', ClosestDestination, false);
+  // Clear Via Points
+  btn = document.getElementById('Cleardest');
+  if (btn) btn.addEventListener('click', ClearDest, false);
   // Create Terrain
   btn = document.getElementById('Terrain');
   if(btn) btn.addEventListener('click', CreateTerrain, false);  

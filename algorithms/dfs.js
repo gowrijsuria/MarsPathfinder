@@ -1,4 +1,4 @@
-async function dfs(beginNode, endNode, via, oldpath=[]) {
+async function dfs(beginNode, endNode, via = false, oldpath=[]) {
   const stack = [];
   const parent = new Map();
   let neighbours = [];
@@ -21,8 +21,8 @@ async function dfs(beginNode, endNode, via, oldpath=[]) {
         return oldpath;
       }
       else{
-       await drawPath(parent, beginNode, endNode, oldpath,via); 
-       return;
+        final_lenght = await drawPath(parent, beginNode, endNode, oldpath,via); 
+        return final_lenght;
       }
     } else {
       neighbours = findNeighbours(node);

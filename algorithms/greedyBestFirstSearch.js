@@ -1,4 +1,4 @@
-async function greedy(beginNode, endNode , via, oldpath=[]){
+async function greedy(beginNode, endNode, via = false, oldpath=[]){
   const frontier = [];
   const parent = new Map();
   let neighbours = [];
@@ -25,8 +25,8 @@ async function greedy(beginNode, endNode , via, oldpath=[]){
         return oldpath;
       }
       else{
-       await drawPath(parent, beginNode, endNode, oldpath,via); 
-       return;
+        final_lenght = await drawPath(parent, beginNode, endNode, oldpath,via); 
+        return final_lenght;
       }
 
     } else {

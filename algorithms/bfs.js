@@ -1,4 +1,4 @@
-async function bfs(beginNode, endNode, via, oldpath=[]) {
+async function bfs(beginNode, endNode, via = false, oldpath=[]) {
   const queue = [];
   const parent = new Map();
   let neighbours = [];
@@ -6,6 +6,7 @@ async function bfs(beginNode, endNode, via, oldpath=[]) {
     row: beginNode.row,
     col: beginNode.col
   };
+
   queue.push(node);
   while (queue.length > 0 && running) {
     node = queue.shift();
@@ -16,7 +17,6 @@ async function bfs(beginNode, endNode, via, oldpath=[]) {
     }
     if(row == endNode.row && col == endNode.col){
       if (via) {
-        console.log(`bfs via`);
         path2 = await drawViaPath(parent, beginNode, endNode);
         oldpath = path2;
         return oldpath;

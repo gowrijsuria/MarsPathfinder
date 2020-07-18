@@ -38,9 +38,14 @@
                 
                 <div class="btn-group" role="group" aria-label="Basic example">            
                     <button id="startBtn" type="button" class="btn btn-dark">Find Path</button>
+                    <!-- toggle between closest and multiple-->
+                    <center>
+                    <p>Closest Destination</p>
+                    <input type="checkbox" id="switch" class="checkbox" />
+                    <label for="switch" class="toggle">
+                    </label>
+                    </center>
                     <button id="clrPathBtn" type="button" class="btn btn-dark">Clear Path</button>
-                    <!-- toggle between pause and resume-->
-                    <button id="pauseSearch" type="button" class="btn btn-dark">Pause Search</button>
                     <button id="clrTerrainBtn" type="button" class="btn btn-dark" >Clear Terrain</button>
                     <button id="clrWallBtn" type="button" class="btn btn-dark">Clear Walls</button>
                     <button id="instructions" type="button" class="btn btn-dark">Instructions</button>
@@ -90,7 +95,7 @@
         <button id="Terrain" type="button" class="btn btn-dark bg-dark">Create Terrain</button>
         <button id="multipleDestinations" type="button" class="btn btn-dark bg-dark">Add Multiple Destinations</button>
         <button id="Maze" type="button" class="btn btn-dark bg-dark">Create Maze</button>
-        <button id="Closestdest" type="button" class="btn btn-dark bg-dark">Closest Destination</button>
+        <button id="Cleardest" type="button" class="btn btn-dark bg-dark">Clear Destinations</button>
         <button id="b2" type="button" class="btn btn-dark bg-dark">TrialButton</button>
 
         <div class="btn-group" role="group">
@@ -125,10 +130,10 @@
 <div id="tutorial" class="card" style="width: 20rem;">
     <div class="card-body">
         <h5 class="card-title">Instructions</h5>
-        <p class="card-text">1. Change start and end points by dragging.</p>
-        <p class="card-text">2. To draw walls, use left click</p>
-        <p class="card-text">3. To delete walls, use right click</p>
-        <p class="card-text">4. Click create terrain for getting a weighted graph</p>
+        <h6 class="card-text">1. Change start and end points by dragging.</h6>
+        <h6 class="card-text">2. To draw walls, use left click</h6>
+        <h6 class="card-text">3. To delete walls, use right click</h6>
+        <h6 class="card-text">4. Click create terrain for getting a weighted graph</h6>
         <button type="button" id="tutorialBtn" class="btn btn-success">Got it!</button>
     </div>
 </div>
