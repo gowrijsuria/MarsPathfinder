@@ -1,4 +1,4 @@
-async function astar(beginNode, endNode , via=false, oldpath=[]){
+async function astar(beginNode, endNode , via, oldpath=[]){
   const frontier = [];
   const parent = new Map();
   let neighbours = [];

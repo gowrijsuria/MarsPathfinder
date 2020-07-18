@@ -30,18 +30,18 @@ const viaNode = {
   row: null,
   col: null
 };
-class dest{
-  constructor() {
-    this.row;
-    this.col;
-  }
-}
+const NewFinishnode = {
+  row: 7,
+  col: num_cols - 20
+};
+
+// const dist = [{ row: null, col: null }];
+var dist = [];
 
 const startBtn = document.getElementById('startBtn');
 
 var BOARD_HEIGHT;
 var BOARD_WIDTH;
-// var dest = [];
 let LMBDown = false;
 let RMBDown = false;
 let enable_via = true;
@@ -59,10 +59,6 @@ let speed = 1; // sleep time in ms between each iteration in algos
 function manhattan(row, col) {
   return Math.abs(row - finishNode.row) + Math.abs(col - finishNode.col);
 }
-
-// function findmanhattan(row, col) {
-
-// }
 
 function findNeighbours(curNode) {
   const neighbours = [];
@@ -110,25 +106,13 @@ function getRow(y){
   return parseInt((y - (y / rectWidth)) / rectWidth); 
 }
 
-function resetVisitedNodes(){
-  for(let row = 0; row < nodes.length; row++){
-    nodes[row].forEach(node => {
-      if(node.state == STATE.VISITED)
-        node.state = STATE.EMPTY;
-    });
-  }
-}
-
 async function drawViaPath(parent, beginNode, endpt){
   clearPath();
   path = [];
   path.push(endpt);
   let endNode = path[path.length - 1];
-  // console.log(`endNode row: ${endNode.row} col: ${endNode.col}`);
   while(!(endNode.row == beginNode.row && endNode.col == beginNode.col)) {
     endNode = parent.get(`${endNode.row},${endNode.col}`);
-    // curNode.state = STATE.PATH;
-    //console.log(`endNode row: ${endNode.row} col: ${endNode.col}`);
     path.push(endNode);
   }
   await sleep(20);
@@ -138,38 +122,40 @@ async function drawViaPath(parent, beginNode, endpt){
 
 //Given an array of {row, col} tuples, this function will change the state of each node to STATE.PATH
 async function drawPath(parent, beginNode, currentendpt,oldpath,via=false){
-   
-   clearPath();
-   if(!via && oldpath.length == 0){
+  
+  clearPath();
+  if(!via && oldpath.length == 0){
+  var path = [];
+  path.push(currentendpt);
+  } 
+  if(oldpath.length != 0){
     var path = [];
+    var path2 = path.concat(oldpath);
+    path = path2;
     path.push(currentendpt);
-    } 
-    if(oldpath.length != 0){
-      var path = [];
-      var path2 = path.concat(oldpath);
-      path = path2;
-      path.push(currentendpt);
-    }
-    
-    let endNode = path[path.length - 1];
-    // console.log(`endNode row: ${endNode.row} col: ${endNode.col}`);
-    while(!(endNode.row == beginNode.row && endNode.col == beginNode.col)) {
-      endNode = parent.get(`${endNode.row},${endNode.col}`);
-      //console.log(`endNode row: ${endNode.row} col: ${endNode.col}`);
-      path.push(endNode);
-    }
-    // clearPath();
-    console.log('done');
-    
-    for(let i = path.length - 1; i >= 0; i--) {
+  }
+  
+  let endNode = path[path.length - 1];
+  // console.log(`endNode row: ${endNode.row} col: ${endNode.col}`);
+  while(!(endNode.row == beginNode.row && endNode.col == beginNode.col)) {
+    endNode = parent.get(`${endNode.row},${endNode.col}`);
+    //console.log(`endNode row: ${endNode.row} col: ${endNode.col}`);
+    path.push(endNode);
+  }
+  // clearPath();
+  console.log('done');  
+  if (draw_flag == true) {
+    for (let i = path.length - 1; i >= 0; i--) {
       let node = path[i];
       let curNode = nodes[node.row][node.col];
-      if(curNode.state != STATE.START && curNode.state != STATE.FINISH && curNode.state != STATE.VIA){
+      if (curNode.state != STATE.START && curNode.state != STATE.FINISH && curNode.state != STATE.VIA) {
         curNode.state = STATE.PATH;
         await sleep(20);
       }
     }
-    return;
+  } 
+  console.log(`pathlength ${path.length}`);
+  return path.length;
 }
 
 /* Button Eventlisteners */
@@ -320,8 +306,8 @@ function MultiDest(e) {
     cell.state = STATE.FINISH;
     console.log(`created via state ${addvia}`);
     multidest += 1;
-    this.row[multidest] = row;
-    this.col[multidest] = col;
+    dist.push({ row, col });
+    console.log(dist);
   }
 }
 
@@ -398,13 +384,14 @@ function moveStartNode(e){
   let row = getRow(getY(e));
 
   let cell1 = nodes[startNode.row][startNode.col];
+  console.log(`cell1: ${cell1.state}`);
   let cell2 = nodes[row][col];
 
   if(cell2.state != STATE.FINISH && cell2.state != STATE.WALL && cell2.state != STATE.VIA)
   {
     cell1.state = cell1.prevState;
     cell1.prevState = STATE.START;
-
+    console.log(`cell1inside: ${cell1.state}`);
     startNode.row = row;
     startNode.col = col;
 
@@ -418,18 +405,26 @@ function moveStartNode(e){
 function moveFinishNode(e){
   let col = getCol(getX(e));
   let row = getRow(getY(e));
-  let cell1 = nodes[finishNode.row][finishNode.col];
+  console.log(`col: ${col}, row: ${row}`);
+  let r = NewFinishnode.row;
+  let c = NewFinishnode.col;
+  let cell1 = nodes[r][c];
+  const index = dist.indexOf({ r, c });
+  dist.splice(index, 1);
+  console.log(`cell1: ${cell1.state}`);
   let cell2 = nodes[row][col];
+  dist.push({ row, col });
 
   if(cell2.state != STATE.START && cell2.state != STATE.WALL && cell2.state != STATE.VIA)
   {
+    console.log(`previous state: ${cell1.prevState}`)
     cell1.state = cell1.prevState;
-    cell1.prevState = STATE.FINISH;  
+    cell1.prevState = STATE.FINISH;
+    console.log(`cell1inside: ${cell1.state}`);
+    NewFinishnode.row = row;
+    NewFinishnode.col = col;
 
-    finishNode.row = row;
-    finishNode.col = col;
-
-    cell1 = nodes[finishNode.row][finishNode.col];
+    cell1 = nodes[NewFinishnode.row][NewFinishnode.col];
     cell1.prevState = cell1.state;
     cell1.state = STATE.FINISH
   }
@@ -478,11 +473,14 @@ canvas.onmousedown = function(e) {
   }
   let col = getCol(getX(e));
   let row = getRow(getY(e));
-  console.log(`row: ${row} col: ${col} state: ${nodes[row][col].state} prevState: ${nodes[row][col].prevState}`);
   if(nodes[row][col].state == STATE.START){
     moveStart = true;
   } else if (nodes[row][col].state == STATE.FINISH) {
     moveFinish = true;
+    console.log(`row: ${row},col:${col}`);
+    NewFinishnode.row = row;
+    NewFinishnode.col = col;
+    console.log(`row: ${NewFinishnode.row},col:${NewFinishnode.col}`);
   } else if (nodes[row][col].state == STATE.VIA) {
     moveVia = true;
   }

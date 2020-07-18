@@ -1,4 +1,4 @@
-async function dfs(beginNode, endNode, via=false, oldpath=[]) {
+async function dfs(beginNode, endNode, via, oldpath=[]) {
   const stack = [];
   const parent = new Map();
   let neighbours = [];

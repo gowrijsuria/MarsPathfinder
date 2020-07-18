@@ -1,4 +1,4 @@
-async function greedy(beginNode, endNode , via=false, oldpath=[]){
+async function greedy(beginNode, endNode , via, oldpath=[]){
   const frontier = [];
   const parent = new Map();
   let neighbours = [];
