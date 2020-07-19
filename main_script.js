@@ -34,6 +34,10 @@ const NewFinishnode = {
   row: 7,
   col: num_cols - 20
 };
+var newendNode = {
+  row: null,
+  col: null
+};
 
 // const dest = [{ row: null, col: null }];
 var dest = [];
@@ -44,6 +48,7 @@ var BOARD_HEIGHT;
 var BOARD_WIDTH;
 let closedest = false;
 let draw_flag = true;
+let newdest_flag = false;
 let LMBDown = false;
 let RMBDown = false;
 let enable_via = true;
@@ -177,10 +182,12 @@ async function search() {
     startBtn.textContent = 'Cancel';
     startBtn.classList.toggle('btn', 'btn-danger');
 
+    console.log(`finishnode row:`, finishNode.row, `col:`, finishNode.col);
+    // newendNode = finishNode;
     //check for closest path
     if (multidest >= 0 && closedest == true) {
       draw_flag = false;
-
+      console.log(`search for closest node`);
       if (currentAlgorithm == ALGORITHMS.BFS) {
         result = await bfs(startNode, finishNode);
         for (let end = 0; end < dest.length; end++){
@@ -188,10 +195,17 @@ async function search() {
           if (result > distance && distance != -1) {
             end_point = end;
             result = distance;
+            newdest_flag = true;
           }
         }
-        finishNode.row = dest[end_point].row;
-        finishNode.col = dest[end_point].col;
+        if (newdest_flag) {
+          newendNode.row = dest[end_point].row;
+          newendNode.col = dest[end_point].col;
+        }
+        else {
+          newendNode.row = finishNode.row;
+          newendNode.col = finishNode.row;
+        }
       }
 
       else if (currentAlgorithm == ALGORITHMS.DFS) {
@@ -200,24 +214,42 @@ async function search() {
           distance = await dfs(startNode, dest[end]);
           if (result > distance && distance != -1) {
             end_point = end;
+            newdest_flag = true;
             result = distance;
           }
         }
-        finishNode.row = dest[end_point].row;
-        finishNode.col = dest[end_point].col;
+        if (newdest_flag) {
+          newendNode.row = dest[end_point].row;
+          newendNode.col = dest[end_point].col;
+        }
+        else {
+          newendNode.row = finishNode.row;
+          newendNode.col = finishNode.row;
+        }
       }
         
       else if (currentAlgorithm == ALGORITHMS.GREEDY) {
+        console.log(`finishnode row:`, finishNode.row, `col:`, finishNode.col);
         result = await greedy(startNode, finishNode);
         for (let end = 0; end < dest.length; end++) {
           distance = await greedy(startNode, dest[end]);
           if (result > distance && distance != -1) {
             end_point = end;
+            newdest_flag = true;
             result = distance;
           }
         }
-        finishNode.row = dest[end_point].row;
-        finishNode.col = dest[end_point].col;
+        if (newdest_flag) {
+          console.log(`new_flag`, newdest_flag);
+          console.log(`finishnode row:`, finishNode.row, `col:`, finishNode.col);
+          newendNode.row = dest[end_point].row;
+          newendNode.col = dest[end_point].col;
+          console.log(`finishnode row:`, finishNode.row, `col:`, finishNode.col);
+        }
+        else {
+          newendNode.row = finishNode.row;
+          newendNode.col = finishNode.row;
+        }
       }
       
       else if (currentAlgorithm == ALGORITHMS.ASTAR) {
@@ -226,11 +258,18 @@ async function search() {
           distance = await astar(startNode, dest[end]);
           if (result > distance && distance != -1) {
             end_point = end;
+            newdest_flag = true;
             result = distance;
           }
         }
-        finishNode.row = dest[end_point].row;
-        finishNode.col = dest[end_point].col;
+        if (newdest_flag) {
+          newendNode.row = dest[end_point].row;
+          newendNode.col = dest[end_point].col;
+        }
+        else {
+          newendNode.row = finishNode.row;
+          newendNode.col = finishNode.row;
+        }
       }
 
       draw_flag = true;
@@ -240,34 +279,34 @@ async function search() {
     {
       if (currentAlgorithm == ALGORITHMS.BFS) {
         path1 = await bfs(startNode, viaNode, true);
-        result = await bfs(viaNode, finishNode,false,path1);  
+        result = await bfs(viaNode, newendNode,false,path1);  
       }
       else if (currentAlgorithm == ALGORITHMS.DFS){
         path1 = await dfs(startNode, viaNode, true);
-        result = await dfs(viaNode, finishNode,false,path1);  
+        result = await dfs(viaNode, newendNode,false,path1);  
       }
       else if (currentAlgorithm == ALGORITHMS.GREEDY){
         path1 = await greedy(startNode, viaNode, true);
-        result = await greedy(viaNode, finishNode,false,path1);  
+        result = await greedy(viaNode, newendNode,false,path1);  
       }
       else if (currentAlgorithm == ALGORITHMS.ASTAR){
         path1 = await astar(startNode, viaNode, true);
-        result = await astar(viaNode, finishNode,false,path1);  
+        result = await astar(viaNode, newendNode,false,path1);  
       }
     }
     else
     {
       if (currentAlgorithm == ALGORITHMS.BFS) {
-        result = await bfs(startNode, finishNode);
+        result = await bfs(startNode, newendNode);
       }
       else if (currentAlgorithm == ALGORITHMS.DFS){
-        result = await dfs(startNode, finishNode);
+        result = await dfs(startNode, newendNode);
       }
       else if (currentAlgorithm == ALGORITHMS.GREEDY){
-        result = await greedy(startNode, finishNode);
+        result = await greedy(startNode, newendNode);
       }
       else if (currentAlgorithm == ALGORITHMS.ASTAR){
-        result = await astar(startNode, finishNode);
+        result = await astar(startNode, newendNode);
       }
 
     }
@@ -371,6 +410,7 @@ function ClearDest() {
   if (!running) {
     for (let end = 0; end < dest.length; end++) {
       dest.pull;
+      console.log(dest);
       nodes[dest[end].row][dest[end].col].state = STATE.EMPTY;
     }
   }
