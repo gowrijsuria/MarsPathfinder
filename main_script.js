@@ -1,5 +1,5 @@
 const STATE = {EMPTY: 'e',WALL: 'w',START: 's',FINISH: 'f',PATH: 'p',VISITED: 'v',TERRAIN: 't', VIA: 'via'};
-const ALGORITHMS = {BFS: 'bfs', DFS: 'dfs', GREEDY: 'greedy', ASTAR: 'astar'};
+const ALGORITHMS = {BFS: 'bfs', DFS: 'dfs', GREEDY: 'greedy', ASTAR: 'astar', DIJKSTRA: 'dijkstra'};
 
 Object.freeze(STATE);
 Object.freeze(ALGORITHMS);
@@ -271,6 +271,25 @@ async function search() {
           newendNode.col = finishNode.row;
         }
       }
+      else if (currentAlgorithm == ALGORITHMS.DIJKSTRA) {
+        result = await dijkstra(startNode, finishNode);
+        for (let end = 0; end < dest.length; end++){
+          distance = await dijkstra(startNode, dest[end]);
+          if (result > distance && distance != -1) {
+            end_point = end;
+            result = distance;
+            newdest_flag = true;
+          }
+        }
+        if (newdest_flag) {
+          newendNode.row = dest[end_point].row;
+          newendNode.col = dest[end_point].col;
+        }
+        else {
+          newendNode.row = finishNode.row;
+          newendNode.col = finishNode.row;
+        }
+      }
 
       draw_flag = true;
     }
@@ -293,6 +312,10 @@ async function search() {
         path1 = await astar(startNode, viaNode, true);
         result = await astar(viaNode, newendNode,false,path1);  
       }
+      else if (currentAlgorithm == ALGORITHMS.DIJKSTRA){
+        path1 = await dijkstra(startNode, viaNode, true);
+        result = await dijkstra(viaNode, newendNode,false,path1);  
+      }
     }
     else
     {
@@ -308,7 +331,9 @@ async function search() {
       else if (currentAlgorithm == ALGORITHMS.ASTAR){
         result = await astar(startNode, newendNode);
       }
-
+      else if (currentAlgorithm == ALGORITHMS.DIJKSTRA){
+        result = await dijkstra(startNode, newendNode);
+      }
     }
 
     if(result == -1)
@@ -688,6 +713,9 @@ window.onload=function init() {
   // Select A* Search algorithm
   btn = document.getElementById('astar');
   if(btn) btn.addEventListener('click', () => {currentAlgorithm = ALGORITHMS.ASTAR; algorithmText.textContent = "A* Search"}, false);
+  // Select Dijkstra algorithm
+  btn = document.getElementById('dijkstra');
+  if(btn) btn.addEventListener('click', () => {currentAlgorithm = ALGORITHMS.DIJKSTRA; algorithmText.textContent = "Dijkstra Algorithm"}, false);
   
   //Extra functionalities 
   
