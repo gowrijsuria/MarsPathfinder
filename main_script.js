@@ -30,10 +30,6 @@ const viaNode = {
   row: null,
   col: null
 };
-const NewFinishnode = {
-  row: 7,
-  col: num_cols - 20
-};
 
 // const dest = [{ row: null, col: null }];
 var dest = [];
@@ -296,6 +292,9 @@ async function search() {
     }
     else
     {
+      // if (closedest == false) {
+      //  newendNode = finishNode; 
+      // }
       if (currentAlgorithm == ALGORITHMS.BFS) {
         result = await bfs(startNode, newendNode);
       }
@@ -515,35 +514,21 @@ function moveStartNode(e){
 }
 
 // Moves the finish node when dragged
-function moveFinishNode(e, dragged_node) {
+function moveFinishNode(e) {
     let col = getCol(getX(e));
     let row = getRow(getY(e));
     console.log(`col: ${col}, row: ${row}`);
-    let r = dragged_node.row;
-    let c = dragged_node.col;
-    let cell1 = nodes[r][c];
+    let cell1 = nodes[finishNode.row][finishNode.col];
     let cell2 = nodes[row][col];
-    if (!(r == finishNode.row && c == finishNode.col)) {
-      const index = dest.indexOf({ r, c });
-      dest.splice(index, 1);
-      dest.push({ row, col });
-    }
-    console.log(dest);
-
 
     if (cell2.state != STATE.START && cell2.state != STATE.WALL && cell2.state != STATE.FINISH && cell2.state != STATE.VIA)
     {
-      console.log(`previous state: ${cell1.prevState}`)
       cell1.state = cell1.prevState;
       cell1.prevState = STATE.EMPTY;
-      console.log(`cell1inside: ${cell1.state}`);
-      if (r == finishNode.row && c == finishNode.col) {
-        finishNode.row = row;
-        finishNode.col = col;
-      }
-      dragged_node.row = row;
-      dragged_node.col = col;
-      cell1 = nodes[dragged_node.row][dragged_node.col];
+      finishNode.row = row;
+      finishNode.col = col;
+
+      cell1 = nodes[finishNode.row][finishNode.col];
       cell1.prevState = cell1.state;
       cell1.state = STATE.FINISH;
     }
@@ -593,12 +578,8 @@ canvas.onmousedown = function(e) {
   let row = getRow(getY(e));
   if(nodes[row][col].state == STATE.START){
     moveStart = true;
-  } else if (nodes[row][col].state == STATE.FINISH) {
+  } else if (row == finishNode.row && col == finishNode.col) {
     moveFinish = true;
-    console.log(`newfinish node row: ${row},col:${col}`);
-    NewFinishnode.row = row;
-    NewFinishnode.col = col;
-    console.log(`row: ${NewFinishnode.row},col:${NewFinishnode.col}`);
   } else if (nodes[row][col].state == STATE.VIA) {
     moveVia = true;
   }
@@ -634,7 +615,7 @@ canvas.onmousemove = function(e) {
     if (moveStart) {
       moveStartNode(e);
     } else if (moveFinish) {
-      moveFinishNode(e, NewFinishnode);
+      moveFinishNode(e);
     } else if (moveVia) {
       moveViaNode(e);
     }
