@@ -34,10 +34,6 @@ const NewFinishnode = {
   row: 7,
   col: num_cols - 20
 };
-var newendNode = {
-  row: null,
-  col: null
-};
 
 // const dest = [{ row: null, col: null }];
 var dest = [];
@@ -183,7 +179,7 @@ async function search() {
     startBtn.classList.toggle('btn', 'btn-danger');
 
     console.log(`finishnode row:`, finishNode.row, `col:`, finishNode.col);
-    // newendNode = finishNode;
+    newendNode = finishNode;
     //check for closest path
     if (multidest >= 0 && closedest == true) {
       draw_flag = false;
@@ -202,10 +198,6 @@ async function search() {
           newendNode.row = dest[end_point].row;
           newendNode.col = dest[end_point].col;
         }
-        else {
-          newendNode.row = finishNode.row;
-          newendNode.col = finishNode.row;
-        }
       }
 
       else if (currentAlgorithm == ALGORITHMS.DFS) {
@@ -221,10 +213,6 @@ async function search() {
         if (newdest_flag) {
           newendNode.row = dest[end_point].row;
           newendNode.col = dest[end_point].col;
-        }
-        else {
-          newendNode.row = finishNode.row;
-          newendNode.col = finishNode.row;
         }
       }
         
@@ -246,10 +234,6 @@ async function search() {
           newendNode.col = dest[end_point].col;
           console.log(`finishnode row:`, finishNode.row, `col:`, finishNode.col);
         }
-        else {
-          newendNode.row = finishNode.row;
-          newendNode.col = finishNode.row;
-        }
       }
       
       else if (currentAlgorithm == ALGORITHMS.ASTAR) {
@@ -266,11 +250,8 @@ async function search() {
           newendNode.row = dest[end_point].row;
           newendNode.col = dest[end_point].col;
         }
-        else {
-          newendNode.row = finishNode.row;
-          newendNode.col = finishNode.row;
-        }
       }
+
       else if (currentAlgorithm == ALGORITHMS.DIJKSTRA) {
         result = await dijkstra(startNode, finishNode);
         for (let end = 0; end < dest.length; end++){
@@ -284,10 +265,6 @@ async function search() {
         if (newdest_flag) {
           newendNode.row = dest[end_point].row;
           newendNode.col = dest[end_point].col;
-        }
-        else {
-          newendNode.row = finishNode.row;
-          newendNode.col = finishNode.row;
         }
       }
 
