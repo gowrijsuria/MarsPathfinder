@@ -410,10 +410,10 @@ function MultiDest(e) {
 
 function ClearDest() {
   if (!running) {
-    for (let end = 0; end < dest.length; end++) {
-      dest.pull;
-      console.log(dest);
+    let len = dest.length;
+    for (let end = len-1; end >= 0; end--) {
       nodes[dest[end].row][dest[end].col].state = STATE.EMPTY;
+      dest.pop();
     }
   }
 }
@@ -500,10 +500,10 @@ function moveStartNode(e){
   console.log(`cell1: ${cell1.state}`);
   let cell2 = nodes[row][col];
 
-  if(cell2.state != STATE.FINISH && cell2.state != STATE.WALL && cell2.state != STATE.VIA)
+  if (cell2.state != STATE.FINISH && cell2.state != STATE.START && cell2.state != STATE.WALL && cell2.state != STATE.VIA)
   {
     cell1.state = cell1.prevState;
-    cell1.prevState = STATE.START;
+    cell1.prevState = STATE.EMPTY;
     console.log(`cell1inside: ${cell1.state}`);
     startNode.row = row;
     startNode.col = col;
@@ -515,36 +515,38 @@ function moveStartNode(e){
 }
 
 // Moves the finish node when dragged
-function moveFinishNode(e){
-  let col = getCol(getX(e));
-  let row = getRow(getY(e));
-  console.log(`col: ${col}, row: ${row}`);
-  let r = NewFinishnode.row;
-  let c = NewFinishnode.col;
-  let cell1 = nodes[r][c];
-  console.log(`dest`,dest,`r:`,r,`c:`,c);
-  const index = dest.indexOf({ r, c });
-  dest.splice(index, 1);
-  console.log(dest);
-  console.log(`cell1: ${cell1.state}`);
-  let cell2 = nodes[row][col];
-  dest.push({ row, col });
-  console.log(dest);
+function moveFinishNode(e, dragged_node) {
+    let col = getCol(getX(e));
+    let row = getRow(getY(e));
+    console.log(`col: ${col}, row: ${row}`);
+    let r = dragged_node.row;
+    let c = dragged_node.col;
+    let cell1 = nodes[r][c];
+    let cell2 = nodes[row][col];
+    if (!(r == finishNode.row && c == finishNode.col)) {
+      const index = dest.indexOf({ r, c });
+      dest.splice(index, 1);
+      dest.push({ row, col });
+    }
+    console.log(dest);
 
 
-  if(cell2.state != STATE.START && cell2.state != STATE.WALL && cell2.state != STATE.VIA)
-  {
-    console.log(`previous state: ${cell1.prevState}`)
-    cell1.state = cell1.prevState;
-    cell1.prevState = STATE.FINISH;
-    console.log(`cell1inside: ${cell1.state}`);
-    NewFinishnode.row = row;
-    NewFinishnode.col = col;
-
-    cell1 = nodes[NewFinishnode.row][NewFinishnode.col];
-    cell1.prevState = cell1.state;
-    cell1.state = STATE.FINISH
-  }
+    if (cell2.state != STATE.START && cell2.state != STATE.WALL && cell2.state != STATE.FINISH && cell2.state != STATE.VIA)
+    {
+      console.log(`previous state: ${cell1.prevState}`)
+      cell1.state = cell1.prevState;
+      cell1.prevState = STATE.EMPTY;
+      console.log(`cell1inside: ${cell1.state}`);
+      if (r == finishNode.row && c == finishNode.col) {
+        finishNode.row = row;
+        finishNode.col = col;
+      }
+      dragged_node.row = row;
+      dragged_node.col = col;
+      cell1 = nodes[dragged_node.row][dragged_node.col];
+      cell1.prevState = cell1.state;
+      cell1.state = STATE.FINISH;
+    }
 }
 
 function moveViaNode(e) {
@@ -593,7 +595,7 @@ canvas.onmousedown = function(e) {
     moveStart = true;
   } else if (nodes[row][col].state == STATE.FINISH) {
     moveFinish = true;
-    console.log(`row: ${row},col:${col}`);
+    console.log(`newfinish node row: ${row},col:${col}`);
     NewFinishnode.row = row;
     NewFinishnode.col = col;
     console.log(`row: ${NewFinishnode.row},col:${NewFinishnode.col}`);
@@ -632,7 +634,7 @@ canvas.onmousemove = function(e) {
     if (moveStart) {
       moveStartNode(e);
     } else if (moveFinish) {
-      moveFinishNode(e);
+      moveFinishNode(e, NewFinishnode);
     } else if (moveVia) {
       moveViaNode(e);
     }
