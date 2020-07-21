@@ -174,10 +174,16 @@ async function search() {
     startBtn.textContent = 'Cancel';
     startBtn.classList.toggle('btn', 'btn-danger');
 
+    var newendNode = {
+      row: null,
+      col: null
+    };
+    
     console.log(`finishnode row:`, finishNode.row, `col:`, finishNode.col);
-    newendNode = finishNode;
+    newendNode.row = finishNode.row;
+    newendNode.col = finishNode.col;
     //check for closest path
-    if (multidest >= 0 && closedest == true) {
+    if (closedest == true) {
       draw_flag = false;
       console.log(`search for closest node`);
       if (currentAlgorithm == ALGORITHMS.BFS) {
@@ -449,7 +455,6 @@ function AddDestn() {
 }
 
 function ClosestDestination() {
-  console.log(`entered adddestn: ${addDestn}`);
   var isChecked = document.getElementById("switch").checked;
   console.log(isChecked);
   if (isChecked == true) {
@@ -458,6 +463,7 @@ function ClosestDestination() {
   else {
     closedest = false;
   }
+  console.log(closedest);
 }
 
 function CreateVia(e) {
