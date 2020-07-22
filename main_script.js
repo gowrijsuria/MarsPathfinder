@@ -27,8 +27,8 @@ const finishNode = {
   col: num_cols-20
 };
 const viaNode = {
-  row: null,
-  col: null
+  row: 7,
+  col: 6
 };
 
 // const dest = [{ row: null, col: null }];
@@ -38,12 +38,13 @@ const startBtn = document.getElementById('startBtn');
 
 var BOARD_HEIGHT;
 var BOARD_WIDTH;
+var Viabtn_flag = true;
 let closedest = false;
 let draw_flag = true;
 let newdest_flag = false;
 let LMBDown = false;
 let RMBDown = false;
-let enable_via = true;
+// let enable_via = true;
 let moveStart = false;
 let moveFinish = false;
 let moveVia = false;
@@ -396,7 +397,7 @@ function ClearVia() {
           node.state = STATE.EMPTY;
       });
     }
-    enable_via = true;
+    // enable_via = true;
     viaOrnot =false;
   }
 }
@@ -443,10 +444,36 @@ function CreateMaze() {
   }
 }
 
+function FuncVia() {
+  if (Viabtn_flag) {
+    document.querySelector('#Via').innerHTML = 'Clear Via Point';
+    AddVia();
+    Viabtn_flag = false;
+  }
+  else {
+    document.querySelector('#Via').innerHTML = 'Add Via Point';
+    ClearVia();
+    Viabtn_flag = true;
+  }
+}
+
 function AddVia() {
   console.log(`entered addvia: ${addvia}`);
-  no_of_via = 1;
-  addvia = true;
+  // no_of_via = 1;
+  let cell = nodes[7][6];
+  if (cell.state != STATE.START && cell.state != STATE.FINISH) {
+    cell.state = STATE.VIA;
+    viaNode.row = 7;
+    viaNode.col = 6;
+  }
+  else {
+    cell = nodes[6][7];
+    cell.state = STATE.VIA;
+    viaNode.row = 6;
+    viaNode.col = 7;
+  }
+  viaOrnot = true;
+  // addvia = true;
 }
 
 function AddDestn() {
@@ -466,19 +493,19 @@ function ClosestDestination() {
   console.log(closedest);
 }
 
-function CreateVia(e) {
-  let col = getCol(getX(e));
-  let row = getRow(getY(e));
-  let cell = nodes[row][col];
-  if (cell.state != STATE.START && cell.state != STATE.FINISH) {
-    cell.state = STATE.VIA;
-    console.log(`created via state ${addvia}`);
-    viaOrnot = true;
-    viaNode.row = row;
-    viaNode.col = col;
-  }
+// function CreateVia(e) {
+//   let col = getCol(getX(e));
+//   let row = getRow(getY(e));
+//   let cell = nodes[row][col];
+//   if (cell.state != STATE.START && cell.state != STATE.FINISH) {
+//     cell.state = STATE.VIA;
+//     console.log(`created via state ${addvia}`);
+//     viaOrnot = true;
+//     viaNode.row = row;
+//     viaNode.col = col;
+//   }
 
-}
+// }
 
 function CreateTerrain() {
   if(!running){
@@ -589,13 +616,13 @@ canvas.onmousedown = function(e) {
   } else if (nodes[row][col].state == STATE.VIA) {
     moveVia = true;
   }
-  else if (addvia) {
-    if (e.button == 0 && enable_via) {
+  // else if (addvia) {
+  //   if (e.button == 0) {
 
-      CreateVia(e);
-      enable_via = false;
-    }
-  }
+  //     CreateVia(e);
+  //     // enable_via = false;
+  //   }
+  // }
   else if (addDestn) {
     if (e.button == 0) {
       MultiDest(e);
@@ -625,10 +652,10 @@ canvas.onmousemove = function(e) {
     } else if (moveVia) {
       moveViaNode(e);
     }
-    else if (addvia) {
-      console.log(`addvia: ${addvia}`);
-      CreateVia(e);
-    }
+    // else if (addvia) {
+    //   console.log(`addvia: ${addvia}`);
+    //   CreateVia(e);
+    // }
     else if (addDestn) {
       console.log(`addvia: ${addvia}`);
       MultiDest(e);
@@ -693,10 +720,10 @@ window.onload=function init() {
   if(btn) btn.addEventListener('click', CreateMaze, false);
   // Create Via Points
   btn = document.getElementById('Via');
-  if(btn) btn.addEventListener('click', AddVia, false);
-  // Clear Via Points
-  btn = document.getElementById('ClearVia');
-  if(btn) btn.addEventListener('click', ClearVia, false);
+  if(btn) btn.addEventListener('click', FuncVia, false);
+  // // Clear Via Points
+  // btn = document.getElementById('ClearVia');
+  // if(btn) btn.addEventListener('click', ClearVia, false);
   // Create Multiple Destinations
   btn = document.getElementById('multipleDestinations');
   if (btn) btn.addEventListener('click', AddDestn, false);

@@ -95,11 +95,16 @@
 -->
 
     <div style="width: 20%; float:left" class="btn-group-vertical sidebar" role="group" aria-label="Button group with nested dropdown">
-        <button id="Via" type="button" class="btn btn-dark bg-dark">Add Via Points</button>
-        <button id="ClearVia" type="button" class="btn btn-dark bg-dark">Clear Via Points</button>
+        <button id="Via" type="button" class="btn btn-dark bg-dark">Add Via Point</button>
         <button id="RandomObs" type="button" class="btn btn-dark bg-dark">Create Random Obstacles</button>
-        <button id="Terrain" type="button" class="btn btn-dark bg-dark">Create Terrain</button>
-        <button id="Maze" type="button" class="btn btn-dark bg-dark">Create Maze</button>
+        <div class="btn-group" role="group">
+            <button type="button" class="btn btn-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false">Add Effects</button>
+            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                <button id="Terrain" type="button" class="mydropdown-item">Create Terrain</button>
+                <button id="Maze" type="button" class="mydropdown-item">Create Maze</button>
+            </div>
+        </div>
         <div class="btn-group" role="group">
             <button type="button" class="btn btn-dark dropdown-toggle" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">Add Nodes</button>
