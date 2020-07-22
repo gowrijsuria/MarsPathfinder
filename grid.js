@@ -1,11 +1,42 @@
+/* Helper Functions */
+function clear() {
+  ctx.clearRect(0, 0, WIDTH, HEIGHT);
+}
+
+function sleep(ms) {
+  return new Promise(r => setTimeout(r, ms));
+}
+
+function getX(e) {
+  return e.clientX - canvas.getBoundingClientRect().left;
+}
+
+function getY(e) {
+  return e.clientY - canvas.getBoundingClientRect().top;
+}
+
+function getCol(x) {
+  // 2nd term's numerator changes based on the constant value that separates cells in createGrid()
+  return parseInt((x - (x / rectHeight)) / rectHeight);
+}
+
+function getRow(y) {
+  // 2nd term's numerator changes based on the constant value that separates cells in createGrid()
+  return parseInt((y - (y / rectWidth)) / rectWidth);
+}
+
 function drawRect(x, y, width, height, state, colour = null) {
   if(colour){
     ctx.fillStyle = colour;
   } else {
     if (state == STATE.START)
-    ctx.fillStyle = "#1fd613";
+      ctx.fillStyle = "#1fd613";
+    else if (state == STATE.XSTART)
+      ctx.fillStyle = "greenyellow";
     else if (state == STATE.FINISH)
-      ctx.fillStyle = "#e81344";
+      ctx.fillStyle = 'red';
+    else if (state == STATE.XFINISH)
+      ctx.fillStyle = "#d83c60";
     else if (state == STATE.TERRAIN)
       {
         ctx.fillStyle = "#a34a40";

@@ -12,7 +12,7 @@ async function bfs(beginNode, endNode, via = false, oldpath=[]) {
     node = queue.shift();
     let row = node.row;
     let col = node.col;
-    if (nodes[row][col].state != STATE.START && nodes[row][col].state != STATE.FINISH && nodes[row][col].state != STATE.VIA) {
+    if (nodes[row][col].state != STATE.START && nodes[row][col].state != STATE.FINISH && nodes[row][col].state != STATE.XSTART && nodes[row][col].state != STATE.XFINISH && nodes[row][col].state != STATE.VIA) {
       nodes[row][col].state = STATE.VISITED;
     }
     if(row == endNode.row && col == endNode.col){

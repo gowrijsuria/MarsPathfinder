@@ -14,7 +14,7 @@ async function greedy(beginNode, endNode, via = false, oldpath=[]){
     let row = node.row;
     let col = node.col;
     // if node is not start/end node, mark as visited
-    if (nodes[row][col].state != STATE.START && nodes[row][col].state != STATE.FINISH && nodes[row][col].state != STATE.VIA) {
+    if (nodes[row][col].state != STATE.START && nodes[row][col].state != STATE.FINISH && nodes[row][col].state != STATE.XSTART && nodes[row][col].state != STATE.XFINISH && nodes[row][col].state != STATE.VIA) {
       nodes[row][col].state = STATE.VISITED;
     }
     // if found, draw its path and return
