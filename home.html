@@ -40,12 +40,17 @@
                 <div class="btn-group" role="group" aria-label="Basic example">            
                     <button id="startBtn" type="button" class="btn btn-dark">Find Path</button>
                     <!-- toggle between closest and multiple-->
-                    <center>
-                    <p>Closest Destination</p>
-                    <input type="checkbox" id="switch" class="checkbox" />
-                    <label for="switch" class="toggle">
-                    </label>
-                    </center>
+                    <!-- <script>
+                    if(false) { -->
+                        <center>
+                        <p>Closest Path</p>
+                        <input type="checkbox" id="switch" class="checkbox" />
+                        <label for="switch" class="toggle">
+                        </label>
+                        </center>
+                    <!-- document.write('<button onclick=document.location.href="https://www.google.com">take  me away</button>');    
+                    }
+                    </script> -->
                     <button id="clrPathBtn" type="button" class="btn btn-dark">Clear Path</button>
                     <button id="clrTerrainBtn" type="button" class="btn btn-dark" >Clear Terrain</button>
                     <button id="clrWallBtn" type="button" class="btn btn-dark">Clear Walls</button>
@@ -95,10 +100,22 @@
         <button id="RandomObs" type="button" class="btn btn-dark bg-dark">Create Random Obstacles</button>
         <button id="Terrain" type="button" class="btn btn-dark bg-dark">Create Terrain</button>
         <button id="Maze" type="button" class="btn btn-dark bg-dark">Create Maze</button>
-        <button id="multipleDestinations" type="button" class="btn btn-dark bg-dark">Add Multiple Destinations</button>
-        <button id="Cleardest" type="button" class="btn btn-dark bg-dark">Clear Destinations</button>
-        <button id="multipleStart" type="button" class="btn btn-dark bg-dark">Add Multiple Start Nodes</button>
-        <button id="ClearStart" type="button" class="btn btn-dark bg-dark">Clear Multiple Start Nodes</button>
+        <div class="btn-group" role="group">
+            <button type="button" class="btn btn-dark dropdown-toggle" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">Add Nodes</button>
+            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                <button id="multipleDestinations" type="button" class="mydropdown-item">Add Destination</button>
+                <button id="multipleStart" type="button" class="mydropdown-item">Add Start Point</button>
+            </div>
+        </div>
+        <div class="btn-group" role="group">
+            <button type="button" class="btn btn-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false">Clear Nodes</button>
+            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                <button id="Cleardest" type="button" class="mydropdown-item">Clear Added Destinations</button>
+                <button id="ClearStart" type="button" class="mydropdown-item">Clear Added Start Points</button>
+            </div>
+        </div>
         <button id="b2" type="button" class="btn btn-dark bg-dark">TrialButton</button>
 
         <div class="btn-group" role="group">
