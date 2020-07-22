@@ -169,6 +169,8 @@ async function search() {
     newbeginNode.row = startNode.row;
     newbeginNode.col = startNode.col;
     
+    newdest_flag = false;
+    newstart_flag = false;
     //check for closest dest path
     if (multidest > 0 && closedest == true) {
       draw_flag = false;
@@ -343,7 +345,6 @@ async function search() {
       draw_flag = true;
     }
 
-    console.log(`beginnode r:`, newbeginNode.row, `c:`, newbeginNode);
     if(viaOrnot == true)
     {
       if (currentAlgorithm == ALGORITHMS.BFS) {
