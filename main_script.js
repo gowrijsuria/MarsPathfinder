@@ -66,8 +66,8 @@ let currentAlgorithm = ALGORITHMS.GREEDY;
 let running = false;
 let speed = 1; // sleep time in ms between each iteration in algos
 
-function manhattan(row, col) {
-  return Math.abs(row - finishNode.row) + Math.abs(col - finishNode.col);
+function manhattan(startrow, startcol, finishrow, finishcol) {
+  return Math.abs(startrow - finishrow) + Math.abs(startcol - finishcol);
 }
 
 function findNeighbours(curNode) {
@@ -384,39 +384,39 @@ async function search() {
         var total_no_of_nodes = 2 + dest.length; 
         console.log(`total_no_of_nodes: ${total_no_of_nodes}`);
         CreateMatrix(total_no_of_nodes);
-        // result1 = await Fill_TSPMatrix(total_no_of_nodes);
-        for(let col = 1; col < total_no_of_nodes; col++) {
-          for(let row = 0; row < col; row++) {
+        result = await Fill_TSPMatrix(total_no_of_nodes);
+        // for(let col = 1; col < total_no_of_nodes; col++) {
+        //   for(let row = 0; row < col; row++) {
            
-            let beginNode = all_nodes[row];
-            let endNode = all_nodes[col];
-            if (currentAlgorithm == ALGORITHMS.BFS) {
-              result = await bfs(beginNode, endNode);
-            }
-            else if (currentAlgorithm == ALGORITHMS.DFS){
-              result = await dfs(beginNode, endNode);
-            }
-            else if (currentAlgorithm == ALGORITHMS.GREEDY){
-              result = await greedy(beginNode, endNode);
-            }
-            else if (currentAlgorithm == ALGORITHMS.ASTAR){
-              result = await astar(beginNode, endNode);
-            }
-            else if (currentAlgorithm == ALGORITHMS.DIJKSTRA){
-              result = await dijkstra(beginNode, endNode);
-            }
+        //     let beginNode = all_nodes[row];
+        //     let endNode = all_nodes[col];
+        //     if (currentAlgorithm == ALGORITHMS.BFS) {
+        //       result = await bfs(beginNode, endNode);
+        //     }
+        //     else if (currentAlgorithm == ALGORITHMS.DFS){
+        //       result = await dfs(beginNode, endNode);
+        //     }
+        //     else if (currentAlgorithm == ALGORITHMS.GREEDY){
+        //       result = await greedy(beginNode, endNode);
+        //     }
+        //     else if (currentAlgorithm == ALGORITHMS.ASTAR){
+        //       result = await astar(beginNode, endNode);
+        //     }
+        //     else if (currentAlgorithm == ALGORITHMS.DIJKSTRA){
+        //       result = await dijkstra(beginNode, endNode);
+        //     }
             
-            TSP_Matrix[row][col].pathlength = result; 
-            TSP_Matrix[col][row].pathlength = TSP_Matrix[row][col].pathlength;
+        //     TSP_Matrix[row][col].pathlength = result; 
+        //     TSP_Matrix[col][row].pathlength = TSP_Matrix[row][col].pathlength;
           
-          }
-        }
+        //   }
+        // }
         console.log(TSP_Matrix);
 
         draw_flag = true;
         var TSP_permutation = FindingTSPPermutation();
         result = await DrawingTSPpath(TSP_permutation);
-
+        
       }
       else {
         if (currentAlgorithm == ALGORITHMS.BFS) {
@@ -450,40 +450,38 @@ async function search() {
   }
 }
 
-// async function Fill_TSPMatrix(total_no_of_nodes) {
-//   draw_flag = false;
-//  for(let row = 1; row < total_no_of_nodes; row++) {
-//     for(let col = 0; col < row; col++) {
-//  for(let col = 1; col < total_no_of_nodes; col++) {
-//     for(let row = 0; row < col; row++) {
+async function Fill_TSPMatrix(total_no_of_nodes) {
+  draw_flag = false;
+ for(let col = 1; col < total_no_of_nodes; col++) {
+    for(let row = 0; row < col; row++) {
      
-//       let beginNode = all_nodes[row];
-//       let endNode = all_nodes[col];
-//       if (currentAlgorithm == ALGORITHMS.BFS) {
-//         result = await bfs(beginNode, endNode);
-//       }
-//       else if (currentAlgorithm == ALGORITHMS.DFS){
-//         result = await dfs(beginNode, endNode);
-//       }
-//       else if (currentAlgorithm == ALGORITHMS.GREEDY){
-//         result = await greedy(beginNode, endNode);
-//       }
-//       else if (currentAlgorithm == ALGORITHMS.ASTAR){
-//         result = await astar(beginNode, endNode);
-//       }
-//       else if (currentAlgorithm == ALGORITHMS.DIJKSTRA){
-//         result = await dijkstra(beginNode, endNode);
-//       }
+      let beginNode = all_nodes[row];
+      let endNode = all_nodes[col];
+      if (currentAlgorithm == ALGORITHMS.BFS) {
+        result = await bfs(beginNode, endNode);
+      }
+      else if (currentAlgorithm == ALGORITHMS.DFS){
+        result = await dfs(beginNode, endNode);
+      }
+      else if (currentAlgorithm == ALGORITHMS.GREEDY){
+        result = await greedy(beginNode, endNode);
+      }
+      else if (currentAlgorithm == ALGORITHMS.ASTAR){
+        result = await astar(beginNode, endNode);
+      }
+      else if (currentAlgorithm == ALGORITHMS.DIJKSTRA){
+        result = await dijkstra(beginNode, endNode);
+      }
       
-//       TSP_Matrix[row][col].pathlength = result; 
-//       TSP_Matrix[col][row].pathlength = TSP_Matrix[row][col].pathlength;
+      TSP_Matrix[row][col].pathlength = result; 
+      TSP_Matrix[col][row].pathlength = TSP_Matrix[row][col].pathlength;
     
-//     }
-//   }
-//   draw_flag = true;
-//   await sleep(20);
-//   return result; 
-// }
+    }
+  }
+  draw_flag = true;
+  await sleep(20);
+  return result; 
+}
 
 function FindingTSPPermutation() {
   let perm_nodes = all_nodes.slice(1,);
