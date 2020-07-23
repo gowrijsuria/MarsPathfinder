@@ -16,8 +16,12 @@ const num_cols = Math.floor(screen.width/rectHeight) - 13;
 
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
+
 const nodes = [];
 var path = [];
+var TSP_Matrix = [];
+var perms = [];
+
 const startNode = {
   row: 7,
   col: 7
@@ -34,6 +38,8 @@ const viaNode = {
 // const dest = [{ row: null, col: null }];
 var dest = [];
 var start = [];
+var start_end = [startNode,finishNode];
+var all_nodes = [];
 
 const startBtn = document.getElementById('startBtn');
 
@@ -56,7 +62,7 @@ let addDestn = false;
 let addstart = false;
 let multidest = 0;
 let multistart = 0;
-let currentAlgorithm = ALGORITHMS.ASTAR;
+let currentAlgorithm = ALGORITHMS.GREEDY;
 let running = false;
 let speed = 1; // sleep time in ms between each iteration in algos
 
@@ -370,20 +376,64 @@ async function search() {
     }
     else
     {
-      if (currentAlgorithm == ALGORITHMS.BFS) {
-        result = await bfs(newbeginNode, newendNode);
+      if(closedest == false) {
+        ClearVia();
+        draw_flag = false;
+        all_nodes = start_end.concat(dest);
+        console.log(`ALLLLLL: ${all_nodes}`);
+        var total_no_of_nodes = 2 + dest.length; 
+        console.log(`total_no_of_nodes: ${total_no_of_nodes}`);
+        CreateMatrix(total_no_of_nodes);
+        // result1 = await Fill_TSPMatrix(total_no_of_nodes);
+        for(let col = 1; col < total_no_of_nodes; col++) {
+          for(let row = 0; row < col; row++) {
+           
+            let beginNode = all_nodes[row];
+            let endNode = all_nodes[col];
+            if (currentAlgorithm == ALGORITHMS.BFS) {
+              result = await bfs(beginNode, endNode);
+            }
+            else if (currentAlgorithm == ALGORITHMS.DFS){
+              result = await dfs(beginNode, endNode);
+            }
+            else if (currentAlgorithm == ALGORITHMS.GREEDY){
+              result = await greedy(beginNode, endNode);
+            }
+            else if (currentAlgorithm == ALGORITHMS.ASTAR){
+              result = await astar(beginNode, endNode);
+            }
+            else if (currentAlgorithm == ALGORITHMS.DIJKSTRA){
+              result = await dijkstra(beginNode, endNode);
+            }
+            
+            TSP_Matrix[row][col].pathlength = result; 
+            TSP_Matrix[col][row].pathlength = TSP_Matrix[row][col].pathlength;
+          
+          }
+        }
+        console.log(TSP_Matrix);
+
+        draw_flag = true;
+        var TSP_permutation = FindingTSPPermutation();
+        result = await DrawingTSPpath(TSP_permutation);
+
       }
-      else if (currentAlgorithm == ALGORITHMS.DFS){
-        result = await dfs(newbeginNode, newendNode);
-      }
-      else if (currentAlgorithm == ALGORITHMS.GREEDY){
-        result = await greedy(newbeginNode, newendNode);
-      }
-      else if (currentAlgorithm == ALGORITHMS.ASTAR){
-        result = await astar(newbeginNode, newendNode);
-      }
-      else if (currentAlgorithm == ALGORITHMS.DIJKSTRA){
-        result = await dijkstra(newbeginNode, newendNode);
+      else {
+        if (currentAlgorithm == ALGORITHMS.BFS) {
+          result = await bfs(newbeginNode, newendNode);
+        }
+        else if (currentAlgorithm == ALGORITHMS.DFS){
+          result = await dfs(newbeginNode, newendNode);
+        }
+        else if (currentAlgorithm == ALGORITHMS.GREEDY){
+          result = await greedy(newbeginNode, newendNode);
+        }
+        else if (currentAlgorithm == ALGORITHMS.ASTAR){
+          result = await astar(newbeginNode, newendNode);
+        }
+        else if (currentAlgorithm == ALGORITHMS.DIJKSTRA){
+          result = await dijkstra(newbeginNode, newendNode);
+        }
       }
     }
 
@@ -397,6 +447,192 @@ async function search() {
     running = false;
     startBtn.textContent = 'Find Path';
     //startBtn.classList.toggle('btn', 'btn-success');
+  }
+}
+
+// async function Fill_TSPMatrix(total_no_of_nodes) {
+//   draw_flag = false;
+//  for(let row = 1; row < total_no_of_nodes; row++) {
+//     for(let col = 0; col < row; col++) {
+//  for(let col = 1; col < total_no_of_nodes; col++) {
+//     for(let row = 0; row < col; row++) {
+     
+//       let beginNode = all_nodes[row];
+//       let endNode = all_nodes[col];
+//       if (currentAlgorithm == ALGORITHMS.BFS) {
+//         result = await bfs(beginNode, endNode);
+//       }
+//       else if (currentAlgorithm == ALGORITHMS.DFS){
+//         result = await dfs(beginNode, endNode);
+//       }
+//       else if (currentAlgorithm == ALGORITHMS.GREEDY){
+//         result = await greedy(beginNode, endNode);
+//       }
+//       else if (currentAlgorithm == ALGORITHMS.ASTAR){
+//         result = await astar(beginNode, endNode);
+//       }
+//       else if (currentAlgorithm == ALGORITHMS.DIJKSTRA){
+//         result = await dijkstra(beginNode, endNode);
+//       }
+      
+//       TSP_Matrix[row][col].pathlength = result; 
+//       TSP_Matrix[col][row].pathlength = TSP_Matrix[row][col].pathlength;
+    
+//     }
+//   }
+//   draw_flag = true;
+//   await sleep(20);
+//   return result; 
+// }
+
+function FindingTSPPermutation() {
+  let perm_nodes = all_nodes.slice(1,);
+        perms = perm(perm_nodes);
+        // console.log(perms.length);
+        // console.log("EPERMREOGFOGONOGE");
+        // console.log(perms);
+        // console.log(perms.length);
+
+        
+  var TSP_path = [];
+  var TSP_permutation = [];
+  var least_dist = 0;
+  for(let iter = 0; iter < perms.length; iter++){  
+    let permutation = perms[iter];
+    TSP_path = [startNode].concat(permutation);
+
+    var start = startNode;
+    var end = permutation[0];
+    var startindex = all_nodes.indexOf(start);
+    var endindex = all_nodes.indexOf(end);
+    var distance = TSP_Matrix[startindex][endindex].pathlength;
+    var total_dist = distance;
+    for(let i = 0; i < permutation.length-1 ; i++)
+    {
+      start = permutation[i];
+      end = permutation[i+1];
+      
+      startindex = all_nodes.indexOf(start);
+      endindex = all_nodes.indexOf(end);
+      distance = TSP_Matrix[startindex][endindex].pathlength;
+      
+      total_dist = total_dist + distance;
+
+    }
+    if(iter == 0){
+        least_dist = total_dist;
+        TSP_permutation = TSP_path;
+      }
+    if(total_dist < least_dist){
+        least_dist = total_dist;
+        TSP_permutation = TSP_path;
+      }
+    console.log(`TSP_path_length : ${least_dist}`);  
+  }
+  console.log(`least_path_length : ${least_dist}`);  
+  console.log(`TSP_permutation : ${TSP_permutation}`);
+  console.log(TSP_permutation);
+
+  return TSP_permutation;
+}
+
+async function DrawingTSPpath(TSP_permutation) {
+  const length = TSP_permutation.length;
+  if (currentAlgorithm == ALGORITHMS.BFS) {
+    path1 = await bfs(startNode, TSP_permutation[0], true);
+    console.log("printing paths:");
+    console.log(path1);
+    for(let i=0 ; i < length-1;i++)  
+    {  
+      path2 = await bfs(TSP_permutation[i], TSP_permutation[i+1],true,path1);    
+      path1 = path2;
+      console.log(path1);
+    }
+    result = await bfs(TSP_permutation[length-2], TSP_permutation[length-1],false,path1);  
+    console.log(result);
+  }
+  else if (currentAlgorithm == ALGORITHMS.DFS){
+   path1 = await dfs(startNode, TSP_permutation[0], true);
+    console.log("printing paths:");
+    console.log(path1);
+    for(let i=0 ; i < length-1;i++)  
+    {  
+      path2 = await dfs(TSP_permutation[i], TSP_permutation[i+1],true,path1);    
+      path1 = path2;
+      console.log(path1);
+    }
+    result = await dfs(TSP_permutation[length-2], TSP_permutation[length-1],false,path1);  
+    console.log(result); 
+  }
+  else if (currentAlgorithm == ALGORITHMS.GREEDY){
+   path1 = await greedy(startNode, TSP_permutation[0], true);
+    console.log("printing paths:");
+    console.log(path1);
+    for(let i=0 ; i < length-1;i++)  
+    {  
+      path2 = await greedy(TSP_permutation[i], TSP_permutation[i+1],true,path1);    
+      path1 = path2;
+      console.log(path1);
+    }
+    result = await greedy(TSP_permutation[length-2], TSP_permutation[length-1],false,path1);  
+    console.log(result);  
+  }
+  else if (currentAlgorithm == ALGORITHMS.ASTAR){
+    path1 = await astar(startNode, TSP_permutation[0], true);
+    console.log("printing paths:");
+    console.log(path1);
+    for(let i=0 ; i < length-1;i++)  
+    {  
+      path2 = await astar(TSP_permutation[i], TSP_permutation[i+1],true,path1);    
+      path1 = path2;
+      console.log(path1);
+    }
+    result = await astar(TSP_permutation[length-2], TSP_permutation[length-1],false,path1);  
+    console.log(result);
+  }
+  else if (currentAlgorithm == ALGORITHMS.DIJKSTRA){
+    path1 = await dijkstra(startNode, TSP_permutation[0], true);
+    
+    console.log("printing paths:");
+    console.log(path1);
+
+    for(let i=0 ; i < length-1;i++)  
+    {  
+      path2 = await dijkstra(TSP_permutation[i], TSP_permutation[i+1],true,path1);    
+      path1 = path2;
+      console.log(path1);
+    }
+    result = await dijkstra(TSP_permutation[length-2], TSP_permutation[length-1],false,path1);  
+    console.log(result);
+  }
+}
+
+
+function perm(xs) {
+  let ret = [];
+
+  for (let i = 0; i < xs.length; i = i + 1) {
+    let rest = perm(xs.slice(0, i).concat(xs.slice(i + 1)));
+
+    if(!rest.length) {
+      ret.push([xs[i]])
+    } else {
+      for(let j = 0; j < rest.length; j = j + 1) {
+        ret.push([xs[i]].concat(rest[j]))
+      }
+    }
+  }
+  return ret;
+}
+
+function CreateMatrix(total_no_of_nodes) {
+  for(let row = 0; row < total_no_of_nodes; row++) {
+    TSP_Matrix[row] = [];
+    for(let col = 0; col < total_no_of_nodes; col++) {
+      TSP_Matrix[row][col] = {
+      pathlength: 0
+      };  
+    }
   }
 }
 
