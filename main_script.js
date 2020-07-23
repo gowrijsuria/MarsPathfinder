@@ -705,6 +705,7 @@ function ClearVia() {
 }
 
 function MultiDest(e) {
+  ClearStartPoints();
   let col = getCol(getX(e));
   let row = getRow(getY(e));
   let cell = nodes[row][col];
@@ -716,6 +717,7 @@ function MultiDest(e) {
 }
 
 function MultiStartPoint(e) {
+  ClearDest();
   let col = getCol(getX(e));
   let row = getRow(getY(e));
   let cell = nodes[row][col];
