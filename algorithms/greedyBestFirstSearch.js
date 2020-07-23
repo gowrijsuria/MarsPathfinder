@@ -5,7 +5,7 @@ async function greedy(beginNode, endNode, via = false, oldpath=[]){
   let node = {
     row: beginNode.row,
     col: beginNode.col,
-    heuristic: manhattan(beginNode.row, beginNode.col)
+    heuristic: manhattan(beginNode.row, beginNode.col,endNode.row, endNode.col)
   };
   
   frontier.push(node);
@@ -41,7 +41,7 @@ async function greedy(beginNode, endNode, via = false, oldpath=[]){
           }
         }
 
-        newNode.heuristic = manhattan(newNode.row, newNode.col);
+        newNode.heuristic = manhattan(newNode.row, newNode.col,endNode.row, endNode.col);
         // if not in frontier / visited nodes, add it
         if(found == -1 && !parent.has(`${newNode.row},${newNode.col}`)){
           frontier.push(newNode);
