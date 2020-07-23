@@ -5,7 +5,7 @@ async function astar(beginNode, endNode, via = false, oldpath=[]){
   let node = {
     row: beginNode.row,
     col: beginNode.col,
-    heuristic: manhattan(beginNode.row, beginNode.col),
+    heuristic: manhattan(beginNode.row, beginNode.col,endNode.row, endNode.col),
     cost: 0
   };
   
@@ -45,7 +45,7 @@ async function astar(beginNode, endNode, via = false, oldpath=[]){
 
         // if not in frontier / visited nodes, add it
         newNode.cost = node.cost + 1;
-        newNode.heuristic = manhattan(newNode.row, newNode.col) + newNode.cost;
+        newNode.heuristic = manhattan(newNode.row, newNode.col,endNode.row, endNode.col) + newNode.cost;
         if(found == -1 && !parent.has(`${newNode.row},${newNode.col}`)){
           frontier.push(newNode);
           parent.set(`${newNode.row},${newNode.col}`, node);
