@@ -39,23 +39,19 @@
                 
                 <div class="btn-group" role="group" aria-label="Basic example">            
                     <button id="startBtn" type="button" class="btn btn-dark">Find Path</button>
-                    <!-- toggle between closest and multiple-->
-                    <!-- <script>
-                    if(false) { -->
                         <center>
-                        <p>Closest Path</p>
+                        <p>Closest Node</p>
                         <input type="checkbox" id="switch" class="checkbox" />
                         <label for="switch" class="toggle">
                         </label>
                         </center>
-                    <!-- document.write('<button onclick=document.location.href="https://www.google.com">take  me away</button>');    
-                    }
-                    </script> -->
                     <button id="clrPathBtn" type="button" class="btn btn-dark">Clear Path</button>
                     <button id="clrTerrainBtn" type="button" class="btn btn-dark" >Clear Terrain</button>
                     <button id="clrWallBtn" type="button" class="btn btn-dark">Clear Walls</button>
                     <button id="instructions" type="button" class="btn btn-dark">Instructions</button>
-                </div>
+                    <button class="btn btn-dark">
+                        <a href="https://github.com/gowrijsuria/MarsPathfinder" target="_blank" id="repoLink">Github Link</a></button>
+                    </div>
 
             </div>
             </nav>
@@ -137,17 +133,7 @@
 <!-- CANVAS -->
     <div style="width: 80%; float:right">
         <div id="boardDiv">
-            <canvas id="canvas" oncontextmenu="return false;"></canvas></div>
-
-
-        <div class="fixed-bottom">
-            <!--
-            <center><a target="_blank" href = "https://github.com/gowrijsuria/MarsPathfinder">Github Repo</a>   
-        </center>
-    -->
-    <a target="_blank" href = "https://github.com/gowrijsuria/MarsPathfinder">Github Repo</a>
-        </div> 
-    
+            <canvas id="canvas" oncontextmenu="return false;"></canvas></div>    
     </div>
 
 
@@ -155,7 +141,7 @@
 <div id="tutorial" class="card" style="width: 20rem;">
     <div class="card-body">
         <h5 class="card-title">Instructions</h5>
-        <h6 class="card-text">1. Change start and end points by dragging.</h6>
+        <h6 class="card-text">1. Change start, via and end points by dragging.</h6>
         <h6 class="card-text">2. To draw walls, use left click</h6>
         <h6 class="card-text">3. To delete walls, use right click</h6>
         <h6 class="card-text">4. Click create terrain for getting a weighted graph</h6>
@@ -163,8 +149,8 @@
     </div>
 </div>
 
-
-
+<script src="./clearNode.js"></script>
+<script src="./moveNode.js"></script>
 <script src="./grid.js"></script>
 <script src="./algorithms/astar.js"></script>
 <script src="./algorithms/greedyBestFirstSearch.js"></script>

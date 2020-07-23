@@ -1,30 +1,3 @@
-/* Helper Functions */
-function clear() {
-  ctx.clearRect(0, 0, WIDTH, HEIGHT);
-}
-
-function sleep(ms) {
-  return new Promise(r => setTimeout(r, ms));
-}
-
-function getX(e) {
-  return e.clientX - canvas.getBoundingClientRect().left;
-}
-
-function getY(e) {
-  return e.clientY - canvas.getBoundingClientRect().top;
-}
-
-function getCol(x) {
-  // 2nd term's numerator changes based on the constant value that separates cells in createGrid()
-  return parseInt((x - (x / rectHeight)) / rectHeight);
-}
-
-function getRow(y) {
-  // 2nd term's numerator changes based on the constant value that separates cells in createGrid()
-  return parseInt((y - (y / rectWidth)) / rectWidth);
-}
-
 function drawRect(x, y, width, height, state, colour = null) {
   if(colour){
     ctx.fillStyle = colour;

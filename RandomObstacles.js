@@ -7,10 +7,9 @@ function randomObs() {
     {
       node = nodes[row][col];
       const ObsOrNot = parseInt(random(1, rows + cols));
-      // const ObsOrNot = parseInt(Math.random() * ((rows+cols) - 1) + 1);
       if(ObsOrNot == 1)
       {
-        if(node.state != STATE.START && node.state != STATE.FINISH)
+        if (node.state != STATE.START && node.state != STATE.FINISH && node.state != STATE.XSTART && node.state != STATE.XFINISH)
         {
           node.state = STATE.WALL;
         }      

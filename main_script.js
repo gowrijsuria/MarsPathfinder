@@ -35,7 +35,6 @@ const viaNode = {
   col: 6
 };
 
-// const dest = [{ row: null, col: null }];
 var dest = [];
 var start = [];
 var start_end = [startNode,finishNode];
@@ -52,7 +51,6 @@ let newdest_flag = false;
 let newstart_flag = false;
 let LMBDown = false;
 let RMBDown = false;
-// let enable_via = true;
 let moveStart = false;
 let moveFinish = false;
 let moveVia = false;
@@ -72,7 +70,6 @@ function manhattan(startrow, startcol, finishrow, finishcol) {
 
 function findNeighbours(curNode) {
   const neighbours = [];
-  // diagonal: [1, 1], [1, -1], [-1, -1], [-1, 1]
   const nodeOffset = [[1, 0], [0, 1], [-1, 0], [0, -1]];
   
   nodeOffset.forEach(offset => {
@@ -345,7 +342,6 @@ async function search() {
           newbeginNode.col = start[start_point].col;
         }
       }
-
       draw_flag = true;
     }
 
@@ -572,76 +568,6 @@ function CreateMatrix(total_no_of_nodes) {
   }
 }
 
-
-//Clears everything except for start and end nodes 
-function clearPath(){
-  if(!running){
-
-    for(let row = 0; row < nodes.length; row++){
-      nodes[row].forEach(node => {
-        if(node.state == STATE.PATH || node.state == STATE.VISITED)
-          node.state = STATE.EMPTY;
-      });
-    }
-  }
-}
-
-//Changes state of empty nodes to wall nodes on left-click
-function createWall(e){
-  let col = getCol(getX(e));
-  let row = getRow(getY(e));
-  let cell = nodes[row][col];
-  if (cell.state != STATE.START && cell.state != STATE.XSTART && cell.state != STATE.FINISH && cell.state != STATE.XFINISH && cell.state != STATE.VIA){
-    cell.state = STATE.WALL;
-  }
-}
-//Changes state of wall nodes to empty nodes on right-click
-function deleteWall(e){
-  let col = getCol(getX(e));
-  let row = getRow(getY(e));
-  let cell = nodes[row][col];
-
-  if(cell.state == STATE.WALL) {
-    cell.state = STATE.EMPTY;
-  }
-}
-
-// Sets all wall nodes in nodes[][] to STATE.EMPTY
-function clearWalls() {
-  if(!running){
-    for(let row = 0; row < nodes.length; row++){
-      nodes[row].forEach(node => {
-        if(node.state == STATE.WALL)
-          node.state = STATE.EMPTY;
-      });
-    }
-  }
-}
-
-function clearTerrain() {
- if(!running){
-    for(let row = 0; row < nodes.length; row++){
-      nodes[row].forEach(node => {
-        if(node.state == STATE.TERRAIN)
-          node.state = STATE.EMPTY;
-      });
-    }
-  } 
-}
-
-function ClearVia() {
-  if(!running){
-    for(let row = 0; row < nodes.length; row++){
-      nodes[row].forEach(node => {
-        if(node.state == STATE.VIA)
-          node.state = STATE.EMPTY;
-      });
-    }
-    // enable_via = true;
-    viaOrnot =false;
-  }
-}
-
 function MultiDest(e) {
   ClearStartPoints();
   let col = getCol(getX(e));
@@ -664,28 +590,6 @@ function MultiStartPoint(e) {
     multistart += 1;
     start.push({ row, col });
     // console.log(dest);
-  }
-}
-
-function ClearDest() {
-  if (!running) {
-    let len = dest.length;
-    for (let end = len-1; end >= 0; end--) {
-      nodes[dest[end].row][dest[end].col].state = STATE.EMPTY;
-      multidest -= 1;
-      dest.pop();
-    }
-  }
-}
-
-function ClearStartPoints() {
-  if (!running) {
-    let len = start.length;
-    for (let end = len - 1; end >= 0; end--) {
-      nodes[start[end].row][start[end].col].state = STATE.EMPTY;
-      multistart -= 1;
-      start.pop();
-    }
   }
 }
 
@@ -772,69 +676,6 @@ document.getElementById("tutorial").classList.toggle("show");
 function Pause() {
 
 }
-
-
-// Moves the start node when dragged
-function moveStartNode(e){
-  let col = getCol(getX(e));
-  let row = getRow(getY(e));
-
-  let cell1 = nodes[startNode.row][startNode.col];
-  let cell2 = nodes[row][col];
-
-  if (cell2.state != STATE.FINISH && cell2.state != STATE.XFINISH && cell2.state != STATE.START && cell2.state != STATE.XSTART && cell2.state != STATE.WALL && cell2.state != STATE.VIA)
-  {
-    cell1.state = cell1.prevState;
-    cell1.prevState = STATE.EMPTY;
-    startNode.row = row;
-    startNode.col = col;
-
-    cell1 = nodes[startNode.row][startNode.col];
-    cell1.prevState = cell1.state;
-    cell1.state = STATE.START;
-  }
-}
-
-// Moves the finish node when dragged
-function moveFinishNode(e) {
-    let col = getCol(getX(e));
-    let row = getRow(getY(e));
-    let cell1 = nodes[finishNode.row][finishNode.col];
-    let cell2 = nodes[row][col];
-
-  if (cell2.state != STATE.START && cell2.state != STATE.XSTART && cell2.state != STATE.WALL && cell2.state != STATE.FINISH && cell2.state != STATE.XFINISH && cell2.state != STATE.VIA)
-    {
-      cell1.state = cell1.prevState;
-      cell1.prevState = STATE.EMPTY;
-      finishNode.row = row;
-      finishNode.col = col;
-
-      cell1 = nodes[finishNode.row][finishNode.col];
-      cell1.prevState = cell1.state;
-      cell1.state = STATE.FINISH;
-    }
-}
-
-function moveViaNode(e) {
-  let col = getCol(getX(e));
-  let row = getRow(getY(e));
-  let cell1 = nodes[viaNode.row][viaNode.col];
-  let cell2 = nodes[row][col];
-
-  if (cell2.state != STATE.START && cell2.state != STATE.XSTART && cell2.state != STATE.WALL && cell2.state != STATE.FINISH && cell2.state != STATE.XFINISH)
-  {
-    cell1.state = cell1.prevState;
-    cell1.prevState = STATE.EMPTY;
-
-    viaNode.row = row;
-    viaNode.col = col;
-
-    cell1 = nodes[viaNode.row][viaNode.col];
-    cell1.prevState = cell1.state;
-    cell1.state = STATE.VIA;
-  }
-}
-
 
 /* Canvas Eventlisteners */
 canvas.onmouseup = function(e) {

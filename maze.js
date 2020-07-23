@@ -12,7 +12,7 @@ function recursive_maze(rowStart, rowEnd, colStart, colEnd, orientation, surroun
       for(let col = 0; col < nodes[row].length; col++)
       {
         node = nodes[row][col];
-        if(node.state != STATE.START && node.state != STATE.FINISH && node.state != STATE.WALL)
+        if (node.state != STATE.START && node.state != STATE.XSTART && node.state != STATE.FINISH && node.state != STATE.XFINISH && node.state != STATE.WALL)
         {
           if(row === 0 || col === 0 || row === BOARD_HEIGHT - 1 || col === BOARD_WIDTH - 1)
           {
@@ -45,7 +45,7 @@ function recursive_maze(rowStart, rowEnd, colStart, colEnd, orientation, surroun
         node = nodes[row][col];
         if(row === currentRow && col !== colRandom && col >= colStart - 1 && col <= colEnd + 1)
         {
-         if(node.state != STATE.START && node.state != STATE.FINISH && node.state != STATE.WALL) 
+          if (node.state != STATE.START && node.state != STATE.FINISH && node.state != STATE.XSTART && node.state != STATE.XFINISH && node.state != STATE.WALL) 
          {
           node.state = STATE.WALL;
          }
@@ -85,7 +85,7 @@ function recursive_maze(rowStart, rowEnd, colStart, colEnd, orientation, surroun
         node = nodes[row][col];
         if(col === currentCol && row !== rowRandom && row >= rowStart - 1 && row <= rowEnd + 1)
         {
-         if(node.state != STATE.START && node.state != STATE.FINISH && node.state != STATE.WALL) 
+          if (node.state != STATE.START && node.state != STATE.FINISH && node.state != STATE.XSTART && node.state != STATE.XFINISH && node.state != STATE.WALL) 
          {
           node.state = STATE.WALL;
          }
