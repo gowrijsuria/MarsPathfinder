@@ -56,7 +56,7 @@ let addDestn = false;
 let addstart = false;
 let multidest = 0;
 let multistart = 0;
-let currentAlgorithm = ALGORITHMS.ASTAR;
+let currentAlgorithm = ALGORITHMS.GREEDY;
 let running = false;
 let speed = 1; // sleep time in ms between each iteration in algos
 
@@ -821,9 +821,12 @@ window.onload=function init() {
   //Find path to Closest destination
   btn = document.getElementById('switch');
   if (btn) btn.addEventListener('click', ClosestDestination, false);
-  // Clear Via Points
+  // Clear Dest Points
   btn = document.getElementById('Cleardest');
   if (btn) btn.addEventListener('click', ClearDest, false);
+  // Clear Start Points
+  btn = document.getElementById('ClearStart');
+  if (btn) btn.addEventListener('click', ClearStartPoints, false);
   // Create Terrain
   btn = document.getElementById('Terrain');
   if(btn) btn.addEventListener('click', CreateTerrain, false);  
