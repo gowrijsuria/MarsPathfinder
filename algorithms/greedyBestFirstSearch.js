@@ -20,7 +20,7 @@ async function greedy(beginNode, endNode, via = false, oldpath=[]){
     // if found, draw its path and return
     if(row == endNode.row && col == endNode.col){
       if(via){
-        path2 = await drawViaPath(parent, beginNode, endNode);
+        path2 = await drawViaPath(parent, beginNode, endNode, oldpath);
         oldpath = path2;
         return oldpath;
       }
