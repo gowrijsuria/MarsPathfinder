@@ -122,10 +122,8 @@ async function drawPath(parent, beginNode, currentendpt,oldpath,via=false){
   }
   
   let endNode = path[path.length - 1];
-  // console.log(`endNode row: ${endNode.row} col: ${endNode.col}`);
   while(!(endNode.row == beginNode.row && endNode.col == beginNode.col)) {
     endNode = parent.get(`${endNode.row},${endNode.col}`);
-    //console.log(`endNode row: ${endNode.row} col: ${endNode.col}`);
     path.push(endNode);
   }
   // clearPath();
@@ -170,8 +168,6 @@ async function search() {
       row: null,
       col: null
     };
-    
-    // console.log(`finishnode row:`, finishNode.row, `col:`, finishNode.col);
     newendNode.row = finishNode.row;
     newendNode.col = finishNode.col;
 
@@ -217,7 +213,6 @@ async function search() {
       }
         
       else if (currentAlgorithm == ALGORITHMS.GREEDY) {
-        // console.log(`finishnode row:`, finishNode.row, `col:`, finishNode.col);
         result = await greedy(startNode, finishNode);
         for (let end = 0; end < dest.length; end++) {
           distance = await greedy(startNode, dest[end]);
@@ -383,13 +378,9 @@ async function search() {
         ClearVia();
         draw_flag = false;
         all_nodes = start_end.concat(dest);
-        // console.log(`ALLLLLL: ${all_nodes}`);
         var total_no_of_nodes = 2 + dest.length; 
-        console.log(`total_no_of_nodes: ${total_no_of_nodes}`);
         CreateMatrix(total_no_of_nodes);
         result = await Fill_TSPMatrix(total_no_of_nodes);
-        // console.log(TSP_Matrix);
-
         var TSP_permutation = FindingTSPPermutation();
         draw_flag = true;
         result = await DrawingTSPpath(TSP_permutation);
@@ -433,9 +424,8 @@ async function Fill_TSPMatrix(total_no_of_nodes) {
     for(let row = 0; row < col; row++) {
      
       let beginNode = all_nodes[row];
-      console.log(all_nodes[row], `allnodes row`);
       let endNode = all_nodes[col];
-      console.log(all_nodes[col], `allnodes col`);
+
       if (currentAlgorithm == ALGORITHMS.BFS) {
         result = await bfs(beginNode, endNode);
       }
@@ -499,85 +489,57 @@ function FindingTSPPermutation() {
         least_dist = total_dist;
         TSP_permutation = TSP_path;
       }
-    console.log(`TSP_path_length : ${least_dist}`);  
   }
-  console.log(`least_path_length : ${least_dist}`);  
-  console.log(`TSP_permutation : ${TSP_permutation}`);
-  console.log(TSP_permutation);
-
   return TSP_permutation;
 }
 
 async function DrawingTSPpath(TSP_permutation) {
   const length = TSP_permutation.length;
-  console.log(TSP_permutation.length,`length`);
   if (currentAlgorithm == ALGORITHMS.BFS) {
     draw_flag = true;
     path1 = await bfs(TSP_permutation[0], TSP_permutation[1], true);
-    console.log("printing paths:");
-    console.log(path1);
     for(let i=1 ; i < length-1; i++)  
     {  
       path2 = await bfs(TSP_permutation[i], TSP_permutation[i+1],true,path1);    
       path1 = path2;
-      console.log(path1);
     }
     result = await bfs(TSP_permutation[length-2], TSP_permutation[length-1],false,path1);  
-    console.log(result);
   }
   else if (currentAlgorithm == ALGORITHMS.DFS){
     path1 = await dfs(TSP_permutation[0], TSP_permutation[1], true);
-    console.log("printing paths:");
-    console.log(path1);
     for(let i=0 ; i < length-1;i++)  
     {  
       path2 = await dfs(TSP_permutation[i], TSP_permutation[i+1],true,path1);    
       path1 = path2;
-      console.log(path1);
     }
     result = await dfs(TSP_permutation[length-2], TSP_permutation[length-1],false,path1);  
-    console.log(result); 
   }
   else if (currentAlgorithm == ALGORITHMS.GREEDY){
     path1 = await greedy(TSP_permutation[0], TSP_permutation[1], true);
-    console.log("printing paths:");
-    console.log(path1);
     for(let i=0 ; i < length-1;i++)  
     {  
       path2 = await greedy(TSP_permutation[i], TSP_permutation[i+1],true,path1);    
       path1 = path2;
-      console.log(path1);
     }
-    result = await greedy(TSP_permutation[length-2], TSP_permutation[length-1],false,path1);  
-    console.log(result);  
+    result = await greedy(TSP_permutation[length-2], TSP_permutation[length-1],false,path1);
   }
   else if (currentAlgorithm == ALGORITHMS.ASTAR){
     path1 = await astar(TSP_permutation[0], TSP_permutation[1], true);
-    console.log("printing paths:");
-    console.log(path1);
     for(let i=0 ; i < length-1;i++)  
     {  
       path2 = await astar(TSP_permutation[i], TSP_permutation[i+1],true,path1);    
       path1 = path2;
-      console.log(path1);
     }
     result = await astar(TSP_permutation[length-2], TSP_permutation[length-1],false,path1);  
-    console.log(result);
   }
   else if (currentAlgorithm == ALGORITHMS.DIJKSTRA){
     path1 = await dijkstra(TSP_permutation[0], TSP_permutation[1], true);
-    
-    console.log("printing paths:");
-    console.log(path1);
-
     for(let i=0 ; i < length-1;i++)  
     {  
       path2 = await dijkstra(TSP_permutation[i], TSP_permutation[i+1],true,path1);    
       path1 = path2;
-      console.log(path1);
     }
     result = await dijkstra(TSP_permutation[length-2], TSP_permutation[length-1],false,path1);  
-    console.log(result);
   }
 }
 
@@ -761,8 +723,6 @@ function FuncVia() {
 }
 
 function AddVia() {
-  console.log(`entered addvia: ${addvia}`);
-  // no_of_via = 1;
   let cell = nodes[7][6];
   if (cell.state != STATE.START && cell.state != STATE.XSTART && cell.state != STATE.FINISH && cell.state != STATE.XFINISH) {
     cell.state = STATE.VIA;
@@ -789,7 +749,6 @@ function AddStartPoint() {
 
 function ClosestDestination() {
   var isChecked = document.getElementById("switch").checked;
-  console.log(isChecked);
   if (isChecked == true) {
     closedest = true;
   }
@@ -821,14 +780,12 @@ function moveStartNode(e){
   let row = getRow(getY(e));
 
   let cell1 = nodes[startNode.row][startNode.col];
-  // console.log(`cell1: ${cell1.state}`);
   let cell2 = nodes[row][col];
 
   if (cell2.state != STATE.FINISH && cell2.state != STATE.XFINISH && cell2.state != STATE.START && cell2.state != STATE.XSTART && cell2.state != STATE.WALL && cell2.state != STATE.VIA)
   {
     cell1.state = cell1.prevState;
     cell1.prevState = STATE.EMPTY;
-    // console.log(`cell1inside: ${cell1.state}`);
     startNode.row = row;
     startNode.col = col;
 
@@ -842,7 +799,6 @@ function moveStartNode(e){
 function moveFinishNode(e) {
     let col = getCol(getX(e));
     let row = getRow(getY(e));
-    // console.log(`col: ${col}, row: ${row}`);
     let cell1 = nodes[finishNode.row][finishNode.col];
     let cell2 = nodes[row][col];
 
