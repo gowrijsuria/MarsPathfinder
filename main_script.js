@@ -108,8 +108,8 @@ async function RoverSearch() {
           }
         }
         if (newdest_flag) {
-          newendNode1.row = dest[end_point].row;
-          newendNode1.col = dest[end_point].col;
+          newendNode.row = dest[end_point].row;
+          newendNode.col = dest[end_point].col;
         }
       }
 
@@ -124,8 +124,8 @@ async function RoverSearch() {
           }
         }
         if (newdest_flag) {
-          newendNode1.row = dest[end_point].row;
-          newendNode1.col = dest[end_point].col;
+          newendNode.row = dest[end_point].row;
+          newendNode.col = dest[end_point].col;
         }
       }
         
@@ -140,8 +140,8 @@ async function RoverSearch() {
           }
         }
         if (newdest_flag) {
-          newendNode1.row = dest[end_point].row;
-          newendNode1.col = dest[end_point].col;
+          newendNode.row = dest[end_point].row;
+          newendNode.col = dest[end_point].col;
         }
       }
       
@@ -156,8 +156,8 @@ async function RoverSearch() {
           }
         }
         if (newdest_flag) {
-          newendNode1.row = dest[end_point].row;
-          newendNode1.col = dest[end_point].col;
+          newendNode.row = dest[end_point].row;
+          newendNode.col = dest[end_point].col;
         }
       }
 
@@ -172,14 +172,14 @@ async function RoverSearch() {
           }
         }
         if (newdest_flag) {
-          newendNode1.row = dest[end_point].row;
-          newendNode1.col = dest[end_point].col;
+          newendNode.row = dest[end_point].row;
+          newendNode.col = dest[end_point].col;
         }
       }
 
       draw_flag = true;
     
-      return result1;
+      // return result1;
 
       
     }
