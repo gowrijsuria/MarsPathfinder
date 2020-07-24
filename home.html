@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" 
+    href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" 
+    integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" 
+    crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" type="text/css" href="css/style2.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Engage 2020 - Mars Pathfinder</title>
+</head>
+
+<body style = "overflow:auto;">
+
+<div>
+        <nav class="navbar nav-tabs navbar-expand-lg navbar-dark bg-dark">
+            <a class="navbar-brand" href="#">Mars Pathfinder</a>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav">
+                    <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
+                    <li class="nav-item dropdown">
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <button id="bfs" type="button" class="mydropdown-item">Breadth-First Search</button>
+                            <button id="dfs" type="button" class="mydropdown-item">Depth-First Search</button>
+                            <button id="greedy" type="button" class="mydropdown-item">Greedy Best-First Search</button>
+                            <button id="dijkstra" type="button" class="mydropdown-item">Dijkstra Algorithm</button>
+                            <button id="astar" type="button" class="mydropdown-item">A* Search</button>
+                        </div>
+                    </li>
+
+                    <li class="navbar-nav">
+                        <div id="algorithm-text" class="navbar-text text-white font-weight-bold">Greedy Best-First Search</div>
+                    </li>
+                </ul>
+                
+                <div class="btn-group" role="group" aria-label="Basic example">            
+                    <button id="startBtn" type="button" class="btn btn-dark">Find Path</button>
+                        <center>
+                        <p>Closest Node</p>
+                        <input type="checkbox" id="switch" class="checkbox" />
+                        <label for="switch" class="toggle">
+                        </label>
+                        </center>
+                    <button id="clrPathBtn" type="button" class="btn btn-dark">Clear Path</button>
+                    <button id="clrTerrainBtn" type="button" class="btn btn-dark" >Clear Terrain</button>
+                    <button id="clrWallBtn" type="button" class="btn btn-dark">Clear Walls</button>
+                    <button id="instructions" type="button" class="btn btn-dark">Instructions</button>
+                    <button class="btn btn-dark">
+                        <a href="https://github.com/gowrijsuria/MarsPathfinder" target="_blank" id="repoLink">Github Link</a></button>
+                    </div>
+
+            </div>
+            </nav>
+
+            <div>
+            <nav class="navbar">
+                <div class="icons NotationsBar"><i class="fa fa-stop startstyle" style="font-size: 24px"></i> Start Node</div>
+                <div class="icons NotationsBar"><i class="fa fa-stop stopstyle" style="font-size: 24px"></i> Target Node</div>
+                <div class="icons NotationsBar"><i class="fa fa-stop viastyle" style="font-size: 24px"></i> Via Node</div>
+                <div class="icons NotationsBar"><i class="fa fa-stop shortestpathstyle" style="font-size: 24px"></i> <i class="fa fa-stop shortestpathstyle1" style="font-size: 24px"></i> Shortest-path Node</div>
+                <div class="icons NotationsBar"><i class="fa fa-stop obstaclestyle" style="font-size: 24px"></i> Obstacle Node</div>
+                <div class="icons NotationsBar"><i class="fa fa-stop terrainstyle" style="font-size: 24px"></i> Terrain Node</div>
+                <div class="icons NotationsBar"><i class="fa fa-stop visitedstyle" style="font-size: 24px"></i> <i
+                        class="fa fa-stop visitedstyle1" style="font-size: 24px"></i> Visited Node</div>
+
+            </nav>
+            </div>
+
+</div>
+
+    <div style="width: 20%; float:left" class="btn-group-vertical sidebar" role="group" aria-label="Button group with nested dropdown">
+        <button id="RandomObs" type="button" class="btn btn-dark bg-dark">Create Random Obstacles</button>
+        <button id="Via" type="button" class="btn btn-dark bg-dark">Add Via Point</button>
+        <button id="Terrain" type="button" class="btn btn-dark bg-dark">Create Terrain</button>
+        <button id="Maze" type="button" class="btn btn-dark bg-dark">Create Maze</button>
+        <div class="btn-group" role="group">
+            <button type="button" class="btn btn-dark dropdown-toggle" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">Add Nodes</button>
+            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                <button id="multipleDestinations" type="button" class="mydropdown-item">Add Destination</button>
+                <button id="multipleStart" type="button" class="mydropdown-item">Add Start Point</button>
+            </div>
+        </div>
+        <button id="Cleardest" type="button" class="btn btn-dark bg-dark">Clear Added Destinations</button>
+        <button id="ClearStart" type="button" class="btn btn-dark bg-dark">Clear Added Start Points</button>
+    </div>
+        
+        
+<!-- CANVAS -->
+    <div style="width: 80%; float:right;">
+        <div class= "fa fa-stop backstyle",id="boardDiv">
+            <canvas id="canvas", style="margin-left: 25px; margin-top: 20px;", oncontextmenu="return false;"></canvas></div>    
+    </div>
+
+
+<!--TUTORIAL-->
+<div id="tutorial" class="card" style="width: 20rem;">
+    <div class="card-body">
+        <h5 class="card-title">Instructions</h5>
+        <h6 class="card-text">1. Change start, via and end points by dragging.</h6>
+        <h6 class="card-text">2. To draw walls, use left click</h6>
+        <h6 class="card-text">3. To delete walls, use right click</h6>
+        <h6 class="card-text">4. Click create terrain for getting a weighted graph</h6>
+        <button type="button" id="tutorialBtn" class="btn btn-success">Got it!</button>
+    </div>
+</div>
+
+<script src="./clearNode.js"></script>
+<script src="./moveNode.js"></script>
+<script src="./grid.js"></script>
+<script src="./algorithms/astar.js"></script>
+<script src="./algorithms/greedyBestFirstSearch.js"></script>
+<script src="./algorithms/dijkstra.js"></script>
+<script src="./algorithms/dfs.js"></script>
+<script src="./algorithms/bfs.js"></script>
+<script src="./maze.js"></script>
+<script src="./terrain.js"></script>
+<script src="./RandomObstacles.js"></script>
+<script src="./main_script.js"></script>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" 
+integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" 
+crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" 
+integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" 
+crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" 
+integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" 
+crossorigin="anonymous"></script>
+
+</body>
+</html>
