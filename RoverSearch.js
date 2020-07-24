@@ -83,6 +83,7 @@ async function RoverClosestDest(){
       }
 
       draw_flag = true;
+      return result;
 }
 
 
@@ -169,6 +170,7 @@ async function MultiAgentClosestPath(){
         }
       }
       draw_flag = true;
+      return result1;
 }
 
 

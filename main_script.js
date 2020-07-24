@@ -133,6 +133,12 @@ async function RoverSearch() {
         var total_no_of_nodes = 2 + dest.length; 
         CreateMatrix(total_no_of_nodes);
         result = await Fill_TSPMatrix(total_no_of_nodes);
+        if(result == -1)
+        {
+          alert('Path could not be found!');
+          running = false;
+          startBtn.textContent = 'Find Path';
+        }
         var TSP_permutation = FindingTSPPermutation();
         draw_flag = true;
         result = await DrawingTSPpath(TSP_permutation);
@@ -166,7 +172,6 @@ async function RoverSearch() {
   else {
     running = false;
     startBtn.textContent = 'Find Path';
-    //startBtn.classList.toggle('btn', 'btn-success');
   }
 }
 
@@ -191,9 +196,6 @@ window.onload=function init() {
   if(btn) btn.addEventListener('input', () => speed = document.getElementById('speed').value);
   // Start search algorithm
   if(startBtn) {
-    // not working
-    //startBtn.classList.add('btn' ,'btn-danger');
-    //startBtn.classList.add('btn', 'btn-success');
     startBtn.addEventListener('click', RoverSearch, false);
 
   }

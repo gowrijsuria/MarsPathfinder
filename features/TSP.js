@@ -24,7 +24,10 @@ async function Fill_TSPMatrix(total_no_of_nodes) {
       
       TSP_Matrix[row][col].pathlength = result; 
       TSP_Matrix[col][row].pathlength = TSP_Matrix[row][col].pathlength;
-    
+      if(result == -1)
+      {
+        return result;
+      }
     }
   }
   draw_flag = true;
@@ -121,6 +124,7 @@ async function DrawingTSPpath(TSP_permutation) {
     }
     result = await dijkstra(TSP_permutation[length-2], TSP_permutation[length-1],false,path1);  
   }
+  return result;
 }
 
 

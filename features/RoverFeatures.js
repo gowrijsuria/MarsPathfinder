@@ -58,6 +58,8 @@ function FuncVia() {
 }
 
 function AddVia() {
+  ClearDest();
+  ClearStartPoints();
   let cell = nodes[7][6];
   if (cell.state != STATE.START && cell.state != STATE.XSTART && cell.state != STATE.FINISH && cell.state != STATE.XFINISH) {
     cell.state = STATE.VIA;
