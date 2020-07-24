@@ -13,10 +13,8 @@ const HEIGHT = 940;
 const rectWidth = 27;
 const rectHeight = 27;
 
-// const num_rows = Math.floor((screen.height - 70)/rectWidth);
-// const num_cols = Math.floor(screen.width/rectHeight) - 13;
-const num_rows = Math.floor((screen.height - 70)/rectWidth);
-const num_cols = Math.floor(screen.width/rectHeight) - 1;
+const num_rows = Math.floor((screen.height - 350) / rectWidth);
+const num_cols = Math.floor(screen.width / rectHeight) - 15;
 
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
