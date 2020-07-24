@@ -1,15 +1,10 @@
-// async function RoverClosestDest(){
-//     }
-
-
-
 async function MultiAgentClosestPath(){
   draw_flag = false;
       if (currentAlgorithm == ALGORITHMS.BFS) {
         result1 = await bfs(startNode, finishNode);
         for (let end = 0; end < start.length; end++) {
           distance = await bfs(start[end], finishNode);
-          if (result1 > distance && distance != -1) {
+          if ((result1 > distance && distance != -1) || result1 == -1) {
             start_point = end;
             result1 = distance;
             newstart_flag = true;
@@ -25,7 +20,7 @@ async function MultiAgentClosestPath(){
         result1 = await dfs(startNode, finishNode);
         for (let end = 0; end < start.length; end++) {
           distance = await dfs(start[end], finishNode);
-          if (result1 > distance && distance != -1) {
+          if ((result1 > distance && distance != -1) || result1 == -1) {
             start_point = end;
             newstart_flag = true;
             result1 = distance;
@@ -39,9 +34,10 @@ async function MultiAgentClosestPath(){
 
       else if (currentAlgorithm == ALGORITHMS.GREEDY) {
         result1 = await greedy(startNode, finishNode);
+        console.log(result1);
         for (let end = 0; end < start.length; end++) {
           distance = await greedy(start[end], finishNode);
-          if (result1 > distance && distance != -1) {
+          if ((result1 > distance && distance != -1) || result1 == -1) {
             start_point = end;
             newstart_flag = true;
             result1 = distance;
@@ -57,7 +53,7 @@ async function MultiAgentClosestPath(){
         result1 = await astar(startNode, finishNode);
         for (let end = 0; end < start.length; end++) {
           distance = await astar(start[end], finishNode);
-          if (result1 > distance && distance != -1) {
+          if ((result1 > distance && distance != -1) || result1 == -1) {
             start_point = end;
             newstart_flag = true;
             result1 = distance;
@@ -73,7 +69,7 @@ async function MultiAgentClosestPath(){
         result1 = await dijkstra(startNode, finishNode);
         for (let end = 0; end < start.length; end++) {
           distance = await dijkstra(start[end], finishNode);
-          if (result1 > distance && distance != -1) {
+          if ((result1 > distance && distance != -1) || result1 == -1) {
             start_point = end;
             result1 = distance;
             newstart_flag = true;
