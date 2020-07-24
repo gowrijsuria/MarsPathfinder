@@ -7,7 +7,7 @@ A web application developed to navigate a Mars rover as a part of Microsoft Mars
 This provides insight into the behaviour of popular traversal algorithms, such as Depth-First Search (DFS), Breadth-First Search (BFS), Greedy Best First Search, Dijkstra's Algorithm and A* Search.
 This visualisation tool was built using Vanilla Javascript, HTML5 Canvas and CSS.
 
-**image of app**
+![Screenshot](model.png)
 
 ## Algorithms 
 This pathfinding algorithm visualizer uses the following algorithms to find a path on Mars.
