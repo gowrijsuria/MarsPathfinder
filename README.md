@@ -52,6 +52,10 @@ These are additional ways to explore Mars while travelling to your destination
     - In the presence of TERAIN nodes, rover follows an optimal path to reach the destination minimising the cost 
     - Select the algorithm by using the dropdown list 
     - Finally, click on **Find Path** for visualising the path followed by the rover 
+    
+## Working
+- Pathfinding with Terrain
+  ![alt-text](https://github.com/gowrijsuria/MarsPathfinder/blob/master/Readme%20Styling/terrain.gif)
 
 ### Team Martians
  - Gowri Lekshmy 
