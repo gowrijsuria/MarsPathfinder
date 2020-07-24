@@ -149,7 +149,8 @@ async function drawPath(parent, beginNode, currentendpt,oldpath,via=false){
 /* Button Eventlisteners */
 function removeDiv() {
   let div = document.getElementById('tutorial');
-  div.parentNode.removeChild(div);
+  // div.parentNode.removeChild(div);
+  div.style.display = "none";
   return false;
 }
 
@@ -678,7 +679,10 @@ function CreateTerrain() {
 }
 
 function CallTutorial(){
-document.getElementById("tutorial").classList.toggle("show");
+// document.getElementById("tutorial").classList.toggle("show");
+let div = document.getElementById('tutorial');
+  div.style.display = "inline";
+  return false;
 }
 
 function Pause() {
