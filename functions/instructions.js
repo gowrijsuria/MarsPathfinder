@@ -97,3 +97,10 @@ function Viafunc_collapse() {
   return false;
 }
 
+/* Button Eventlisteners */
+function removeDiv() {
+  let div = document.getElementById('tutorial');
+  div.style.display = "none";
+  return false;
+}
+
