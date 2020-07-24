@@ -6,7 +6,7 @@ function randomObs() {
     for(let col = 0; col < nodes[row].length; col++)
     {
       node = nodes[row][col];
-      const ObsOrNot = parseInt(random(1, rows + cols));
+      const ObsOrNot = parseInt(random(1, 10));
       if(ObsOrNot == 1)
       {
         if (node.state != STATE.START && node.state != STATE.FINISH && node.state != STATE.XSTART && node.state != STATE.XFINISH)
