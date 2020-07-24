@@ -94,7 +94,93 @@ async function RoverSearch() {
     newstart_flag = false;
     //check for closest dest path
     if (multidest > 0 && closedest == true) {
-      result = await RoverClosestDest();
+//       result = await RoverClosestDest();
+      draw_flag = false;
+
+      if (currentAlgorithm == ALGORITHMS.BFS) {
+        result1 = await bfs(startNode, finishNode);
+        for (let end = 0; end < dest.length; end++){
+          distance = await bfs(startNode, dest[end]);
+          if (result1 > distance && distance != -1) {
+            end_point = end;
+            result1 = distance;
+            newdest_flag = true;
+          }
+        }
+        if (newdest_flag) {
+          newendNode1.row = dest[end_point].row;
+          newendNode1.col = dest[end_point].col;
+        }
+      }
+
+      else if (currentAlgorithm == ALGORITHMS.DFS) {
+        result1 = await dfs(startNode, finishNode);
+        for (let end = 0; end < dest.length; end++) {
+          distance = await dfs(startNode, dest[end]);
+          if (result1 > distance && distance != -1) {
+            end_point = end;
+            newdest_flag = true;
+            result1 = distance;
+          }
+        }
+        if (newdest_flag) {
+          newendNode1.row = dest[end_point].row;
+          newendNode1.col = dest[end_point].col;
+        }
+      }
+        
+      else if (currentAlgorithm == ALGORITHMS.GREEDY) {
+        result1 = await greedy(startNode, finishNode);
+        for (let end = 0; end < dest.length; end++) {
+          distance = await greedy(startNode, dest[end]);
+          if (result1 > distance && distance != -1) {
+            end_point = end;
+            newdest_flag = true;
+            result1 = distance;
+          }
+        }
+        if (newdest_flag) {
+          newendNode1.row = dest[end_point].row;
+          newendNode1.col = dest[end_point].col;
+        }
+      }
+      
+      else if (currentAlgorithm == ALGORITHMS.ASTAR) {
+        result1 = await astar(startNode, finishNode);
+        for (let end = 0; end < dest.length; end++) {
+          distance = await astar(startNode, dest[end]);
+          if (result1 > distance && distance != -1) {
+            end_point = end;
+            newdest_flag = true;
+            result1 = distance;
+          }
+        }
+        if (newdest_flag) {
+          newendNode1.row = dest[end_point].row;
+          newendNode1.col = dest[end_point].col;
+        }
+      }
+
+      else if (currentAlgorithm == ALGORITHMS.DIJKSTRA) {
+        result1 = await dijkstra(startNode, finishNode);
+        for (let end = 0; end < dest.length; end++){
+          distance = await dijkstra(startNode, dest[end]);
+          if (result1 > distance && distance != -1) {
+            end_point = end;
+            result1 = distance;
+            newdest_flag = true;
+          }
+        }
+        if (newdest_flag) {
+          newendNode1.row = dest[end_point].row;
+          newendNode1.col = dest[end_point].col;
+        }
+      }
+
+      draw_flag = true;
+    
+      return result1;
+
       
     }
 
