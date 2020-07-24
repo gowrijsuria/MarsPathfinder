@@ -21,7 +21,7 @@
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav">
-                    <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
+                    <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-toggle="tooltip" data-placement="right" title="Click to select an Algorithm"></a>
                     <li class="nav-item dropdown">
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <button id="bfs" type="button" class="mydropdown-item">Breadth-First Search</button>
@@ -37,45 +37,57 @@
                     </li>
                 </ul>
                 
-                <div id = "myTopnav" class="btn-group" role="group" aria-label="Basic example">            
-                    <button id="startBtn" type="button" class="btn btn-dark">Find Path</button>
-                        <center>
+                <div class="btn-group" role="group" aria-label="Basic example">            
+<button id="startBtn" type="button" class="btn btn-dark" data-toggle="tooltip" data-placement="right" title="Select an Algorithm and click to find the path">Find Path</button>
+                        <center onclick="Closestfunc()" data-toggle="tooltip" data-placement="bottom" title="Turn it on to find out the closest destination node with Multiple Start Nodes and vice-verse. Click to know more">
                         <p>Closest Node</p>
                         <input type="checkbox" id="switch" class="checkbox" />
                         <label for="switch" class="toggle">
                         </label>
                         </center>
-                    <button id="clrPathBtn" type="button" class="btn btn-dark">Clear Path</button>
-                    <button id="clrTerrainBtn" type="button" class="btn btn-dark" >Clear Terrain</button>
-                    <button id="clrWallBtn" type="button" class="btn btn-dark">Clear Walls</button>
-                    <button id="instructions" type="button" class="btn btn-dark">Instructions</button>
+                    <button id="clrPathBtn" type="button" class="btn btn-dark" data-toggle="tooltip" data-placement="right" title="Click to clear the search path">Clear Path</button>
+                    
+                    <button id="clrTerrainBtn" type="button" class="btn btn-dark" data-toggle="tooltip" data-placement="right" title="Click to clear all the created node weights">Clear Terrain</button>
+                    
+                    <button id="clrWallBtn" type="button" class="btn btn-dark" data-toggle="tooltip" data-placement="right" title="Click to clear all the obstacles">Clear Walls</button>
+                    
+                    <button id="instructions" type="button" class="btn btn-dark" data-toggle="tooltip" data-placement="right" title="Click to display the Instructions">Instructions</button>
+                    
                     <button class="btn btn-dark">
                         <a href="https://github.com/gowrijsuria/MarsPathfinder" target="_blank" id="repoLink">Github Link</a></button>
-                    </div>
-
+                </div>
             </div>
             </nav>
-            <!--<div class = "fixedheight">-->
-            <nav class = "navbar" style = "display: inline-block; float: left;">
-                <div class="d-inline-block p-2 bg-white text-dark" style = "float:left"><i class="fa fa-stop startstyle" style="font-size: 1.25rem"></i> Start Node</div>
-                <div class="d-inline-block p-2 bg-white text-dark" style = "float:left"><i class="fa fa-stop stopstyle" style="font-size: 1.25rem"></i> Target Node</div>
-            <div class="d-inline-block p-2 bg-white text-dark" style = "float:left"><i class="fa fa-stop viastyle" style="font-size: 1.25rem"></i> Via Node</div>
-                <div class="d-inline-block p-2 bg-white text-dark" style = "float:left"><i class="fa fa-stop shortestpathstyle" style="font-size: 1.25rem"></i> Shortest-Path Node</div>
-                <div class="d-inline-block p-2 bg-white text-dark" style = "float:left"><i class="fa fa-stop shortestpathstyle1" style="font-size: 1.25rem"></i>Shortest-Path Terrain Node</div>
-                <div class="d-inline-block p-2 bg-white text-dark" style = "float:left"><i class="fa fa-stop obstaclestyle" style="font-size: 1.25rem"></i> Obstacle Node</div>
-                <div class="d-inline-block p-2 bg-white text-dark" style = "float:left"><i class="fa fa-stop terrainstyle" style="font-size: 1.25rem"></i> Terrain Node</div>
-                <div class="d-inline-block p-2 bg-white text-dark" style = "float:left"><i class="fa fa-stop visitedstyle" style="font-size: 1.25rem"></i> Visited Node</div>
-                <div class="d-inline-block p-2 bg-white text-dark" style = "float:left"><i class="fa fa-stop visitedstyle1" style="font-size: 1.25rem"></i> Visited Terrain Node</div>
+
+            <div>
+            <nav class = "navbar">
+                <div class="d-inline-block p-2 bg-white text-dark" style = "float:left"><i class="fa fa-stop startstyle" style="font-size: 1.25rem"></i> Start</div>
+                
+                <div class="d-inline-block p-2 bg-white text-dark" style = "float:left"><i class="fa fa-stop stopstyle" style="font-size: 1.25rem"></i> Target</div>
+
+                <div class="d-inline-block p-2 bg-white text-dark" style = "float:left"><i class="fa fa-stop viastyle" style="font-size: 1.25rem"></i> Via Node</div>
+                
+                <div class="d-inline-block p-2 bg-white text-dark" style = "float:left"><i class="fa fa-stop shortestpathstyle" style="font-size: 1.25rem"></i> Shortest-Path</div>
+                
+                <div class="d-inline-block p-2 bg-white text-dark" style = "float:left"><i class="fa fa-stop shortestpathstyle1" style="font-size: 1.25rem"></i>Shortest-Path Terrain</div>
+                
+                <div class="d-inline-block p-2 bg-white text-dark" style = "float:left"><i class="fa fa-stop obstaclestyle" style="font-size: 1.25rem"></i> Obstacle</div>
+                
+                <div class="d-inline-block p-2 bg-white text-dark" style = "float:left"><i class="fa fa-stop terrainstyle" style="font-size: 1.25rem"></i> Terrain</div>
+                
+                <div class="d-inline-block p-2 bg-white text-dark" style = "float:left"><i class="fa fa-stop visitedstyle" style="font-size: 1.25rem"></i> Visited</div>
+                
+                <div class="d-inline-block p-2 bg-white text-dark" style = "float:left"><i class="fa fa-stop visitedstyle1" style="font-size: 1.25rem"></i> Visited Terrain</div>
 
             </nav>
-        <!--</div>-->
+</div>
 </div>
 
-    <div id = "accordion" style="width: 20%;float:left;" class=" card btn-group-vertical sidebar" role="group" aria-label="Button group with nested dropdown">
+    <div id = "accordion" style="width: 20%;float:left;" class="card btn-group-vertical sidebar" role="group" aria-label="Button group with nested dropdown">
+
         <button id="RandomObs" type="button" class="btn btn-dark bg-dark" data-toggle="tooltip" data-placement="right" title="Click to create Random Untraversable Obstacles">Create Random Obstacles</button>
         
-            <button id="Via" type="button" class="btn btn-dark bg-dark" data-toggle="tooltip" data-placement="right" title="Click to add a Via Point">Add Via Point</button>
-
+        <button id="Via" type="button" class="btn btn-dark bg-dark" data-toggle="tooltip" data-placement="right" title="Click to add a Via Point">Add Via Point</button>
             
         <button id="Terrain" type="button" class="btn btn-dark bg-dark" data-toggle="tooltip" data-placement="right" title="Click to create traversable weights to random nodes">Create Terrain</button>
         
@@ -91,29 +103,71 @@
             </div>
         
         </div>
+
         <button id="Cleardest" type="button" class="btn btn-dark bg-dark" data-toggle="tooltip" data-placement="right" title="Click to remove new destination nodes and keep only the original one">Clear Added Destinations</button>
 
         <button id="ClearStart" type="button" class="btn btn-dark bg-dark" data-toggle="tooltip" data-placement="right" title="Click to remove new start nodes and keep only the original one">Clear Added Start Points</button>
 
 
-        <div id = "ViaInfo" class="card" style = "position: relative; display:none">
+        <div id = "ViaInfo" class="card bg-white text-dark" style = "position: relative; display:none;">
             <div class="card-body">
-                <h5 class="card-title">Instructions</h5>
-                <h6 class="card-text">VIa Info</h6>        
+                <h5 class="card-title">About Via Point</h5>
+                <h6 class="card-text">A Via Point is a Drop-by point before reaching the destination</h6>
+                <h6 class="card-text">It is similar to having multiple destinations with a fixed Final Destination</h6>
+
             </div> 
         </div>
 
         <div id = "RandObInfo" class="card" style = "position: relative; display:none">
             <div class="card-body">
-                <h5 class="card-title">Instructions</h5>
-                <h6 class="card-text">Random Obstacles Info</h6>        
+                <h5 class="card-title">Random Obstacles</h5>
+                <h6 class="card-text">Randomly creates walls in the grid</h6>
+                <h6 class="card-text">You can also manually add more walls by left-clicking in the grid</h6>        
+
             </div> 
         </div>
 
-
+        <div id = "TerrainInfo" class="card" style = "position: relative; display:none">
+            <div class="card-body">
+                <h5 class="card-title">About Terrain</h5>
+                <h6 class="card-text">Terrain represents craters, mountains on Mars which are dangerous but manoeuvrable </h6>
+                <h6 class="card-text">It assigns a different costs to different nodes randomly to simulate the environment</h6>        
+            </div> 
         </div>
-        
-        
+
+        <div id = "MazeInfo" class="card" style = "position: relative; display:none">
+            <div class="card-body">
+                <h5 class="card-title">Recursive Maze</h5>
+                <h6 class="card-text">It generates a Maze of Obstacles recursively</h6>
+                <h6 class="card-text">This feature simulates a typical Mars Terrain where most of the paths are unmanoeuvrable</h6>        
+            </div> 
+        </div>
+
+        <div id = "DestInfo" class="card" style = "position: relative; display:none">
+                <div class="card-body">
+                <h5 class="card-title">Multiple Destinations</h5>
+                <h6 class="card-text">To visit Multiple Places to Pick-Up something or investigate the area </h6>
+                <h6 class="card-text">This feature simulates the situation by finding least cost path using Travelling Salesman Problem</h6>        
+            </div> 
+        </div>
+
+        <div id = "StartInfo" class="card" style = "position: relative; display:none">
+            <div class="card-body">
+                <h5 class="card-title">Multiple Start Points</h5>
+                <h6 class="card-text">In case we have multiple Rovers, this feature creates a Multi-Agent Scenario</h6>
+                <h6 class="card-text">It chooses the start node which is closest to the destination</h6>        
+            </div> 
+        </div>
+
+        <div id = "ClosestInfo" class="card" style = "position: relative; display:none">
+            <div class="card-body">
+                <h5 class="card-title">Closest Start/Destination Node</h5>
+                <h6 class="card-text">Turn it on to find out the closest destination node with Multiple Agents</h6>
+                <h6 class="card-text">And closest Agent with Multiple Destinations</h6>        
+            </div> 
+        </div>
+</div>
+
 <!-- CANVAS -->
     <div style="width: 80%; float:right; top:0">
         <div id="boardDiv">
@@ -132,7 +186,7 @@
     </div>
 </div>
 
-
+<script src="./instructions.js"></script>
 <script src="./clearNode.js"></script>
 <script src="./moveNode.js"></script>
 <script src="./grid.js"></script>

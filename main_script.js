@@ -826,11 +826,16 @@ window.onload=function init() {
   if(btn) 
     {
       btn.addEventListener('click', CreateRandomObs, false);
+      btn.addEventListener('click', Randfunc, false);
+      
     }
   // Create Maze Button
   btn = document.getElementById('Maze');
-  if(btn) btn.addEventListener('click', CreateMaze, false);
-  
+  if(btn) 
+    {
+      btn.addEventListener('click', CreateMaze, false);
+      btn.addEventListener('click', Mazefunc, false);
+  }
   // Create Via Points
   btn = document.getElementById('Via');
   if(btn) {
@@ -840,10 +845,18 @@ window.onload=function init() {
   }
   // Create Multiple Destinations
   btn = document.getElementById('multipleDestinations');
-  if (btn) btn.addEventListener('click', AddDestn, false);
+  if (btn)
+    { btn.addEventListener('click', AddDestn, false);
+    btn.addEventListener('click', Destfunc, false);
+    
+  }
   // Create Multiple Start Points
   btn = document.getElementById('multipleStart');
-  if (btn) btn.addEventListener('click', AddStartPoint, false);
+  if (btn) {
+    btn.addEventListener('click', AddStartPoint, false);
+    btn.addEventListener('click', Startfunc, false);
+  
+  }
   //Find path to Closest destination
   btn = document.getElementById('switch');
   if (btn) btn.addEventListener('click', ClosestDestination, false);
@@ -855,8 +868,12 @@ window.onload=function init() {
   if (btn) btn.addEventListener('click', ClearStartPoints, false);
   // Create Terrain
   btn = document.getElementById('Terrain');
-  if(btn) btn.addEventListener('click', CreateTerrain, false);  
 
+  if(btn) 
+    {btn.addEventListener('click', CreateTerrain, false);  
+    btn.addEventListener('click', Terrainfunc, false);  
+
+}
   btn = document.getElementById('instructions');
   if(btn) btn.addEventListener('click', CallTutorial, false);  
 
