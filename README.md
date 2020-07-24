@@ -23,7 +23,7 @@ These are additional ways to explore Mars while travelling to your destination
   - **Create Maze**                 - Uses Recursive Maze division to generate a maze 
   - **Via Point**                  - Traverse through a via point before reaching your destination
   - **Create Terrain**              - Simulates craters and mountains on Mars , manoeuvre your rover through them 
-  - **Add Multiple Destinations**   - Creates multiple end points for the rover 
+  - **Add Multiple Destinations**   - Creates multiple destination points for the rover 
   - **Add Multiple Start points**   - Creates multiple start points for the rover
   - **Closest Path**                
     - Finds closest destination when multiple destinations are present 
@@ -32,7 +32,7 @@ These are additional ways to explore Mars while travelling to your destination
     - Finds the optimal path to follow when there are multiple destinations 
 
 ## Instructions
- - Change the start and end node positions by dragging
+ - Change the start and destination node positions by dragging
  - To draw walls, use left click
  - To delete walls, use right click
  - **Normal Pathfinding**
@@ -42,7 +42,7 @@ These are additional ways to explore Mars while travelling to your destination
  - **Complex Pathfinding**
    - Add multiple destinations or start nodes with via points for complex pathfinding    
    - Click on **Add Via point**, drag it to a suitable point and click **Find Path** 
-   - Click on **Add Nodes**, then click on the surface to create _**an extra start or destination node**_. The user can click to add as many start or end nodes as possible
+   - Click on **Add Nodes**, then click on the surface to create _**an extra start or destination node**_. The user can click to add as many start or destination nodes as possible
    - Toggle the **Closest Path** button to GREEN for finding the closest path and to RED for TSP with multiple destinations
      - (**ON**) Travel to your **closest destination** on Mars either with **_multiple start or destination nodes_**
         - With multiple destination nodes, finds the closest destination
