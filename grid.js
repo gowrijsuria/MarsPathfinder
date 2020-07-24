@@ -1,3 +1,15 @@
+function Viafunc(){
+  let div = document.getElementById('ViaInfo');
+  div.style.display = "inline";
+  return false;
+}
+
+function Viafunc_collapse() {
+  let div = document.getElementById('tutorial');
+  div.style.display = "none";
+  return false;
+}
+
 function drawRect(x, y, width, height, state, colour = null) {
   if(colour){
     ctx.fillStyle = colour;

@@ -38,20 +38,22 @@ font-size: 16px;
 padding: 8px 8px 8px 8px;
 font-weight: 500;
 }
-
-.btn-dark:hover, .btn-dark:focus, .btn-dark:active, .btn-dark.active, .open>.dropdown-toggle.btn-dark {
+ 
+.btn-dark:hover,.btn-dark:focus, .btn-dark:active, .btn-dark.active, .open>.dropdown-toggle.btn-dark {
     color: #fff;
     background-color: #F4A460;
     border-color: #f6b278; /*set the color you want here*/
 
 }
+
+
 /*
 .btn-group{
 padding: 2px 4px 2px 2px;
 
 }
 */
-@media (max-width: 768px) {
+@media (max-width: 20%) {
     .btn, .btn-group {
         width:100%;
     }
@@ -166,4 +168,8 @@ p {
 			
 .checkbox { 
     display : none;
+}
+
+.fixedheight{
+    height: 50px;
 }

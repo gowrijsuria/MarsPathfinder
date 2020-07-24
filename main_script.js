@@ -778,6 +778,11 @@ window.onload=function init() {
   // Close tutorial
   let btn = document.getElementById('tutorialBtn');
   if(btn) btn.addEventListener('click', removeDiv, false);
+
+//  let btn = document.getElementById('ViaClose');
+//  if(btn) btn.addEventListener('click', Viafunc_collapse, false);
+
+  
   // Clear walls
   btn = document.getElementById('clrWallBtn');
   if(btn) btn.addEventListener('click', clearWalls, false);
@@ -818,13 +823,21 @@ window.onload=function init() {
   
   // Create Random Obstacles
   btn = document.getElementById('RandomObs');
-  if(btn) btn.addEventListener('click', CreateRandomObs, false);
+  if(btn) 
+    {
+      btn.addEventListener('click', CreateRandomObs, false);
+    }
   // Create Maze Button
   btn = document.getElementById('Maze');
   if(btn) btn.addEventListener('click', CreateMaze, false);
+  
   // Create Via Points
   btn = document.getElementById('Via');
-  if(btn) btn.addEventListener('click', FuncVia, false);
+  if(btn) {
+    btn.addEventListener('click', FuncVia, false);
+    btn.addEventListener('click', Viafunc, false);
+
+  }
   // Create Multiple Destinations
   btn = document.getElementById('multipleDestinations');
   if (btn) btn.addEventListener('click', AddDestn, false);
