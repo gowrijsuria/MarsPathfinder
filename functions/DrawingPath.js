@@ -39,6 +39,11 @@ async function drawPath(parent, beginNode, currentendpt,oldpath,via=false){
   if (draw_flag == true) {
     for (let i = path.length - 1; i >= 0; i--) {
       let node = path[i];
+      if (node.col === undefined) {
+        alert('Path could not be found!');
+        running = false;
+        startBtn.textContent = 'Find Path';
+      }
       let curNode = nodes[node.row][node.col];
       if (curNode.state != STATE.START && curNode.state != STATE.XSTART && curNode.state != STATE.XFINISH && curNode.state != STATE.FINISH && curNode.state != STATE.VIA) {
         if (curNode.state != STATE.VISITED_TERRAIN){
