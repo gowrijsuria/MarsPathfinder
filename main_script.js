@@ -4,8 +4,6 @@ const ALGORITHMS = {BFS: 'bfs', DFS: 'dfs', GREEDY: 'greedy', ASTAR: 'astar', DI
 Object.freeze(STATE);
 Object.freeze(ALGORITHMS);
 
-// const WIDTH = (80/100)*2000;
-// const HEIGHT = 1000;
 const WIDTH = 1920;
 const HEIGHT = 940;
 
@@ -13,8 +11,6 @@ const HEIGHT = 940;
 const rectWidth = 27;
 const rectHeight = 27;
 
-// const num_rows = Math.floor((screen.height - 70)/rectWidth);
-// const num_cols = Math.floor(screen.width/rectHeight) - 13;
 const num_rows = Math.floor((screen.height - 350)/rectWidth);
 const num_cols = Math.floor(screen.width /rectHeight) - 15;
 

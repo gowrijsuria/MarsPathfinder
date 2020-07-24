@@ -93,6 +93,15 @@ background-color:
     font-size: 24px;
 }
 
+.startstyle1{
+ color:greenyellow;
+ font-size: 24px;
+}
+
+.stopstyle1{
+ color: #d83c60;
+ font-size: 24px;
+}
 .stopstyle{
     color:red;
     font-size: 24px;
