@@ -72,7 +72,7 @@ These are additional ways to explore Mars while travelling to your destination
   <br>
 - Travelling Salesman Problem with multiple Destinations
   <br>
-  ![alt-text](https://github.com/gowrijsuria/MarsPathfinder/blob/master/Readme%20Styling/TSP.gif)
+  ![alt-text](https://github.com/gowrijsuria/MarsPathfinder/blob/master/Readme%20Styling/TSP_.gif)
   <br>
 - Finding closet destination among the multiple
   <br>
