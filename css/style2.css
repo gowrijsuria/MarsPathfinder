@@ -38,22 +38,20 @@ font-size: 16px;
 padding: 8px 8px 8px 8px;
 font-weight: 500;
 }
- 
-.btn-dark:hover,.btn-dark:focus, .btn-dark:active, .btn-dark.active, .open>.dropdown-toggle.btn-dark {
+
+.btn-dark:hover, .btn-dark:focus, .btn-dark:active, .btn-dark.active, .open>.dropdown-toggle.btn-dark {
     color: #fff;
     background-color: #F4A460;
     border-color: #f6b278; /*set the color you want here*/
 
 }
-
-
 /*
 .btn-group{
 padding: 2px 4px 2px 2px;
 
 }
 */
-@media (max-width: 20%) {
+@media (max-width: 768px) {
     .btn, .btn-group {
         width:100%;
     }
@@ -84,6 +82,12 @@ background-color:
 
 }
 
+.backstyle{
+     /*background-color:#333; */
+    /*width: 100%;*/
+    /*height: 100%;*/
+    background-image: url(mars.jpg);
+}
 .startstyle{
     color:#1fd613;
     font-size: 24px;
@@ -115,7 +119,7 @@ background-color:
 }
 
 .terrainstyle{
-	color:#8B0000;
+	color:rgb(180, 61, 61);
 	/*background:linear-gradient(to right, #ffccff 0%, #a34a40 100%);*/
     font-size: 24px;	
 }
@@ -168,8 +172,4 @@ p {
 			
 .checkbox { 
     display : none;
-}
-
-.fixedheight{
-    height: 50px;
 }
