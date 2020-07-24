@@ -75,7 +75,7 @@ async function RoverSearch() {
     startBtn.textContent = 'Cancel';
     startBtn.classList.toggle('btn', 'btn-danger');
 
-    var newendNode1 = {
+    var newendNode = {
       row: null,
       col: null
     };
@@ -84,8 +84,8 @@ async function RoverSearch() {
       row: null,
       col: null
     };
-    newendNode1.row = finishNode.row;
-    newendNode1.col = finishNode.col;
+    newendNode.row = finishNode.row;
+    newendNode.col = finishNode.col;
 
     newbeginNode.row = startNode.row;
     newbeginNode.col = startNode.col;
