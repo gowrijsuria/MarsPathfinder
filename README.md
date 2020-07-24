@@ -55,9 +55,14 @@ These are additional ways to explore Mars while travelling to your destination
     
 ## Working
 - Basic Pathfinding
-  ![alt-text](https://github.com/gowrijsuria/MarsPathfinder/blob/master/Readme%20Styling/basic.gif)
+  ![alt-text](Readme Styling/Basic.gif)
 - Pathfinding with Terrain
-  ![alt-text](https://github.com/gowrijsuria/MarsPathfinder/blob/master/Readme%20Styling/terrain.gif)
+  ![alt-text](https://github.com/gowrijsuria/MarsPathfinder/blob/master/Readme%20Styling/terrain.gif)  
+- MultiAgent for for choosing closest start node 
+  ![alt-text](https://github.com/gowrijsuria/MarsPathfinder/blob/master/Readme%20Styling/multiagent.gif)
+- Travelling Salesman Problem with multiple Destinations
+  ![alt-text](https://github.com/gowrijsuria/MarsPathfinder/blob/master/Readme%20Styling/TSP.gif)
+  
 
 ### Team Martians
  - Gowri Lekshmy 
