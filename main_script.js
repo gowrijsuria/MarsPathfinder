@@ -329,7 +329,7 @@ window.onload=function init() {
   btn = document.getElementById('multipleDestinations');
   if (btn) 
   { btn.addEventListener('click', AddDestn, false);
-    btn.addEventListener('click', Destfunc, false);
+    //btn.addEventListener('click', Destfunc, false);
     
   }
   // Create Multiple Start Points
