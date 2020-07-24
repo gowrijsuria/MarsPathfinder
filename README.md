@@ -5,7 +5,7 @@ A web application developed to navigate a Mars rover as a part of Microsoft Mars
 [**Live demo !!**](https://marspathfinder.herokuapp.com/)
 
 This provides insight into the behaviour of popular traversal algorithms, such as Depth-First Search (DFS), Breadth-First Search (BFS), Greedy Best First Search, Dijkstra's Algorithm and A* Search.
-This visualisation tool was built using Vanilla Javascript, HTML5 Canvas, CSS and Bootstrap.
+This visualisation tool was built using Vanilla Javascript, HTML5 Canvas and CSS.
 
 ![Screenshot](model.png)
 
