@@ -6,6 +6,8 @@ function clearPath(){
       nodes[row].forEach(node => {
         if(node.state == STATE.PATH || node.state == STATE.VISITED)
           node.state = STATE.EMPTY;
+        else if(node.state == STATE.VISITED_TERRAIN || node.state == STATE.TERRAIN_PATH)
+          node.state = STATE.TERRAIN;
       });
     }
   }
@@ -47,7 +49,7 @@ function clearTerrain() {
  if(!running){
     for(let row = 0; row < nodes.length; row++){
       nodes[row].forEach(node => {
-        if(node.state == STATE.TERRAIN)
+        if(node.state == STATE.TERRAIN || node.state == STATE.VISITED_TERRAIN || node.state == STATE.TERRAIN_PATH)
           node.state = STATE.EMPTY;
       });
     }

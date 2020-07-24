@@ -102,13 +102,18 @@ background-color:
     font-size: 24px;
 }
 
+.shortestpathstyle1{
+    color:#FF8C00;
+    font-size: 24px;
+}
+
 .obstaclestyle{
     color:#696969;
     font-size: 24px;
 }
 
 .terrainstyle{
-	color:#a34a40;
+	color:#8B0000;
 	/*background:linear-gradient(to right, #ffccff 0%, #a34a40 100%);*/
     font-size: 24px;	
 }
@@ -116,6 +121,11 @@ background-color:
 .visitedstyle{
 	color:#58c4b7;
     font-size: 24px;		
+}
+
+.visitedstyle1{
+    color:#8A2BE2;
+    font-size: 24px;        
 }
 
 .toggle { 

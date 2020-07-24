@@ -1,18 +1,22 @@
-const STATE = {EMPTY: 'e',WALL: 'w',START: 's', XSTART: 'xs', FINISH: 'f', XFINISH: 'xf', PATH: 'p',VISITED: 'v',TERRAIN: 't', VIA: 'via'};
+const STATE = {EMPTY: 'e',WALL: 'w',START: 's', XSTART: 'xs', FINISH: 'f', XFINISH: 'xf', PATH: 'p',VISITED: 'v',TERRAIN: 't', VIA: 'via',VISITED_TERRAIN: 'vt',TERRAIN_PATH: 'tp'};
 const ALGORITHMS = {BFS: 'bfs', DFS: 'dfs', GREEDY: 'greedy', ASTAR: 'astar', DIJKSTRA: 'dijkstra'};
 
 Object.freeze(STATE);
 Object.freeze(ALGORITHMS);
 
-const WIDTH = (80/100)*2000;
-const HEIGHT = 1000;
+// const WIDTH = (80/100)*2000;
+// const HEIGHT = 1000;
+const WIDTH = 1920;
+const HEIGHT = 940;
 
 //Size of each pixel in the grid
 const rectWidth = 27;
 const rectHeight = 27;
 
+// const num_rows = Math.floor((screen.height - 70)/rectWidth);
+// const num_cols = Math.floor(screen.width/rectHeight) - 13;
 const num_rows = Math.floor((screen.height - 70)/rectWidth);
-const num_cols = Math.floor(screen.width/rectHeight) - 13;
+const num_cols = Math.floor(screen.width/rectHeight) - 1;
 
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
@@ -42,8 +46,6 @@ var all_nodes = [];
 
 const startBtn = document.getElementById('startBtn');
 
-var BOARD_HEIGHT;
-var BOARD_WIDTH;
 var Viabtn_flag = true;
 let closedest = false;
 let draw_flag = true;
@@ -89,48 +91,53 @@ function findNeighbours(curNode) {
 async function drawViaPath(parent, beginNode, endpt, oldpath) {
   clearPath();
   var path = [];
-  var path2 = path.concat(oldpath);
-  path = path2;
   
   path.push(endpt);
-  // let endNode = path[path.length - 1];
   let endNode = endpt;
   while (!(endNode.row == beginNode.row && endNode.col == beginNode.col)) {
     endNode = parent.get(`${endNode.row},${endNode.col}`);
     path.push(endNode);
   }
+
+  fpath = path.concat(oldpath);
   await sleep(20);
-  return path;
+  return fpath;
 }
 
 //Given an array of {row, col} tuples, this function will change the state of each node to STATE.PATH
 async function drawPath(parent, beginNode, currentendpt,oldpath,via=false){
   
   clearPath();
-  if(!via && oldpath.length == 0){
   var path = [];
-  path.push(currentendpt);
+  if(!via && oldpath.length == 0){
+    path.push(currentendpt);
   } 
   if(oldpath.length != 0){
-    var path = [];
-    var path2 = path.concat(oldpath);
-    path = path2;
     path.push(currentendpt);
   }
-  
+
   let endNode = path[path.length - 1];
   while(!(endNode.row == beginNode.row && endNode.col == beginNode.col)) {
     endNode = parent.get(`${endNode.row},${endNode.col}`);
     path.push(endNode);
   }
-  // clearPath();
+  if(oldpath.length != 0){
+    var path2 = path.concat(oldpath);
+    path = path2;
+  }
+
   console.log('done');  
   if (draw_flag == true) {
     for (let i = path.length - 1; i >= 0; i--) {
       let node = path[i];
       let curNode = nodes[node.row][node.col];
       if (curNode.state != STATE.START && curNode.state != STATE.XSTART && curNode.state != STATE.XFINISH && curNode.state != STATE.FINISH && curNode.state != STATE.VIA) {
-        curNode.state = STATE.PATH;
+        if (curNode.state != STATE.VISITED_TERRAIN){
+          curNode.state = STATE.PATH;
+        }
+        else{
+          curNode.state = STATE.TERRAIN_PATH;
+        }
         await sleep(20);
       }
     }
@@ -570,6 +577,7 @@ function CreateMatrix(total_no_of_nodes) {
 
 function MultiDest(e) {
   ClearStartPoints();
+  ClearVia();
   let col = getCol(getX(e));
   let row = getRow(getY(e));
   let cell = nodes[row][col];
@@ -665,7 +673,7 @@ function ClosestDestination() {
 function CreateTerrain() {
   if(!running){
     clearPath();
-    Createterrain(); 
+    Createterrain(nodes); 
   }  
 }
 

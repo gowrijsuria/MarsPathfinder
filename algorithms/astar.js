@@ -6,7 +6,7 @@ async function astar(beginNode, endNode, via = false, oldpath=[]){
     row: beginNode.row,
     col: beginNode.col,
     heuristic: manhattan(beginNode.row, beginNode.col,endNode.row, endNode.col),
-    cost: 0
+    cost: nodes[beginNode.row][beginNode.col].weight     
   };
   
   frontier.push(node);
@@ -16,7 +16,12 @@ async function astar(beginNode, endNode, via = false, oldpath=[]){
     let col = node.col;
     // if node is not start/end node, mark as visited
     if (nodes[row][col].state != STATE.START && nodes[row][col].state != STATE.FINISH && nodes[row][col].state != STATE.XSTART && nodes[row][col].state != STATE.XFINISH && nodes[row][col].state != STATE.VIA) {
-      nodes[row][col].state = STATE.VISITED;
+      if(nodes[row][col].state == STATE.TERRAIN){
+        nodes[row][col].state = STATE.VISITED_TERRAIN;
+      }
+      else{
+        nodes[row][col].state = STATE.VISITED;
+      }
     }
     // if found, draw its path and return
     if(row == endNode.row && col == endNode.col){
@@ -44,7 +49,7 @@ async function astar(beginNode, endNode, via = false, oldpath=[]){
         }
 
         // if not in frontier / visited nodes, add it
-        newNode.cost = node.cost + 1;
+        newNode.cost = node.cost + nodes[newNode.row][newNode.col].weight;
         newNode.heuristic = manhattan(newNode.row, newNode.col,endNode.row, endNode.col) + newNode.cost;
         if(found == -1 && !parent.has(`${newNode.row},${newNode.col}`)){
           frontier.push(newNode);

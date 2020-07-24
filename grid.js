@@ -11,10 +11,7 @@ function drawRect(x, y, width, height, state, colour = null) {
     else if (state == STATE.XFINISH)
       ctx.fillStyle = "#d83c60";
     else if (state == STATE.TERRAIN)
-      {
-        ctx.fillStyle = "#a34a40";
-        console.log("Terrain detected!!")
-      }
+        ctx.fillStyle = "#8B0000";
     else if (state == STATE.WALL)
       ctx.fillStyle = "#696969";
     else if (state == STATE.VIA)
@@ -23,6 +20,10 @@ function drawRect(x, y, width, height, state, colour = null) {
       ctx.fillStyle = "#ebeb2a";
     else if (state == STATE.VISITED)
       ctx.fillStyle = "#58c4b7";
+    else if (state == STATE.VISITED_TERRAIN)
+      ctx.fillStyle = "#8A2BE2";
+    else if (state == STATE.TERRAIN_PATH)
+      ctx.fillStyle = "#FF8C00";
     else
       ctx.fillStyle = "#ffcc99";
   }
@@ -49,8 +50,6 @@ function createGrid() {
   }
   nodes[startNode.row][startNode.col].state = STATE.START;
   nodes[finishNode.row][finishNode.col].state = STATE.FINISH;
-  BOARD_HEIGHT = nodes.length;
-  BOARD_WIDTH = nodes[0].length;
 }
 
 //renders grid by drawing the rectangles
