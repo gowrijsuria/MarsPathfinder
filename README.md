@@ -22,11 +22,11 @@ These are additional ways to explore Mars while travelling to your destination
   - **Random Obstacles**            - Generates random obstacles on the surface of Mars 
   - **Create Maze**                 - Uses Recursive Maze division to generate a maze 
   - **Via Point**                  - Traverse through a via point before reaching your destination
-  - **Create Terrain**              - Simulates craters and mountains on Mars , manoeuvre your rover through them 
+  - **Create Terrain**              - Simulates craters and mountains on Mars, manoeuvre your rover through them 
   - **Add Multiple Destinations**   - Creates multiple destination points for the rover 
   - **Add Multiple Start points**   - Creates multiple start points for the rover
   - **Closest Path**                
-    - Finds closest destination when multiple destinations are present 
+    - Finds the closest destination when multiple destinations are present 
     - Chooses one start point among many to reach the destination as quick as possible (simulating a multi agent system)
  - **Travelling Salesman Problem with multiple destinations**
     - Finds the optimal path to follow when there are multiple destinations 
@@ -51,7 +51,7 @@ These are additional ways to explore Mars while travelling to your destination
     - Click **Create Terrain** for simulating the Martian surface (paths with cost)
     - In the presence of TERAIN nodes, rover follows an optimal path to reach the destination minimising the cost 
     - Select the algorithm by using the dropdown list 
-    - Finally click on **Find Path** for visualising the path followed by the rover 
+    - Finally, click on **Find Path** for visualising the path followed by the rover 
 
 ### Team Martians
  - Gowri Lekshmy 
