@@ -54,6 +54,8 @@ These are additional ways to explore Mars while travelling to your destination
     - Finally, click on **Find Path** for visualising the path followed by the rover 
     
 ## Working
+- Basic Pathfinding
+  ![alt-text](Readme Styling/Basic.gif)
 - Pathfinding with Terrain
   ![alt-text](https://github.com/gowrijsuria/MarsPathfinder/blob/master/Readme%20Styling/terrain.gif)
 
