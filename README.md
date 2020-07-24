@@ -62,13 +62,21 @@ These are additional ways to explore Mars while travelling to your destination
   <br>
   ![alt-text](https://github.com/gowrijsuria/MarsPathfinder/blob/master/Readme%20Styling/terrain.gif)
   <br>
-- MultiAgent for for choosing closest start node 
+- Via Point for the rover to pass through
+  <br>
+  ![alt-text](https://github.com/gowrijsuria/MarsPathfinder/blob/master/Readme%20Styling/via.gif)
+  <br>
+- MultiAgent for choosing closest start node 
   <br>
   ![alt-text](https://github.com/gowrijsuria/MarsPathfinder/blob/master/Readme%20Styling/multiagent.gif)
   <br>
 - Travelling Salesman Problem with multiple Destinations
   <br>
   ![alt-text](https://github.com/gowrijsuria/MarsPathfinder/blob/master/Readme%20Styling/TSP.gif)
+  <br>
+- Finding closet destination among the multiple
+  <br>
+  ![alt-text](https://github.com/gowrijsuria/MarsPathfinder/blob/master/Readme%20Styling/closedest.gif)
   <br>
 
 ### Team Martians
