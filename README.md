@@ -5,7 +5,7 @@ A web application developed to navigate a Mars rover as a part of Microsoft Mars
 [**Live demo !!**](https://marspathfinder.herokuapp.com/)
 
 This provides insight into the behaviour of popular traversal algorithms, such as Depth-First Search (DFS), Breadth-First Search (BFS), Greedy Best First Search, Dijkstra's Algorithm and A* Search.
-This visualisation tool was built using Vanilla Javascript, HTML5 Canvas and CSS.
+This visualisation tool was built using Vanilla Javascript, HTML5 Canvas, CSS and Bootstrap.
 
 ![Screenshot](model.png)
 
@@ -25,7 +25,7 @@ These are additional ways to explore Mars while travelling to your destination
   - **Create Terrain**              - Simulates craters and mountains on Mars, manoeuvre your rover through them 
   - **Add Multiple Destinations**   - Creates multiple destination points for the rover 
   - **Add Multiple Start points**   - Creates multiple start points for the rover
-  - **Closest Path**                
+  - **Closest Node**                
     - Finds the closest destination when multiple destinations are present 
     - Chooses one start point among many to reach the destination as quick as possible (simulating a multi agent system)
  - **Travelling Salesman Problem with multiple destinations**
@@ -43,7 +43,7 @@ These are additional ways to explore Mars while travelling to your destination
    - Add multiple destinations or start nodes with via points for complex pathfinding    
    - Click on **Add Via point**, drag it to a suitable point and click **Find Path** 
    - Click on **Add Nodes**, then click on the surface to create _**an extra start or destination node**_. The user can click to add as many start or destination nodes as possible
-   - Toggle the **Closest Path** button to GREEN for finding the closest path and to RED for TSP with multiple destinations
+   - Toggle the **Closest Node** button to GREEN for finding the closest path and to RED for TSP with multiple destinations
      - (**ON**) Travel to your **closest destination** on Mars either with **_multiple start or destination nodes_**
         - With multiple destination nodes, finds the closest destination
         - With multiple start nodes, chooses the closest start point to the destination
