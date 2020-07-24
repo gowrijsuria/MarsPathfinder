@@ -55,7 +55,7 @@ These are additional ways to explore Mars while travelling to your destination
     
 ## Working
 - Basic Pathfinding
-  ![alt-text](Readme Styling/basic.gif)
+  ![alt-text](https://github.com/gowrijsuria/MarsPathfinder/blob/master/Readme%20Styling/basic.gif)
 - Pathfinding with Terrain
   ![alt-text](https://github.com/gowrijsuria/MarsPathfinder/blob/master/Readme%20Styling/terrain.gif)
 
